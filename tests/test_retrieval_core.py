@@ -85,6 +85,13 @@ def test_chunk_ids_track_tokenizer_identity():
     assert first[0].identifier != second[0].identifier
 
 
+def test_unicode_and_crlf_offsets_are_not_normalised():
+    text = "# Synthetic\r\n\r\nCafé 水 evidence.\r\n"
+    chunks = chunk_document("synthetic", text, FakeEmbedder())
+    assert all(chunk.text == text[chunk.start : chunk.end] for chunk in chunks)
+    assert "\r\n" in chunks[0].text
+
+
 def test_ingestion_rejects_invalid_metadata_before_database(tmp_path):
     from rag_audit.ingestion import ingest
 

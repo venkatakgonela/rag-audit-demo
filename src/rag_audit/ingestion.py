@@ -33,7 +33,7 @@ def ingest(connection: psycopg.Connection, directory: Path, embedder: Embedder) 
         path = (directory / document["path"]).resolve()
         if not path.is_relative_to(directory.resolve()):
             raise ValueError("Source path escapes corpus")
-        source = path.read_text(encoding="utf-8")
+        source = path.read_bytes().decode("utf-8")
         if hashlib.sha256(source.encode()).hexdigest() != document["sha256"]:
             raise ValueError("Source hash mismatch")
         chunks = chunk_document(document["id"], source, embedder)
