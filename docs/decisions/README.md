@@ -19,10 +19,11 @@ Record significant product choices here. Preserve accepted decision text; dated 
 | [0011: Liveness and version](0011-liveness-version.md) | Accepted | October 2, 2026; retrospective |
 | [0012: Mermaid](0012-mermaid.md) | Accepted | October 2, 2026; new documentation decision |
 | [0013: Synthetic original work](0013-synthetic-original-work.md) | Accepted | October 2, 2026; retrospective |
+| [0014: Query access control](0014-query-access-control.md) | Accepted | October 2, 2026 |
+| [0015: Section chunks and fusion](0015-section-chunks-and-fusion.md) | Accepted | October 2, 2026 |
+| [0016: Local embedding runtime](0016-local-embedding-runtime.md) | Accepted | October 2, 2026 |
 
 ## Pending decisions
-
-Current retrieval decisions: [0014: access control](0014-query-access-control.md), [0015: chunks and fusion](0015-section-chunks-and-fusion.md), [0016: local embeddings](0016-local-embedding-runtime.md), all Accepted October 2, 2026.
 
 All entries are **Planned**, not accepted choices. Milestones describe product work, not implementation commitments.
 

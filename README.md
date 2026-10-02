@@ -1,8 +1,8 @@
 # rag-audit-demo
 
-A foundation for a planned audit-grade RAG service and evaluation harness. Today it provides a health API, environment-based settings, a PostgreSQL/pgvector development database, and automated foundation checks. Access-controlled retrieval, cited answers, deterministic business rules, and regression gating are design goals, not implemented features.
+A synthetic retrieval core for a planned audit-grade RAG service and evaluation harness. Today it provides a health API, deterministic corpus generation, PostgreSQL/pgvector ingestion, fixture-access-controlled hybrid retrieval and optional local CPU embeddings. Cited answers, deterministic business rules and regression gating remain planned.
 
-> **All data is synthetic.** The planned domain models a fictional insurer. Nothing here is real customer, policy or claims data. Sample database credentials and identifiers are synthetic, disposable, and local-only; no corpus exists yet.
+> **All data is synthetic.** The generated corpus models a fictional insurer. Nothing here is real customer, policy or claims data. Database credentials and identifiers are synthetic, disposable and local-only.
 
 ## Status
 
