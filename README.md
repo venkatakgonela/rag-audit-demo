@@ -98,11 +98,11 @@ Answer settings (environment names): `ANSWER_MODE=extractive`, `QUESTION_CHARACT
 make setup && make up && make db-init
 make generate-corpus
 make setup-embeddings
-make ingest
-make query ARGS='--subject synthetic-customer-a --query "water damage evidence"'
-make query ARGS='--subject synthetic-broker-a --query "water damage evidence"'
-make query ARGS='--subject synthetic-underwriter-a --query "water damage evidence"'
-make query ARGS='--subject synthetic-admin --query "water damage evidence"'
+uv run --frozen --extra embeddings python -m rag_audit.cli ingest
+uv run --frozen --extra embeddings python -m rag_audit.cli query --subject synthetic-customer-a --query "water damage evidence"
+uv run --frozen --extra embeddings python -m rag_audit.cli query --subject synthetic-broker-a --query "water damage evidence"
+uv run --frozen --extra embeddings python -m rag_audit.cli query --subject synthetic-underwriter-a --query "water damage evidence"
+uv run --frozen --extra embeddings python -m rag_audit.cli query --subject synthetic-admin --query "water damage evidence"
 make test-embeddings
 ```
 
@@ -112,7 +112,7 @@ Customers/brokers cannot join staff teams, claims must be restricted, and broker
 
 For mechanics-only testing, `uv run --frozen python -m rag_audit.cli ingest --fake` and the corresponding `query --fake` need no model runtime. Fake and real model identities cannot be mixed; re-ingest when switching.
 
-Settings read `.env` from the working directory, with environment variables taking precedence. Never commit `.env` or real credentials. The following is the complete application/Compose configuration surface:
+Settings read `.env` from the working directory, with environment variables taking precedence. Never commit `.env` or real credentials. The following database/Compose settings complement the answering settings above:
 
 | Variable | Default / example | Purpose |
 | --- | --- | --- |
@@ -150,10 +150,10 @@ The CI workflow runs lint, format checking, type checks, and unit tests in one U
 ## Repository layout
 
 ```text
-src/rag_audit/       API, settings, and database connectivity helpers
+src/rag_audit/       Retrieval, rules, answering, tracing, API and configuration
 tests/              Unit tests and opt-in database integration tests
 docker/init/        Shared vector extension initialisation SQL
-docs/               Planned architecture, ADRs, and backlog
+docs/               Implemented/planned architecture, ADRs, and backlog
 .github/workflows/   Foundation CI workflow
 compose.yaml        Local-only PostgreSQL/pgvector service
 Makefile            Setup, development, and verification commands
