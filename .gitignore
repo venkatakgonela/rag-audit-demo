@@ -2,6 +2,8 @@
 __pycache__/
 *.pyc
 .env
+.env.*
+!.env.example
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
@@ -9,3 +11,8 @@ __pycache__/
 htmlcov/
 .DS_Store
 data/
+dist/
+build/
+*.egg-info/
+.coverage.*
+coverage.xml
