@@ -6,6 +6,10 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Added
 
+- Deterministic labelled synthetic corpus, transactional ingestion, fixture access control and exact pre-filtered hybrid retrieval with source offsets and eligible-only raw ranking signals.
+- Optional pinned CPU ONNX embeddings, explicit model setup and smoke commands; default tests remain model-download-free.
+- Cross-platform runtime comparison and access/chunking/runtime decisions. Real-model CI evaluation remains planned.
+
 - Python 3.12 package with locked dependencies and environment-based, secret-masked settings.
 - FastAPI liveness endpoint at `/health`, reporting the package version without requiring a database.
 - Loopback-only PostgreSQL 16/pgvector development service with persistent storage and shared extension initialisation.

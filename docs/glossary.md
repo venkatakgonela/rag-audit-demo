@@ -1,5 +1,11 @@
 # Glossary
 
+- **Eligible set:** rows authorised inside SQL before either ranking branch.
+- **RRF:** reciprocal rank fusion; sums `1/(60+rank)` across available lists here.
+- **Source offsets:** zero-based half-open Unicode positions reproducing chunk text.
+- **CLS pooling:** selecting the first output token before L2 normalisation.
+- **Snapshot ingestion:** atomic replacement of this demo's corpus and identities.
+
 Definitions describe the design vocabulary; they do not imply implementation. Follow [architecture](ARCHITECTURE.md) for status and [technology choices](technology-choices.md) for official references.
 
 | Term | Meaning here |

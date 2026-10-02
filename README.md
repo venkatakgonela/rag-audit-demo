@@ -11,8 +11,8 @@ Under active development. Nothing below is claimed as working until it ships wit
 | Area | Status |
 | --- | --- |
 | Project skeleton, Docker Compose + pgvector, CI | foundation implemented; local checks verified; hosted CI verified (private repository run) |
-| Synthetic corpus and ACL model | planned |
-| Hybrid retrieval with pre-filter access control | planned |
+| Synthetic corpus and ACL model | implemented, synthetic fixture identities only |
+| Hybrid retrieval with pre-filter access control | implemented, exact CPU vectors + full-text RRF |
 | Rules layer and answer policy (citations, refusal) | planned |
 | Evaluation harness and golden set | planned |
 | CI regression gate | planned |
@@ -46,6 +46,26 @@ make setup && make lint && make typecheck && make test
 ```
 
 ## Configuration
+
+### Synthetic retrieval quickstart
+
+```sh
+make setup && make up && make db-init
+make generate-corpus
+make setup-embeddings
+make ingest
+make query ARGS='--subject synthetic-customer-a --query "water damage evidence"'
+make query ARGS='--subject synthetic-broker-a --query "water damage evidence"'
+make query ARGS='--subject synthetic-underwriter-a --query "water damage evidence"'
+make query ARGS='--subject synthetic-admin --query "water damage evidence"'
+make test-embeddings
+```
+
+These commands retrieve evidence, not generated answers. Model setup explicitly downloads the pinned publisher tokenizer/ONNX export; ordinary tests do not. Source documents and model cache live in ignored `data/`. Ingestion atomically replaces the single managed synthetic corpus, including fixture identities; do not put unrelated data in the `demo_*` tables. Re-run `make db-init` for an existing foundation database without deleting its volume. Plain `make setup` may remove the optional environment; embedding commands explicitly request it again.
+
+Customers/brokers cannot join staff teams, claims must be restricted, and broker/customer assignments are explicit. Scores, offsets and authorised returned chunk IDs support future answer-policy checks. Nearest neighbours may be irrelevant: semantic abstention is not implemented. This is not production authentication or constant-time execution. See the [access decision](docs/decisions/0014-query-access-control.md) and [measured runtime comparison](docs/decisions/0016-local-embedding-runtime.md).
+
+For mechanics-only testing, `uv run --frozen python -m rag_audit.cli ingest --fake` and the corresponding `query --fake` need no model runtime. Fake and real model identities cannot be mixed; re-ingest when switching.
 
 Settings read `.env` from the working directory, with environment variables taking precedence. Never commit `.env` or real credentials. The following is the complete application/Compose configuration surface:
 

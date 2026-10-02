@@ -1,3 +1,5 @@
+- Add real-model retrieval evaluation in CI with a pinned-artifact cache strategy; default CI uses fake embeddings only.
+- Evaluate sentence-aware long-section boundaries and native Linux performance with a labelled retrieval set.
 - Harden workflow supply chain: SHA pins and Dependabot.
 - Replace the deprecated httpx-based Starlette TestClient dependency (Starlette suggests httpx2) when it is safe.
 - Tighten the CI-shape test: reject chained or piped commands (`&&`, `;`, `|`, backticks, `$(`, newlines).

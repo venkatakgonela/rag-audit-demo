@@ -4,6 +4,18 @@
 
 ## Runtime dependencies
 
+### onnxruntime
+
+Optional CPU inference, pinned 1.30.0. Executes the immutable publisher ONNX export with CLS pooling and L2 normalisation; no remote Python model code. MIT licence; [upstream](https://github.com/microsoft/onnxruntime). [Measured alternatives](decisions/0016-local-embedding-runtime.md).
+
+### tokenizers
+
+Optional tokenizer, pinned 0.23.2. Uses the publisher tokenizer for budgets and Unicode source offsets. Apache-2.0; [upstream](https://github.com/huggingface/tokenizers). Revisit with the model.
+
+### numpy
+
+Optional arrays/normalisation, pinned 2.5.3. BSD-3-Clause plus bundled notices; [metadata](https://pypi.org/pypi/numpy/2.5.3/json). No optional runtime import on default unit-only paths.
+
 ### fastapi
 
 Typed HTTP framework used by the [health app](../src/rag_audit/api/main.py). Chosen for a compact contract-oriented API; Flask offers a smaller WSGI core, Django a fuller app stack, and Litestar another typed ASGI option. Accepted trade-off: Pydantic/Starlette coupling; revisit for different product/deployment needs. [ADR 0003](decisions/0003-fastapi.md), [official features](https://fastapi.tiangolo.com/features/).

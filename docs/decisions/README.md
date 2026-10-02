@@ -22,14 +22,12 @@ Record significant product choices here. Preserve accepted decision text; dated 
 
 ## Pending decisions
 
+Current retrieval decisions: [0014: access control](0014-query-access-control.md), [0015: chunks and fusion](0015-section-chunks-and-fusion.md), [0016: local embeddings](0016-local-embedding-runtime.md), all Accepted October 2, 2026.
+
 All entries are **Planned**, not accepted choices. Milestones describe product work, not implementation commitments.
 
 | Question | Options to weigh and constraints | Decision milestone |
 | --- | --- | --- |
-| Embedding model | Local open-source candidates; dimensions, licence, quality, CPU cost | Retrieval baseline |
-| Chunking strategy | Section-aware fixed windows versus semantic splits; overlap and citation fidelity | Ingestion |
-| Access-control model and enforcement | Roles plus ownership versus explicit grants; SQL candidate-set constraints mandatory, never application post-filtering | Corpus/ACL modelling and retrieval validation |
-| Keyword search | PostgreSQL text search/ranking versus BM25 implementation or search service | Hybrid retrieval |
 | Reranker | None versus local cross-encoder; quality/latency trade-off | Retrieval evaluation |
 | Provider interface and default | Desired generation/embedding separation; initial Claude-plus-local-embeddings intent versus validated alternatives; no adapter exists | Answer policy/provider integration |
 | Judge and calibration | Candidate judge models, rubric, human calibration and error reporting | Evaluation harness |
