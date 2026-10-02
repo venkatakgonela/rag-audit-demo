@@ -22,6 +22,9 @@ Record significant product choices here. Preserve accepted decision text; dated 
 | [0014: Query access control](0014-query-access-control.md) | Accepted | October 2, 2026 |
 | [0015: Section chunks and fusion](0015-section-chunks-and-fusion.md) | Accepted | October 2, 2026 |
 | [0016: Local embedding runtime](0016-local-embedding-runtime.md) | Accepted | October 2, 2026 |
+| [0017: Rules, routing and identity](0017-rules-routing-identity.md) | Accepted | October 2, 2026 |
+| [0018: Extractive answer policy](0018-extractive-answer-policy.md) | Accepted | October 2, 2026 |
+| [0019: Generation, tracing and accounting](0019-generation-tracing-accounting.md) | Accepted | October 2, 2026 |
 
 ## Pending decisions
 
@@ -30,10 +33,11 @@ All entries are **Planned**, not accepted choices. Milestones describe product w
 | Question | Options to weigh and constraints | Decision milestone |
 | --- | --- | --- |
 | Reranker | None versus local cross-encoder; quality/latency trade-off | Retrieval evaluation |
-| Provider interface and default | Desired generation/embedding separation; initial Claude-plus-local-embeddings intent versus validated alternatives; no adapter exists | Answer policy/provider integration |
+| Real provider default | Provider-neutral fake interface exists; real endpoint adapter and validated default remain undecided | Real-provider integration |
 | Judge and calibration | Candidate judge models, rubric, human calibration and error reporting | Evaluation harness |
 | CI gate thresholds | Zero-leak/citation/rule safety constraints plus evidence-based quality tolerance | Regression gate |
-| Cost accounting | Token/price estimates versus reconciled usage; versioning prices and local costs | Tracing |
+| Profile calibration | Per-embedder provisional constants exist; labelled precision/recall calibration remains planned | Retrieval evaluation |
+| Real-provider accounting | Synthetic usage and versioned prices exist; verified real token bounds and unknown-price policy remain planned | Real-provider integration |
 | Workflow supply chain | Action SHA pins, update automation and image digests | CI hardening |
 | Runner image | Pin ubuntu-24.04 versus follow ubuntu-latest; migration compatibility | CI hardening |
 | Repository licence | Candidate permissive terms versus retaining current restrictions pending an explicit choice | Publication policy |

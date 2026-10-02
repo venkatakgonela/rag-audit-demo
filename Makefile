@@ -21,6 +21,8 @@ help:
 	  'ingest            Replace the managed synthetic corpus atomically' \
 	  'query             Retrieve for a fixture subject; accepts ARGS' \
 	  'test-embeddings   Run explicit model smoke against data/model'
+	@printf '%s\n' 'ask               Answer with offline fake generation; --fake selects fake embeddings' \
+	  'stub-token        Issue a signed synthetic subject token for the local HTTP stub'
 
 setup:
 	uv sync --frozen
@@ -68,10 +70,17 @@ setup-embeddings:
 	uv run --frozen --extra embeddings python -m rag_audit.cli download-model $(ARGS)
 
 ingest:
-	uv run --frozen --extra embeddings python -m rag_audit.cli ingest $(ARGS)
+	uv run --frozen python -m rag_audit.cli ingest $(ARGS)
 
 query:
-	uv run --frozen --extra embeddings python -m rag_audit.cli query $(ARGS)
+	uv run --frozen python -m rag_audit.cli query $(ARGS)
+
+.PHONY: ask stub-token
+ask:
+	uv run --frozen python -m rag_audit.cli ask $(ARGS)
+
+stub-token:
+	uv run --frozen python -m rag_audit.cli stub-token $(ARGS)
 
 .PHONY: test-embeddings
 test-embeddings:

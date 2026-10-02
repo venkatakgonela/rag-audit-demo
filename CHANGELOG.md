@@ -6,6 +6,12 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Added
 
+- Corpus v2 with 50 synthetic documents, structured policies/claims and visible role differentiation; v1 is no longer supported.
+- Access-scoped Decimal status, payout and eligibility rules; deterministic entity routing and code-owned wording.
+- Offline fake generation, extractive citation verification, versioned provisional evidence profiles and identical absent/inaccessible no-answer envelopes.
+- Durable trace-before-release, synthetic usage and nullable versioned Decimal accounting, bounded prompts/output and cooperative provider deadlines.
+- Signed subject-only local stub, minimal `POST /ask`, Python `ask`, and offline `make ask`/`stub-token` commands. Real generation and calibrated evaluation remain planned.
+
 - Deterministic labelled synthetic corpus, transactional ingestion, fixture access control and exact pre-filtered hybrid retrieval with source offsets and eligible-only raw ranking signals.
 - Optional pinned CPU ONNX embeddings, explicit model setup and smoke commands; default tests remain model-download-free.
 - Cross-platform runtime comparison and access/chunking/runtime decisions. Real-model CI evaluation remains planned.

@@ -1,5 +1,13 @@
 from dataclasses import dataclass
 
+import psycopg
+
+ACL_SQL = """(
+ d.tier = ANY(%(tiers)s) OR d.team = ANY(%(teams)s)
+ OR (d.kind='claim' AND d.owner=%(subject)s)
+ OR (d.kind='claim' AND %(role)s='broker' AND EXISTS (
+ SELECT 1 FROM demo_brokers b WHERE b.broker=%(subject)s AND b.customer=d.owner)))"""
+
 TIERS = {
     "customer": ("public",),
     "broker": ("public", "broker"),
@@ -19,6 +27,24 @@ class Identity:
             raise ValueError("Invalid identity")
         if self.role in ("customer", "broker") and self.teams:
             raise ValueError("External users cannot belong to staff teams")
+
+
+def load_identity(connection: psycopg.Connection, subject: str) -> Identity:
+    row = connection.execute(
+        "SELECT subject,role,teams FROM demo_users WHERE subject=%s", (subject,)
+    ).fetchone()
+    if row is None:
+        raise ValueError("Unknown fixture identity")
+    return Identity(row[0], row[1], tuple(row[2]))
+
+
+def access_parameters(identity: Identity) -> dict:
+    return {
+        "subject": identity.subject,
+        "role": identity.role,
+        "teams": list(identity.teams),
+        "tiers": list(TIERS[identity.role]),
+    }
 
 
 def validate_document(document: dict, users: dict, teams: set[str]) -> None:
