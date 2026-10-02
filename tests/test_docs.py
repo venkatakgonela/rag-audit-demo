@@ -157,7 +157,10 @@ def test_runtime_dependencies_have_catalogue_entries():
         re.sub(r"[-_.]+", "-", name.lower())
         for name in re.findall(r"^### (\S+)$", catalogue, re.M)
     }
-    for requirement in project["project"]["dependencies"]:
+    requirements = list(project["project"]["dependencies"])
+    for extra in project["project"].get("optional-dependencies", {}).values():
+        requirements.extend(extra)
+    for requirement in requirements:
         match = re.match(r"[A-Za-z0-9][A-Za-z0-9_.-]*", requirement)
         assert match, f"Unrecognised requirement: {requirement}"
         name = re.sub(r"[-_.]+", "-", match.group().lower())

@@ -19,6 +19,9 @@ Record significant product choices here. Preserve accepted decision text; dated 
 | [0011: Liveness and version](0011-liveness-version.md) | Accepted | October 2, 2026; retrospective |
 | [0012: Mermaid](0012-mermaid.md) | Accepted | October 2, 2026; new documentation decision |
 | [0013: Synthetic original work](0013-synthetic-original-work.md) | Accepted | October 2, 2026; retrospective |
+| [0014: Query access control](0014-query-access-control.md) | Accepted | October 2, 2026 |
+| [0015: Section chunks and fusion](0015-section-chunks-and-fusion.md) | Accepted | October 2, 2026 |
+| [0016: Local embedding runtime](0016-local-embedding-runtime.md) | Accepted | October 2, 2026 |
 
 ## Pending decisions
 
@@ -26,10 +29,6 @@ All entries are **Planned**, not accepted choices. Milestones describe product w
 
 | Question | Options to weigh and constraints | Decision milestone |
 | --- | --- | --- |
-| Embedding model | Local open-source candidates; dimensions, licence, quality, CPU cost | Retrieval baseline |
-| Chunking strategy | Section-aware fixed windows versus semantic splits; overlap and citation fidelity | Ingestion |
-| Access-control model and enforcement | Roles plus ownership versus explicit grants; SQL candidate-set constraints mandatory, never application post-filtering | Corpus/ACL modelling and retrieval validation |
-| Keyword search | PostgreSQL text search/ranking versus BM25 implementation or search service | Hybrid retrieval |
 | Reranker | None versus local cross-encoder; quality/latency trade-off | Retrieval evaluation |
 | Provider interface and default | Desired generation/embedding separation; initial Claude-plus-local-embeddings intent versus validated alternatives; no adapter exists | Answer policy/provider integration |
 | Judge and calibration | Candidate judge models, rubric, human calibration and error reporting | Evaluation harness |

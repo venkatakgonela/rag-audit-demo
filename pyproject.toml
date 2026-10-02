@@ -15,6 +15,9 @@ dependencies = [
     "uvicorn>=0.34,<1",
 ]
 
+[project.optional-dependencies]
+embeddings = ["onnxruntime==1.30.0", "tokenizers==0.23.2", "numpy==2.5.3"]
+
 [dependency-groups]
 dev = [
     "httpx>=0.28,<1",
@@ -32,7 +35,7 @@ packages = ["src/rag_audit"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--strict-markers"
-markers = ["integration: requires a configured PostgreSQL database with vector enabled"]
+markers = ["integration: requires a configured PostgreSQL database with vector enabled", "model: explicit local real-model smoke"]
 
 [tool.ruff]
 target-version = "py312"
@@ -46,6 +49,10 @@ python_version = "3.12"
 files = ["src", "tests"]
 check_untyped_defs = true
 warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = ["numpy", "onnxruntime", "tokenizers"]
+ignore_missing_imports = true
 
 [tool.coverage.run]
 source = ["rag_audit"]

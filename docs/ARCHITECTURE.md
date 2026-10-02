@@ -1,194 +1,166 @@
 # Architecture: synthetic RAG audit demonstration
 
-All domain data is synthetic; no corpus exists yet. The foundation is a health API and database/tooling skeleton, not an operational question-answering service. See the [evidence convention](README.md#evidence-convention) and [decision index](decisions/README.md).
+Implemented: health foundation, synthetic corpus generation, transactional ingestion, fixture access control and local hybrid retrieval. Planned: answering, business rules, citation enforcement, tracing, evaluation and release gating. All domain records are fictional and labelled synthetic.
 
 ## Key design ideas
 
-1. **Planned — access control before retrieval.** Restrict eligible records inside the retrieval query before selecting ranked results, never fetch globally and discard forbidden answers afterwards. This aims to prevent cross-customer access and evidence contamination; query plans and recall remain unvalidated.
-2. **Planned — deterministic core with an LLM shell.** Code computes business outcomes; the model may phrase them but must not choose them. This prevents invented eligibility or monetary outcomes from becoming authoritative.
-3. **Planned — evidence-carrying answers with explicit “I don't know”.** Answers must cite the caller's authorised retrieved evidence and pass quotation checks, or decline when evidence is inadequate. This targets fabricated support without pretending citation correctness alone proves faithfulness.
-4. **Planned — evaluation as a release gate.** A labelled regression set will test leaks, citations, rules, quality, latency, and cost before release. It prevents known regressions being accepted on the strength of a few demonstrations; current CI checks only the foundation.
-5. **Implemented, limited scope — fail-closed defaults.** Database operations fail without configuration and rendered errors mask connection secrets, while `/health` remains database-independent. This prevents implicit database selection and tested disclosure paths, not arbitrary logging or authentication failures; see the [threat model](threat-model.md).
-
-## Implemented foundation and planned scope
-
-**Implemented:** [`/health`](../src/rag_audit/api/main.py), [settings](../src/rag_audit/settings.py), [database checks/init](../src/rag_audit/db.py), [Compose](../compose.yaml), [shared SQL](../docker/init/001-enable-vector.sql), [Make commands](../Makefile), and [CI](../.github/workflows/ci.yml). Health reports installed package metadata without a database call, as covered by [unit tests](../tests/test_health.py); vector availability has a separate [integration test](../tests/integration/test_database.py). Hosted foundation CI is verified for the revision in the reading guide, not every future revision.
-
-**Planned:** synthetic customer, broker, underwriter and administrator roles; documents/claims; hybrid search; deterministic rules; generated answers; tracing; evaluation; and an audit report. Roles express intent, not a current identity system. Concrete schemas, algorithms and thresholds remain [pending](decisions/README.md#pending-decisions).
+1. Implemented: materialise eligible rows in SQL before exact vector and keyword ranking, never retrieve globally then discard forbidden hits.
+2. Implemented: deterministic source slices with section paths and Unicode offsets; section paths enter embedding/full-text inputs without changing stored text.
+3. Implemented: explicit CPU-only optional runtime, immutable model revision and no paid API in tests.
+4. Planned: deterministic rules with an LLM phrasing shell, authorised citations and evidence-sensitive abstention.
+5. Planned: real-model quality evaluation and a regression gate. Current local tests are security/mechanics checks, not broad retrieval-quality proof.
 
 ## System context
 
-Caption: **System context** — foundation within the planned synthetic-domain service.
-Legend: solid outlines/arrows = implemented; dashed outlines/arrows and Planned labels = future capability; human roles are prospective.
+Caption: **System context** — current retrieval and planned answering.
+Legend: solid links are Implemented; dashed links are Planned.
 
 ```mermaid
 flowchart LR
-    users["Planned: customer, broker, underwriter, admin"]
-    service["Implemented: health API"]
-    helper["Implemented: separate database helper"]
-    qa["Planned: question-answering service"]
-    db[("Implemented: PostgreSQL plus vector extension")]
-    model["Planned: external LLM provider"]
-    helper --> db
-    users -.-> qa
-    qa -.->|extends API capability| service
-    qa -.->|authorised evidence| db
-    qa -.-> model
-    classDef planned stroke-dasharray: 5 5;
-    class users,qa,model planned;
+    user["Synthetic fixture caller"] --> cli["Implemented retrieval CLI"]
+    cli --> db[("PostgreSQL plus pgvector")]
+    cli --> model["Local pinned ONNX model"]
+    user -.-> answer["Planned answering service"]
+    answer -.-> cli
 ```
 
 ## Containers
 
-Caption: **Containers** — logical processes and stores, not an API Docker image.
-Legend: solid = implemented; dashed = planned; CI verification is revision-scoped.
-
-```mermaid
-flowchart TB
-    api["Implemented: host-run FastAPI and settings"]
-    db[("Implemented: PostgreSQL 16 / pgvector")]
-    cli["Implemented: database check / init command"]
-    ci["Implemented: foundation CI, hosted verified"]
-    tests["Implemented: unit and integration tests"]
-    eval["Planned: evaluation harness"]
-    rag["Planned: RAG service components"]
-    api -.-> rag
-    cli --> db
-    ci --> tests
-    tests -->|integration only| db
-    eval -.-> rag
-    rag -.-> db
-    classDef planned stroke-dasharray: 5 5;
-    class rag,eval planned;
-```
-
-The database represents a technology, not a shared local/CI instance. The deployment diagram distinguishes those instances.
-
-## Planned components
-
-Caption: **Components** — conceptual boundaries, none implemented yet.
-Legend: all nodes and dashed arrows are Planned; this does not prescribe final module names.
+Caption: **Containers** — logical processes, not an application Docker image.
+Legend: all nodes and links are Implemented; external generation is absent.
 
 ```mermaid
 flowchart LR
-    ingest["Planned: section-aware ingestion"]
-    retrieval["Planned: query-enforced ACL and hybrid retrieval"]
-    rules["Planned: deterministic rules"]
-    policy["Planned: answer policy and citation checks"]
-    provider["Planned: generation / embedding adapters"]
-    tracing["Planned: usage and decision tracing"]
-    ingest -.-> retrieval
-    retrieval -.-> policy
-    rules -.-> policy
-    policy -.-> provider
-    provider -.-> policy
-    policy -.-> tracing
-    classDef planned stroke-dasharray: 5 5;
-    class ingest,retrieval,rules,policy,provider,tracing planned;
+    host["Host Python CLI and health API"] --> database[("Loopback Compose PostgreSQL")]
+    host --> cache["Local model cache"]
+    tests["Unit and opt-in integration tests"] --> database
+    ci["Existing CI configuration"] --> tests
 ```
 
-Query-level ACL constraints are not proof of physical filter-before-ANN execution. [pgvector documents post-scan filtering for approximate indexes](https://github.com/pgvector/pgvector#filtering); [ADR 0004](decisions/0004-postgresql-pgvector.md) defers retrieval design/validation rather than weakening the invariant.
+## Components
+
+Caption: **Components** — implemented retrieval pipeline.
+Legend: all shown components and links are Implemented.
+
+```mermaid
+flowchart LR
+    corpus["Seeded corpus generator"] --> files["Markdown and ACL manifest"]
+    files --> chunks["Section-aware exact source slices"]
+    chunks --> embedding["Section path plus text embedding"]
+    embedding --> ingest["Atomic single-corpus replacement"]
+    ingest --> database[("Documents and chunks")]
+    subject["Trusted fixture subject"] --> eligible["SQL eligible relation"]
+    database --> eligible
+    eligible --> ranking["Exact cosine plus full-text ranks"]
+    ranking --> result["RRF and eligible-only raw signals"]
+```
+
+The [chunker](../src/rag_audit/chunking.py) targets 384 tokens, ceiling 480, overlap 48 only inside long sections, reserving space for section path and special tokens. The [adapter](../src/rag_audit/embeddings.py) uses the pinned ONNX export, CLS pooling and normalisation. The [retrieval statement](../src/rag_audit/retrieval.py) applies tier OR team OR owner/assigned-broker grants before both ranks. Claims must be restricted; customer/broker identities cannot join staff teams. [Decision 0014](decisions/0014-query-access-control.md) defines the trust boundary.
 
 ## Planned answering flow
 
-Caption: **Question-answering sequence** — target behaviour; identity and ACL representation remain undecided.
-Legend: all participants/messages/branches are Planned; sequence arrows show message direction, not implementation status.
+Caption: **Question-answering sequence** — answering is Planned; retrieval exists independently.
+Legend: all messages are Planned integration, not implemented answer-policy behaviour.
 
 ```mermaid
 sequenceDiagram
-    actor Caller as Planned caller with role
+    actor Caller
     participant Policy as Planned answer policy
-    participant Retrieval as Planned ACL-filtered retrieval
+    participant Retrieval as Implemented retrieval
     participant Rules as Planned deterministic rules
-    participant Model as Planned provider adapter
-    Caller->>Policy: Question and verified caller context
-    alt Request not authorised
-        Policy-->>Caller: Generic refusal, no existence disclosure
-    else Request permitted
-        Policy->>Retrieval: Query within authorised eligible set
-        Retrieval-->>Policy: Authorised chunks only
-        alt Evidence inadequate or absent
-            Policy-->>Caller: I do not know, no restricted-document disclosure
-        else Evidence adequate
-            Policy->>Rules: Compute outcomes from authorised data
-            Rules-->>Policy: Deterministic result
-            Policy->>Model: Evidence and fixed outcomes to phrase
-            Model-->>Policy: Candidate answer and citations
-            Policy->>Policy: Check cited IDs, quotations, fixed outcomes
-            alt Checks fail
-                Policy-->>Caller: Safe fallback, no unverified answer
-            else Checks pass
-                Policy-->>Caller: Answer with authorised citations
-            end
-        end
+    participant Model as Planned generation adapter
+    Caller->>Policy: Question
+    Policy->>Retrieval: Trusted subject and query
+    Retrieval-->>Policy: Authorised slices and raw signals
+    alt Inadequate evidence
+        Policy-->>Caller: I do not know
+    else Sufficient evidence
+        Policy->>Rules: Compute fixed outcomes
+        Rules-->>Policy: Results
+        Policy->>Model: Evidence and fixed results
+        Model-->>Policy: Draft with citations
+        Policy->>Policy: Validate citations and fixed outcomes
+        Policy-->>Caller: Checked answer or safe fallback
     end
 ```
 
-Inaccessible and absent evidence must not receive distinguishing disclosures. Refusal policy, output checks and fallback wording need adversarial tests before any implemented claim.
+Nearest neighbours can be irrelevant. Retrieval does not implement semantic “no match”, refusal wording or citation enforcement. Inaccessible content must not influence returned results/scores, but constant-time execution is not promised.
 
-## Planned data model
+## Implemented data model
 
-Caption: **Data model** — conceptual relationships, not a migration or final ACL schema.
-Legend: every entity/attribute/relationship is Planned; candidate cardinalities require validation during modelling.
+Caption: **Data model** — actual shared-init schema.
+Legend: entities and relationships are Implemented; teams are validated arrays, not a separate table.
 
 ```mermaid
 erDiagram
-    PLANNED_DOCUMENTS ||--o{ PLANNED_CHUNKS : contains
-    PLANNED_CHUNKS ||--o{ PLANNED_ACL_ENTRIES : restricted_by
-    PLANNED_USERS ||--o{ PLANNED_CLAIMS : owns
-    PLANNED_ROLES ||--o{ PLANNED_USER_ROLES : assigned
-    PLANNED_USERS ||--o{ PLANNED_USER_ROLES : holds
-    PLANNED_ROLES ||--o{ PLANNED_ACL_ENTRIES : permits
-    PLANNED_USERS ||--o{ PLANNED_ACL_ENTRIES : may_own
-    PLANNED_DOCUMENTS {
-        string synthetic_document_id
+    DEMO_USERS ||--o{ DEMO_DOCUMENTS : owns_claim
+    DEMO_USERS ||--o{ DEMO_BROKERS : assigns
+    DEMO_DOCUMENTS ||--o{ DEMO_CHUNKS : contains
+    DEMO_USERS {
+        string subject PK
+        string role
+        string_array teams
     }
-    PLANNED_CHUNKS {
-        string synthetic_chunk_id
+    DEMO_BROKERS {
+        string broker FK
+        string customer FK
+    }
+    DEMO_DOCUMENTS {
+        string id PK
+        string source
+        string kind
+        string tier
+        string team
+        string owner FK
+    }
+    DEMO_CHUNKS {
+        string id PK
+        string document_id FK
+        string text
         string section
+        int ordinal
+        int start_offset
+        int end_offset
+        string tier
+        string team
+        string owner FK
+        vector embedding
+        tsvector search
+        string corpus_version
+        string model_identity
     }
-    PLANNED_CLAIMS {
-        string synthetic_claim_id
+    DEMO_CONFIGURATION {
+        boolean singleton PK
+        string model_identity
+        string corpus_version
     }
 ```
 
-These are synthetic identifier labels. Ownership, broker-client scope, role combinations and document-versus-chunk ACL attachment are unresolved; no allow/deny precedence is decided here.
+[Ingestion](../src/rag_audit/ingestion.py) validates the complete manifest and computes vectors before atomically replacing the single managed corpus. Shared/exclusive advisory locks prevent mixed identity/corpus snapshots. Changed input removes stale rows; repeated input preserves IDs/counts. This is not a multi-corpus migration system. Run the same [initial SQL](../docker/init/001-enable-vector.sql) through Compose or `make db-init`.
 
-## Implemented deployment
+## Deployment
 
-Caption: **Deployment** — current local/CI layouts; foundation hosted CI verified in a private repository run.
-Legend: all nodes/arrows are Implemented configuration or observed foundation execution; no production deployment is implied.
+Caption: **Deployment** — local and CI configuration.
+Legend: nodes and links are Implemented configuration; hosted execution is verified only for the historical foundation, not this increment.
 
 ```mermaid
 flowchart TB
-    subgraph Local["Implemented: local development"]
-        make["Make on host"] --> api["Host API 127.0.0.1:8000"]
-        make --> init["Host database helper"]
-        init --> db[("Compose database 127.0.0.1:5433")]
-        db --> volume["Named PostgreSQL volume"]
-        sql["Tracked vector init SQL"] --> db
+    subgraph Local
+        make["Make on host"] --> cli["CLI and health API"]
+        cli --> db[("Loopback database")]
+        cli --> onnx["Optional CPU model cache"]
     end
-    subgraph Hosted["Implemented: verified foundation CI"]
-        unit["Ubuntu checks job"] --> checks["make setup / lint / typecheck / test"]
-        integration["Ubuntu integration job"] --> commands["make setup / db-init / test-integration"]
-        commands --> service[("Own pgvector service on host port 5432")]
-        shared["Same tracked SQL via db-init"] --> commands
+    subgraph CI
+        unit["Default checks without model"] --> checks["Lint, types, unit/docs tests"]
+        integration["Fake-vector integration tests"] --> service[("Own pgvector service")]
     end
 ```
 
-Local shutdown retains data. CI uses its own service container, not Compose or the local volume: [workflow](../.github/workflows/ci.yml), [Compose](../compose.yaml), [GitHub services](https://docs.github.com/en/actions/tutorials/use-containerized-services/create-postgresql-service-containers). Runner/cache follow-ups remain in the [backlog](BACKLOG.md).
+## Quality, evidence and limits
 
-## Quality attributes, constraints, and non-goals
-
-| Status | Attribute / constraint | Mechanism and limit |
-| --- | --- | --- |
-| Implemented | Repeatable Python setup | [Lockfile](../uv.lock), frozen [commands](../Makefile); not bit-reproducible OS/browser builds. |
-| Implemented | Docker-free feedback | [Unit isolation](../tests/conftest.py); integration opt-in, not guaranteed service availability. |
-| Implemented | Tested secret masking | [Settings](../tests/test_settings.py), [errors](../tests/test_db.py); no guarantee for deliberately unwrapped values or arbitrary new logs. |
-| Implemented | Configuration/doc regression checks | [Configuration tests](../tests/test_configuration.py), [docs tests](../tests/test_docs.py); known bypasses disclosed. |
-| Planned | Authorised grounded answers | Query design, citations, rules, future adversarial tests; no current certification. |
-| Planned | Quality/cost release control | Golden cases, calibrated judging, thresholds, usage accounting; none measured yet. |
-| Rejected for current scope | Production claims | No production identity provider, tenancy guarantee, availability target or throughput benchmark. |
-| Rejected for current scope | Broader product features | No multi-agent orchestration, fine-tuning, voice, non-English support or polished UI. |
-
-Continue with [patterns](patterns.md) and the [threat model](threat-model.md) for precise test/limitation mappings.
+- [Unit tests](../tests/test_retrieval_core.py) check deterministic generation/chunks, metadata restrictions and source offsets.
+- [Integration tests](../tests/integration/test_retrieval.py) check role sets, forbidden-content noninterference, raw signals, idempotence and ANN underfill versus exact search.
+- [Explicit real-model smoke](../tests/test_embedding_adapter.py) checks shape, normalisation, query instruction and Unicode offsets. Default CI does not execute it; a cache-backed real-model evaluation remains required.
+- Exact search is linear in eligible rows; candidate bounds limit ranking output, not database work. No production identity provider, constant-time defence, semantic abstention or quality gate exists.
+- Operator/database access is trusted. Corpus and model cache are ignored local state; initial model download trusts HTTPS/publisher, and local hash metadata is not signed.
+- Keep [technology choices](technology-choices.md), [patterns](patterns.md), [threat model](threat-model.md), [decisions](decisions/README.md) and [backlog](BACKLOG.md) aligned with actual evidence.

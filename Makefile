@@ -1,4 +1,5 @@
 .DEFAULT_GOAL := help
+ARGS ?=
 .PHONY: help setup up down lint format typecheck test test-integration db-init run clean
 
 help:
@@ -15,6 +16,11 @@ help:
 	  'run               Serve the API on 127.0.0.1:8000' \
 	  'clean             Remove generated Python artifacts, not .env or DB data' \
 	  'help              Show these targets'
+	@printf '%s\n' 'generate-corpus   Generate labelled synthetic documents' \
+	  'setup-embeddings  Install optional CPU runtime and download pinned model' \
+	  'ingest            Replace the managed synthetic corpus atomically' \
+	  'query             Retrieve for a fixture subject; accepts ARGS' \
+	  'test-embeddings   Run explicit model smoke against data/model'
 
 setup:
 	uv sync --frozen
@@ -52,3 +58,21 @@ clean:
 	rm -rf .venv .pytest_cache .ruff_cache .mypy_cache htmlcov build dist
 	rm -f .coverage .coverage.* coverage.xml
 	find src tests -type d -name __pycache__ -prune -exec rm -rf {} +
+
+.PHONY: generate-corpus setup-embeddings ingest query
+generate-corpus:
+	uv run --frozen python -m rag_audit.cli generate $(ARGS)
+
+setup-embeddings:
+	uv sync --frozen --extra embeddings
+	uv run --frozen --extra embeddings python -m rag_audit.cli download-model $(ARGS)
+
+ingest:
+	uv run --frozen --extra embeddings python -m rag_audit.cli ingest $(ARGS)
+
+query:
+	uv run --frozen --extra embeddings python -m rag_audit.cli query $(ARGS)
+
+.PHONY: test-embeddings
+test-embeddings:
+	SYNTHETIC_MODEL_DIRECTORY=$(CURDIR)/data/model uv run --frozen --extra embeddings pytest -m model
