@@ -1,1 +1,2 @@
 - Harden workflow supply chain: SHA pins and Dependabot.
+- Replace the deprecated httpx-based Starlette TestClient dependency (Starlette suggests httpx2) when it is safe.
