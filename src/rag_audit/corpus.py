@@ -25,6 +25,8 @@ def generate(directory: Path, seed: int = 42) -> dict:
         {"subject": "synthetic-admin", "role": "admin", "teams": []},
     ]
     documents = []
+    policies = []
+    claims = []
     families = [
         ("policy", "public"),
         ("faq", "public"),
@@ -33,7 +35,7 @@ def generate(directory: Path, seed: int = 42) -> dict:
         ("claim", "restricted"),
     ]
     for kind, tier in families:
-        for ordinal in range(6):
+        for ordinal in range(10):
             identifier = f"synthetic-{kind}-{ordinal}"
             team = "claims-a" if ordinal % 2 == 0 else "claims-b"
             owner = (
@@ -49,6 +51,62 @@ def generate(directory: Path, seed: int = 42) -> dict:
                 "## 2.1 Assessment\n\n"
                 f"Synthetic assessment amount {rng.randrange(100, 900)} units.\n"
             )
+            if kind == "policy":
+                record = {
+                    "id": identifier,
+                    "document_id": identifier,
+                    "currency": "GBP",
+                    "excess": f"{100 + ordinal * 25}.00",
+                    "limit": f"{2000 + ordinal * 500}.00",
+                    "covered": ["water", "fire"],
+                    "window": 14 + ordinal,
+                }
+                policies.append(record)
+                text += (
+                    "\n## Cover terms\n\nSynthetic policy excess is GBP "
+                    f"{record['excess']}. The payout limit is GBP {record['limit']}. "
+                    "Covered perils are water and fire. Notification must arrive "
+                    f"within {record['window']} days of the incident.\n"
+                )
+            elif kind == "claim":
+                record = {
+                    "id": identifier,
+                    "document_id": identifier,
+                    "policy_id": f"synthetic-policy-{ordinal}",
+                    "owner": owner,
+                    "status": ("pending", "approved", "declined", "paid")[ordinal % 4],
+                    "loss": f"{500 + ordinal * 300}.00",
+                    "peril": "water" if ordinal % 3 else "theft",
+                    "incident": "2026-01-01",
+                    "notified": f"2026-01-{10 + ordinal:02d}",
+                }
+                claims.append(record)
+                text += (
+                    "\n## Claim facts\n\nSynthetic claim status is "
+                    f"{record['status']}. "
+                    f"Loss is GBP {record['loss']}; peril is {record['peril']}. "
+                    f"Incident date {record['incident']}; "
+                    f"notification date {record['notified']}. "
+                    f"Applicable policy: {record['policy_id']}.\n"
+                )
+            elif kind == "guide":
+                text += (
+                    "\n## Broker reconciliation\n\nBroker reconciliation requires "
+                    "a signed authority form and a duplicate-payment check "
+                    "within three working days.\n"
+                )
+            elif kind == "underwriting":
+                text += (
+                    "\n## Underwriting inspection\n\nUnderwriting inspection "
+                    "requires a flood elevation survey and a fire compartment "
+                    "schedule before referral approval.\n"
+                )
+            else:
+                text += (
+                    "\n## Public procedure\n\nPublic procedure requires photographs, "
+                    "repair receipts and a contact preference. Acknowledgement "
+                    "arrives within two working days.\n"
+                )
             if tier != "public":
                 text += f"\nRestricted synthetic sentinel {identifier}-canary.\n"
             if ordinal == 0:
@@ -76,7 +134,10 @@ def generate(directory: Path, seed: int = 42) -> dict:
                 }
             )
     manifest = {
-        "version": f"synthetic-v1-seed-{seed}",
+        "version": f"synthetic-v2-seed-{seed}",
+        "format": 2,
+        "policies": policies,
+        "claims": claims,
         "teams": ["claims-a", "claims-b"],
         "users": users,
         "brokers": [

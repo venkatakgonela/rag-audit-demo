@@ -45,3 +45,20 @@ CREATE TABLE IF NOT EXISTS demo_configuration (
     model_identity text NOT NULL,
     corpus_version text NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS demo_policies (
+    id text PRIMARY KEY,
+    document_id text NOT NULL UNIQUE REFERENCES demo_documents(id),
+    record jsonb NOT NULL
+);
+CREATE TABLE IF NOT EXISTS demo_claims (
+    id text PRIMARY KEY,
+    document_id text NOT NULL UNIQUE REFERENCES demo_documents(id),
+    policy_id text NOT NULL REFERENCES demo_policies(id),
+    record jsonb NOT NULL
+);
+CREATE TABLE IF NOT EXISTS demo_traces (
+    request_id text PRIMARY KEY,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    payload jsonb NOT NULL
+);

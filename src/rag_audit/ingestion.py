@@ -8,6 +8,7 @@ import psycopg
 from rag_audit.access import Identity, validate_document
 from rag_audit.chunking import chunk_document
 from rag_audit.embeddings import Embedder
+from rag_audit.structured import validate_records, write_records
 
 
 def ingest(connection: psycopg.Connection, directory: Path, embedder: Embedder) -> int:
@@ -23,6 +24,9 @@ def ingest(connection: psycopg.Connection, directory: Path, embedder: Embedder) 
     for broker, customer in manifest["brokers"]:
         if users[broker]["role"] != "broker" or users[customer]["role"] != "customer":
             raise ValueError("Invalid broker assignment")
+    for document in manifest["documents"]:
+        validate_document(document, users, teams)
+    validate_records(manifest)
     records = []
     seen = set()
     for document in manifest["documents"]:
@@ -50,6 +54,8 @@ def ingest(connection: psycopg.Connection, directory: Path, embedder: Embedder) 
         records.append((document, source, chunks, vectors))
     with connection.transaction():
         connection.execute("SELECT pg_advisory_xact_lock(482031)")
+        connection.execute("DELETE FROM demo_claims")
+        connection.execute("DELETE FROM demo_policies")
         connection.execute("DELETE FROM demo_chunks")
         connection.execute("DELETE FROM demo_documents")
         connection.execute("DELETE FROM demo_brokers")
@@ -95,6 +101,7 @@ def ingest(connection: psycopg.Connection, directory: Path, embedder: Embedder) 
                         embedder.identity,
                     ),
                 )
+        write_records(connection, manifest)
         connection.execute(
             "INSERT INTO demo_configuration VALUES (true,%s,%s) "
             "ON CONFLICT(singleton) DO UPDATE SET "

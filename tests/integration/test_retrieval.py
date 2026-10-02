@@ -40,25 +40,25 @@ def expected_documents(subject):
     public = {
         f"synthetic-{kind}-{ordinal}"
         for kind in ("policy", "faq")
-        for ordinal in range(6)
+        for ordinal in range(10)
     }
     if "admin" in subject:
         return {
             f"synthetic-{kind}-{ordinal}"
             for kind in ("policy", "faq", "guide", "underwriting", "claim")
-            for ordinal in range(6)
+            for ordinal in range(10)
         }
     parity = 0 if subject.endswith("-a") else 1
-    claims = {f"synthetic-claim-{ordinal}" for ordinal in range(parity, 6, 2)}
+    claims = {f"synthetic-claim-{ordinal}" for ordinal in range(parity, 10, 2)}
     if "customer" in subject:
         return public | claims
     if "broker" in subject:
-        return public | claims | {f"synthetic-guide-{ordinal}" for ordinal in range(6)}
+        return public | claims | {f"synthetic-guide-{ordinal}" for ordinal in range(10)}
     return (
         public
         | claims
-        | {f"synthetic-underwriting-{ordinal}" for ordinal in range(6)}
-        | {f"synthetic-guide-{ordinal}" for ordinal in range(parity, 6, 2)}
+        | {f"synthetic-underwriting-{ordinal}" for ordinal in range(10)}
+        | {f"synthetic-guide-{ordinal}" for ordinal in range(parity, 10, 2)}
     )
 
 
