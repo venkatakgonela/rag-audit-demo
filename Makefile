@@ -82,6 +82,10 @@ ask:
 stub-token:
 	uv run --frozen python -m rag_audit.cli stub-token $(ARGS)
 
+.PHONY: test-live-config
+test-live-config:
+	uv run --frozen pytest --run-live -m live
+
 .PHONY: test-embeddings
 test-embeddings:
 	SYNTHETIC_MODEL_DIRECTORY=$(CURDIR)/data/model uv run --frozen --extra embeddings pytest -m model

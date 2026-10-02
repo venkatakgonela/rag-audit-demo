@@ -17,6 +17,7 @@ from rag_audit.policy import (
     strict_json,
     verify,
 )
+from rag_audit.responses import BOUND_VERSION, MAX_INPUT_TOKENS, ResponsesProvider
 from rag_audit.routing import route
 from rag_audit.rules import templates
 from rag_audit.settings import Settings
@@ -46,6 +47,9 @@ def new_trace() -> dict:
         "reported_model": None,
         "cost_usd": None,
         "price_version": None,
+        "cost_basis": None,
+        "input_bound": None,
+        "bound_version": None,
         "corpus_version": None,
         "embedding_identity": None,
         "configuration_version": CONFIGURATION_VERSION,
@@ -131,34 +135,69 @@ async def ask(
             trace["skips"] = skips
             trace["profile_version"] = PROFILES[embedder.identity].version
         if selected or (choices and rephrase):
+            real = isinstance(provider, ResponsesProvider)
+            output_cap = (
+                settings.generation_output_tokens if real else settings.output_units
+            )
+            seconds = settings.generation_seconds if real else settings.provider_seconds
+            ceiling = (
+                settings.generation_cost_ceiling if real else settings.cost_ceiling
+            )
             trace["sent_ids"] = [chunk["id"] for chunk in selected]
             request = GenerationRequest(
                 question,
                 tuple(Evidence(chunk["id"], chunk["text"]) for chunk in selected),
-                settings.output_units,
-                settings.provider_seconds,
+                output_cap,
+                seconds,
                 CONFIGURATION_VERSION,
                 choices,
                 settings.answer_mode.value,
             )
             trace["requested_provider"] = provider.identity
             trace["requested_model"] = provider.model
-            price = prices.get(provider.model)
+            expected_model = (
+                provider.reported_model
+                if isinstance(provider, ResponsesProvider)
+                else provider.model
+            )
+            price = prices.get(expected_model)
             trace["price_version"] = price.version if price else None
-            input_bound = len(request.serialized().encode())
+            prompt_size = (
+                len(provider.body(request))
+                if isinstance(provider, ResponsesProvider)
+                else len(request.serialized().encode())
+            )
+            input_bound = (
+                provider.input_bound(request)
+                if isinstance(provider, ResponsesProvider)
+                else prompt_size
+            )
+            trace["input_bound"] = input_bound
+            trace["bound_version"] = BOUND_VERSION if real else "synthetic_utf8_bytes"
+            trace["cost_basis"] = price.source if price else None
             trace["reason"] = "provider_budget"
             if (
-                input_bound > settings.prompt_bytes
-                or not isinstance(provider, FakeGenerator)
+                prompt_size > settings.prompt_bytes
+                or not isinstance(provider, (FakeGenerator, ResponsesProvider))
+                or (
+                    real
+                    and (
+                        price is None
+                        or input_bound > MAX_INPUT_TOKENS
+                        or price.cached_per_million is None
+                        or price.cache_write_per_million is None
+                    )
+                )
                 or (
                     price is not None
                     and (
-                        price.unit != "synthetic_utf8_bytes"
+                        price.unit
+                        != ("provider_tokens" if real else "synthetic_utf8_bytes")
                         or not preflight(
                             input_bound,
-                            settings.output_units,
+                            output_cap,
                             price,
-                            settings.cost_ceiling,
+                            ceiling,
                         )
                     )
                 )
@@ -167,33 +206,44 @@ async def ask(
             started = clock()
             trace["reason"] = "provider_error"
             try:
-                result = await asyncio.wait_for(
-                    provider.generate(request), settings.provider_seconds
-                )
+                result = await asyncio.wait_for(provider.generate(request), seconds)
             finally:
                 trace["durations"]["generate"] = clock() - started
             trace["reason"] = "provider_contract"
             validate_usage(result.usage)
             trace["usage"] = asdict(result.usage)
+            if result.model == expected_model:
+                trace["reported_provider"] = result.provider
+                trace["reported_model"] = result.model
             cost = estimate(result.usage, prices.get(result.model))
             trace["cost_usd"] = str(cost) if cost is not None else None
             if (
                 result.provider != provider.identity
-                or result.model != provider.model
+                or result.model != expected_model
                 or result.finish != "complete"
-                or result.usage.unit != "synthetic_utf8_bytes"
+                or result.usage.unit
+                != ("provider_tokens" if real else "synthetic_utf8_bytes")
                 or result.usage.input is None
                 or result.usage.output is None
                 or result.usage.input > input_bound
-                or result.usage.output > settings.output_units
-                or result.usage.input != input_bound
-                or result.usage.output != len(result.payload.encode())
+                or (
+                    result.usage.output
+                    + (
+                        0
+                        if result.usage.reasoning_subset
+                        else (result.usage.reasoning or 0)
+                    )
+                )
+                > output_cap
+                or (not real and result.usage.input != input_bound)
+                or (not real and result.usage.output != len(result.payload.encode()))
+                or (real and (result.usage.input > MAX_INPUT_TOKENS or cost is None))
                 or len(result.payload.encode()) > settings.output_bytes
             ):
                 raise ValueError("Provider contract")
             trace["reported_provider"] = result.provider
             trace["reported_model"] = result.model
-            if cost is not None and cost > settings.cost_ceiling:
+            if cost is not None and cost > ceiling:
                 raise ValueError("Reported cost exceeds ceiling")
             started = clock()
             trace["reason"] = "verification_failed"

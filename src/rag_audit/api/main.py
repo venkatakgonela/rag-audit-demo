@@ -1,5 +1,6 @@
 import uuid
 from contextlib import contextmanager
+from pathlib import Path
 
 import psycopg
 from fastapi import FastAPI, Request
@@ -8,8 +9,9 @@ from fastapi.responses import Response
 from rag_audit import __version__
 from rag_audit.answering import ask, new_trace
 from rag_audit.auth import verify_token
-from rag_audit.embeddings import FakeEmbedder
+from rag_audit.embeddings import FakeEmbedder, OnnxEmbedder
 from rag_audit.policy import envelope, serialize, strict_json
+from rag_audit.provider_config import configured_provider
 from rag_audit.settings import Settings
 from rag_audit.store import PostgresStore
 
@@ -78,8 +80,26 @@ async def ask_endpoint(request: Request) -> Response:
                 trace["reason"] = reason
                 store.trace(str(uuid.uuid4()), trace)
                 return error_response(status)
+            try:
+                provider, prices = configured_provider(settings)
+                embedder = (
+                    OnnxEmbedder(Path("data/model"))
+                    if settings.generation_backend == "responses"
+                    else FakeEmbedder()
+                )
+            except Exception:
+                trace = new_trace()
+                trace["reason"] = "configuration_error"
+                store.trace(str(uuid.uuid4()), trace)
+                return error_response(503)
             response = await ask(
-                store, subject, data["question"], FakeEmbedder(), settings=settings
+                store,
+                subject,
+                data["question"],
+                embedder,
+                provider,
+                settings=settings,
+                prices=prices,
             )
             return Response(
                 serialize(response),
