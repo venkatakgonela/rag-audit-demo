@@ -26,3 +26,7 @@ Python 3.12 (`uv`), FastAPI, PostgreSQL 16 + pgvector (Docker Compose), pytest, 
 ## Commits
 
 Small, focused commits with conventional prefixes (`feat:`, `test:`, `docs:`, `chore:`).
+
+## Documentation
+
+Record non-trivial product decisions as ADRs with real alternatives and revisit triggers. Keep architecture diagrams and technology/pattern catalogues current, label implemented versus planned behaviour, link security claims to tests, and keep documentation checks passing. Preserve accepted decision text; use dated additive clarifications or superseding ADRs rather than rewriting rationale.

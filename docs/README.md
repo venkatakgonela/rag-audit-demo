@@ -1,0 +1,19 @@
+# Documentation reading guide
+
+All domain data is synthetic. **Implemented** means present in the repository; **Planned** means a design intention, not a working feature. **Rejected** describes an option not selected for this scope, not an inferior product.
+
+1. [Architecture](ARCHITECTURE.md) — clients and engineers: the five design ideas, current foundation, future flows, and deployment.
+2. [Decision index](decisions/README.md) — anyone asking “why this rather than that?”; alternatives and unresolved decisions.
+3. [Technology choices](technology-choices.md) and [patterns](patterns.md) — implementers and technical interviews: trade-offs, locations, and tests.
+4. [Threat model](threat-model.md) — reviewers: trust boundaries, tested protections, known gaps, and planned mitigations.
+5. [Glossary](glossary.md) — readers new to the terminology.
+
+Use the [project README](../README.md) for runnable commands, the [changelog](../CHANGELOG.md) for changes, and the [backlog](BACKLOG.md) for deferred work.
+
+## Evidence convention
+
+Repository links identify implemented code, configuration, and tests. External links identify official behaviour references consulted on October 2, 2026; project trade-offs are assessments, not comparative benchmarks. Foundation hosted CI was verified for commit `8e7a2a3` on October 2, 2026 in a private repository run: both jobs passed. That observation does not certify subsequent revisions. No private run URLs are published.
+
+## Documentation checks
+
+The [documentation tests](../tests/test_docs.py) run in `make test` without Docker. They cover root/docs Markdown inline links and explicit/collapsed reference links, local heading fragments, ADR index/sections, Mermaid fences/captions, and direct runtime catalogue entries. Literal code examples and external URLs are not link-checked. This small checker is not a complete CommonMark/HTML parser: use the supported link forms, not raw HTML links, shortcut references, or nested-parenthesis destinations. Mermaid syntax/rendering and factual accuracy require separate review; no external network is used by the tests.

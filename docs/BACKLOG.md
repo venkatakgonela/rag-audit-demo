@@ -1,2 +1,7 @@
 - Harden workflow supply chain: SHA pins and Dependabot.
 - Replace the deprecated httpx-based Starlette TestClient dependency (Starlette suggests httpx2) when it is safe.
+- Tighten the CI-shape test: reject chained or piped commands (`&&`, `;`, `|`, backticks, `$(`, newlines).
+- Guard against `network_mode: host` (and other mechanisms that bypass port publishing) in the Compose invariant test.
+- Decide whether to pin the runner image (ubuntu-24.04) or accept ubuntu-latest, and record it in an ADR when CI is hardened.
+- The verified foundation CI run warned that `ubuntu-latest` migrates to Ubuntu 26 from 19 October 2026; assess compatibility before that change. This records the observed warning, not an independently verified rollout schedule.
+- Investigate the harmless cache-reservation warning observed when both jobs use the setup-uv cache; both foundation jobs passed despite it.

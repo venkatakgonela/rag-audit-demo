@@ -1,10 +1,43 @@
 # Architecture decision records
 
-Record significant product architecture choices here. Use sequential four-digit filenames such as `0001-record-architecture-decisions.md`. Link superseding records and keep discussion focused on public product design.
+Record significant product choices here. Preserve accepted decision text; dated additive clarifications may extend structure without changing the decision. Supersede substantive changes. Alternatives in retrospective records are current assessments, not invented historical trials. See the [evidence convention](../README.md#evidence-convention).
 
 ## Index
 
-- [0001: Record product architecture decisions](0001-record-architecture-decisions.md)
+| Record | Status | Recorded |
+| --- | --- | --- |
+| [0001: Architecture records](0001-record-architecture-decisions.md) | Accepted | October 2, 2026; additive schema clarification same date |
+| [0002: Python and uv](0002-python-uv-locking.md) | Accepted | October 2, 2026; retrospective |
+| [0003: FastAPI](0003-fastapi.md) | Accepted | October 2, 2026; retrospective |
+| [0004: PostgreSQL and pgvector](0004-postgresql-pgvector.md) | Accepted for foundation; retrieval unvalidated | October 2, 2026; retrospective |
+| [0005: Settings and secrets](0005-settings-secrets.md) | Accepted | October 2, 2026; retrospective |
+| [0006: psycopg without ORM](0006-psycopg-no-orm.md) | Accepted | October 2, 2026; retrospective |
+| [0007: Make interface](0007-make-interface.md) | Accepted | October 2, 2026; retrospective |
+| [0008: Local Compose](0008-local-compose.md) | Accepted | October 2, 2026; retrospective |
+| [0009: CI jobs](0009-ci-jobs.md) | Accepted | October 2, 2026; retrospective |
+| [0010: Test strategy](0010-test-strategy.md) | Accepted | October 2, 2026; retrospective |
+| [0011: Liveness and version](0011-liveness-version.md) | Accepted | October 2, 2026; retrospective |
+| [0012: Mermaid](0012-mermaid.md) | Accepted | October 2, 2026; new documentation decision |
+| [0013: Synthetic original work](0013-synthetic-original-work.md) | Accepted | October 2, 2026; retrospective |
+
+## Pending decisions
+
+All entries are **Planned**, not accepted choices. Milestones describe product work, not implementation commitments.
+
+| Question | Options to weigh and constraints | Decision milestone |
+| --- | --- | --- |
+| Embedding model | Local open-source candidates; dimensions, licence, quality, CPU cost | Retrieval baseline |
+| Chunking strategy | Section-aware fixed windows versus semantic splits; overlap and citation fidelity | Ingestion |
+| Access-control model and enforcement | Roles plus ownership versus explicit grants; SQL candidate-set constraints mandatory, never application post-filtering | Corpus/ACL modelling and retrieval validation |
+| Keyword search | PostgreSQL text search/ranking versus BM25 implementation or search service | Hybrid retrieval |
+| Reranker | None versus local cross-encoder; quality/latency trade-off | Retrieval evaluation |
+| Provider interface and default | Desired generation/embedding separation; initial Claude-plus-local-embeddings intent versus validated alternatives; no adapter exists | Answer policy/provider integration |
+| Judge and calibration | Candidate judge models, rubric, human calibration and error reporting | Evaluation harness |
+| CI gate thresholds | Zero-leak/citation/rule safety constraints plus evidence-based quality tolerance | Regression gate |
+| Cost accounting | Token/price estimates versus reconciled usage; versioning prices and local costs | Tracing |
+| Workflow supply chain | Action SHA pins, update automation and image digests | CI hardening |
+| Runner image | Pin ubuntu-24.04 versus follow ubuntu-latest; migration compatibility | CI hardening |
+| Repository licence | Candidate permissive terms versus retaining current restrictions pending an explicit choice | Publication policy |
 
 ## Template
 
@@ -17,15 +50,27 @@ Status: Proposed | Accepted | Superseded by NNNN
 
 What problem and constraints require a decision?
 
+## Decision drivers
+
+Which quality attributes and constraints matter most?
+
+## Options considered
+
+At least two real alternatives with pros, cons, and reasons for not selecting them.
+
 ## Decision
 
 What will the product do, and why?
 
-## Alternatives
-
-Which options were considered, and why were they not chosen?
-
 ## Consequences
 
 What benefits, costs, risks, and follow-up work result?
+
+## Revisit when
+
+What evidence or changed constraint would reopen this choice?
+
+## Sources
+
+Link implementation/test evidence and official behaviour references; mark uncertainty.
 ```

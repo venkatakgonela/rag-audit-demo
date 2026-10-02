@@ -10,7 +10,7 @@ Under active development. Nothing below is claimed as working until it ships wit
 
 | Area | Status |
 | --- | --- |
-| Project skeleton, Docker Compose + pgvector, CI | foundation implemented; local checks verified; hosted CI pending |
+| Project skeleton, Docker Compose + pgvector, CI | foundation implemented; local checks verified; hosted CI verified (private repository run) |
 | Synthetic corpus and ACL model | planned |
 | Hybrid retrieval with pre-filter access control | planned |
 | Rules layer and answer policy (citations, refusal) | planned |
@@ -22,6 +22,8 @@ Under active development. Nothing below is claimed as working until it ships wit
 ## Design
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for components and non-goals, and [AGENTS.md](AGENTS.md) for the engineering rules every change must respect.
+
+Start with the [documentation reading guide](docs/README.md) for architecture, decisions, trade-offs, and security evidence.
 
 ## Quickstart
 
@@ -78,7 +80,7 @@ When changing a port or database credential, update `DATABASE_URL` as well. For 
 
 Plain `uv run --frozen pytest` skips integration tests by default. The explicit integration target enables and selects them. Unit tests isolate settings from the developer's environment and `.env`.
 
-The CI workflow runs lint, format checking, type checks, and unit tests in one Ubuntu job and real PostgreSQL/pgvector integration tests in another. All shell steps use Makefile targets. Hosted CI execution is pending publication; local verification is not a claim of a passing hosted run.
+The CI workflow runs lint, format checking, type checks, and unit tests in one Ubuntu job and real PostgreSQL/pgvector integration tests in another. All shell steps use Makefile targets. Foundation hosted CI is verified (private repository run) for commit `8e7a2a3`; both jobs passed on October 2, 2026. This does not certify subsequent revisions.
 
 ## Repository layout
 

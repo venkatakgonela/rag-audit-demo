@@ -1,0 +1,60 @@
+# Technology choices
+
+**Implemented** unless marked otherwise. This catalogue covers direct runtime/dev/build requirements and project tools; [pyproject.toml](../pyproject.toml) and [uv.lock](../uv.lock) are version evidence and the complete transitive inventory. The assessments are project-specific, not benchmarks. Source links were consulted October 2, 2026. Each row's revisit condition states when to reconsider, not a promised change.
+
+## Runtime dependencies
+
+### fastapi
+
+Typed HTTP framework used by the [health app](../src/rag_audit/api/main.py). Chosen for a compact contract-oriented API; Flask offers a smaller WSGI core, Django a fuller app stack, and Litestar another typed ASGI option. Accepted trade-off: Pydantic/Starlette coupling; revisit for different product/deployment needs. [ADR 0003](decisions/0003-fastapi.md), [official features](https://fastapi.tiangolo.com/features/).
+
+### uvicorn
+
+ASGI server invoked by `make run`, rather than the application framework itself. Chosen to serve the current ASGI app; Hypercorn or other ASGI hosting are alternatives not benchmarked here. Accepted trade-off: server configuration remains local-development oriented; revisit for production serving requirements. [ADR 0003](decisions/0003-fastapi.md), [official documentation](https://www.uvicorn.org/).
+
+### pydantic-settings
+
+Typed environment/dotenv configuration with precedence and validation. Chosen over plain environment reads, dynaconf or environs to keep validation/masking consistent; accepted trade-off is dependency semantics and careful secret handling. Revisit for rotation/central secret storage. [ADR 0005](decisions/0005-settings-secrets.md), [official settings documentation](https://docs.pydantic.dev/latest/concepts/pydantic_settings/).
+
+### psycopg
+
+PostgreSQL driver with the `binary` installation extra (`psycopg-binary` in the lockfile). Chosen for explicit small SQL operations over SQLAlchemy, asyncpg or psycopg2; accepted trade-off is synchronous per-operation connections and binary distribution dependence. Revisit for domain persistence, pooling or measured concurrency needs. [ADR 0006](decisions/0006-psycopg-no-orm.md), [official usage](https://www.psycopg.org/psycopg3/docs/basic/usage.html).
+
+## Supporting runtime components
+
+| Component | What / why here | Alternatives and accepted trade-off | Revisit / ADR / source |
+| --- | --- | --- | --- |
+| Python 3.12 | Pinned interpreter minor for a repeatable baseline | Python 3.13 is not claimed incompatible; narrower tested platform accepted | Required compatibility/support changes; [0002](decisions/0002-python-uv-locking.md), [Python docs](https://docs.python.org/3.12/) |
+| Pydantic / SecretStr | Validation and secret-wrapper component used through settings | Manual parsing/masking trades less dependency for more custom code; masking is not encryption | Expanded secret lifecycle; [0005](decisions/0005-settings-secrets.md), [types](https://docs.pydantic.dev/latest/api/types/) |
+| Starlette | Transitive ASGI/TestClient integration beneath FastAPI | Switching framework changes this coupling; upstream compatibility work accepted | TestClient migration when safe; [0003](decisions/0003-fastapi.md), [official test-client source](https://github.com/Kludex/starlette/blob/main/docs/testclient.md) |
+
+## Development and build dependencies
+
+| Dependency | What / why here | Options and accepted trade-off | Revisit / ADR / official source |
+| --- | --- | --- | --- |
+| hatchling | Build backend for the installable src package | setuptools or another backend; small backend-specific configuration accepted | Packaging complexity changes; [0002](decisions/0002-python-uv-locking.md), [build config](https://hatch.pypa.io/latest/config/build/) |
+| pytest | Test runner, fixtures, markers | unittest or another runner; external dependency accepted for expressive fixtures | Ecosystem/test constraints; [0010](decisions/0010-test-strategy.md), [markers](https://docs.pytest.org/en/stable/example/markers.html) |
+| pytest-cov | Coverage reporting in unit runs | Direct coverage invocation/no report; measurement overhead accepted, no security proof | Reporting becomes misleading or slow; [0010](decisions/0010-test-strategy.md), [docs](https://pytest-cov.readthedocs.io/en/latest/) |
+| ruff | Lint and formatting interface | Separate Black/Flake8/isort-style toolchain; chosen rule-set coupling accepted | Rules/format needs diverge; [0010](decisions/0010-test-strategy.md), [docs](https://docs.astral.sh/ruff/) |
+| mypy | Basic static checking of source/tests | Pyright or no static checker; imperfect type coverage and stub maintenance accepted | Stronger contract coverage needed; [0010](decisions/0010-test-strategy.md), [docs](https://mypy.readthedocs.io/en/stable/getting_started.html) |
+| httpx | Current TestClient HTTP dependency | Network-only tests or safe future client migration; upstream deprecation warning accepted temporarily | Compatible replacement validated; [0010](decisions/0010-test-strategy.md), [docs](https://www.python-httpx.org/), [backlog](BACKLOG.md) |
+| PyYAML | Parse Compose/workflow in offline invariant tests | Hand-written YAML subset; dependency accepted to avoid fragile parsing | YAML usage changes; [0010](decisions/0010-test-strategy.md), [safe_load](https://pyyaml.org/wiki/PyYAMLDocumentation) |
+| types-pyyaml | Type stubs for mypy's YAML imports | Ignored missing imports or custom annotations; extra dev artifact accepted | Upstream typing availability changes; [0010](decisions/0010-test-strategy.md), [typeshed stubs](https://github.com/python/typeshed/tree/main/stubs/PyYAML) |
+
+## Tools, services and standards
+
+| Tool / standard | What / why here | Options and accepted trade-off | Revisit / ADR / official source |
+| --- | --- | --- | --- |
+| uv | Lock, sync and run workflow | Poetry/pip-tools; tool-specific workflow accepted | Environment needs change; [0002](decisions/0002-python-uv-locking.md), [sync](https://docs.astral.sh/uv/concepts/projects/sync/) |
+| Make | Common local/CI recipes | just, Task, nox, scripts; Make/shell availability required | Cross-platform complexity; [0007](decisions/0007-make-interface.md), [manual](https://www.gnu.org/software/make/manual/make.html) |
+| PostgreSQL 16 | Relational candidate store for synthetic claims/evidence | Separate relational/vector stores; operational DB requirement accepted | Retrieval modelling proves mismatch; [0004](decisions/0004-postgresql-pgvector.md), [manual](https://www.postgresql.org/docs/16/intro-whatis.html) |
+| pgvector/pgvector:pg16 | Database image with vector extension | Qdrant/Weaviate/Chroma/OpenSearch/managed services; mutable image tag and unvalidated ANN behaviour accepted only for foundation | Before retrieval adoption and image hardening; [0004](decisions/0004-postgresql-pgvector.md), [upstream](https://github.com/pgvector/pgvector) |
+| Docker / Docker Compose | Local isolated database lifecycle | Testcontainers/local install; Docker runtime and volume lifecycle required | Deployment/isolation changes; [0008](decisions/0008-local-compose.md), [services](https://docs.docker.com/reference/compose-file/services/) |
+| GitHub Actions | Hosted checks and database service job | Another CI or local-only checks; hosted environment dependence accepted | Availability/security policy changes; [0009](decisions/0009-ci-jobs.md), [services](https://docs.github.com/en/actions/tutorials/use-containerized-services/create-postgresql-service-containers) |
+| actions/checkout and astral-sh/setup-uv | Checkout and Python/uv setup steps | Manual setup/other actions; major-tag mutability accepted pending hardening | SHA-pinning decision; [0009](decisions/0009-ci-jobs.md), [checkout](https://github.com/actions/checkout), [setup-uv](https://github.com/astral-sh/setup-uv) |
+| ubuntu-latest | Current runner label | Pin a named image; migration uncertainty currently accepted, not a final policy | Before observed 19 October 2026 migration warning takes effect; [0009](decisions/0009-ci-jobs.md), [backlog](BACKLOG.md) |
+| Mermaid | Text-source diagrams | draw.io/PlantUML/Structurizr; automatic layout and renderer variation accepted | Readability or shared-model need; [0012](decisions/0012-mermaid.md), [docs](https://mermaid.js.org/intro/) |
+| Keep a Changelog | Reader-oriented Unreleased record | Raw commit history; manual curation accepted | Release process changes; [0001](decisions/0001-record-architecture-decisions.md), [standard](https://keepachangelog.com/en/1.1.0/) |
+| ADRs | Context/options/decision/consequence records | Commit-only rationale or one growing overview; maintenance cost accepted | Decision discoverability worsens; [0001](decisions/0001-record-architecture-decisions.md), [original discussion](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) |
+
+**Planned, not dependencies:** embedding models, provider SDKs, rerankers and judge services. See [pending decisions](decisions/README.md#pending-decisions), not an invented implemented catalogue entry. None of the alternatives has been workload-benchmarked here.
