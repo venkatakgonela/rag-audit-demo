@@ -56,6 +56,8 @@ class Usage:
     cached_subset: bool = True
     reasoning_subset: bool = True
     unit: str = "synthetic_utf8_bytes"
+    cache_write: int | None = None
+    cache_write_subset: bool = True
 
 
 @dataclass(frozen=True)
@@ -68,8 +70,10 @@ class GenerationResult:
 
 
 class Generator(Protocol):
-    identity: str
-    model: str
+    @property
+    def identity(self) -> str: ...
+    @property
+    def model(self) -> str: ...
 
     async def generate(self, request: GenerationRequest) -> GenerationResult: ...
 
