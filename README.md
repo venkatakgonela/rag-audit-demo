@@ -1,6 +1,6 @@
 # rag-audit-demo
 
-A synthetic retrieval core for a planned audit-grade RAG service and evaluation harness. Today it provides a health API, deterministic corpus generation, PostgreSQL/pgvector ingestion, fixture-access-controlled hybrid retrieval and optional local CPU embeddings. Cited answers, deterministic business rules and regression gating remain planned.
+A synthetic, offline answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Real generation, calibrated evaluation and regression gating remain planned.
 
 > **All data is synthetic.** The generated corpus models a fictional insurer. Nothing here is real customer, policy or claims data. Database credentials and identifiers are synthetic, disposable and local-only.
 
@@ -13,10 +13,10 @@ Under active development. Nothing below is claimed as working until it ships wit
 | Project skeleton, Docker Compose + pgvector, CI | foundation implemented; local checks verified; hosted CI verified (private repository run) |
 | Synthetic corpus and ACL model | implemented, synthetic fixture identities only |
 | Hybrid retrieval with pre-filter access control | implemented, exact CPU vectors + full-text RRF |
-| Rules layer and answer policy (citations, refusal) | planned |
+| Rules layer and extractive answer policy | implemented with offline fake generation |
 | Evaluation harness and golden set | planned |
 | CI regression gate | planned |
-| Cost and latency tracing | planned |
+| Cost and latency tracing | implemented; synthetic usage, unknown price is null |
 | Sample AI audit report | planned |
 
 ## Design
@@ -47,6 +47,51 @@ make setup && make lint && make typecheck && make test
 
 ## Configuration
 
+### Offline answering quickstart
+
+With locked dependencies and the PostgreSQL image already cached, this sequence needs no downloads or API keys:
+
+```sh
+UV_OFFLINE=1 make setup
+docker compose up -d --wait --pull never
+UV_OFFLINE=1 make db-init
+UV_OFFLINE=1 make generate-corpus
+UV_OFFLINE=1 make ingest ARGS='--fake'
+UV_OFFLINE=1 make ask ARGS='--fake --subject synthetic-customer-a --query "public procedure"'
+UV_OFFLINE=1 make ask ARGS='--fake --subject synthetic-broker-a --query "broker reconciliation"'
+UV_OFFLINE=1 make ask ARGS='--fake --subject synthetic-underwriter-a --query "underwriting inspection"'
+UV_OFFLINE=1 make ask ARGS='--fake --subject synthetic-admin --query "status synthetic-claim-1"'
+UV_OFFLINE=1 make ask ARGS='--fake --subject synthetic-customer-b --query "status synthetic-claim-1"'
+UV_OFFLINE=1 make ask ARGS='--fake --subject synthetic-broker-b --query "payout synthetic-claim-1"'
+UV_OFFLINE=1 make ask ARGS='--fake --subject synthetic-underwriter-b --query "eligibility synthetic-claim-1"'
+UV_OFFLINE=1 make ask ARGS='--fake --query "payout synthetic-claim-0"'
+UV_OFFLINE=1 make ask ARGS='--fake --query "status synthetic-claim-1"'
+UV_OFFLINE=1 make ask ARGS='--fake --query "status synthetic-claim-999"'
+UV_OFFLINE=1 make test-integration
+```
+
+The last two asks have byte-identical no-answer bodies. Customer A cannot answer `broker reconciliation` or `underwriting inspection`; broker A can answer only the former; underwriter A can answer both through tier/team grants. Integration tests demonstrate this and run the deliberately malicious fake provider against the injection fixture. Adversarial modes are test-only, not HTTP request options.
+
+Corpus **v2 only**: 50 synthetic documents, ten structured policies and ten claims. Re-run `db-init`, generate and ingest over an older database; additive schema initialization preserves existing traces. Ingestion replaces the managed corpus atomically. Never use these tables for unrelated records.
+
+`answer_mode=extractive` is the default and only supported mode. The model mainly selects evidence, not general synthesis: each statement equals its exact quote, with no whitespace/Unicode normalization. The gate uses per-embedder provisional profiles, not calibrated confidence: fake cosine >= 0.15, cached local model >= 0.55, both plus a positive keyword match. Longer natural-language questions can abstain. See [answer policy](docs/decisions/0018-extractive-answer-policy.md).
+
+Rules recognise status, payout/payable, eligibility/eligible with one synthetic claim ID and optional matching policy ID. Default wording is code-owned; no provider calculation. Explicit hidden/absent entity references never fall back to public neighbours. No-answer equality is not a constant-time guarantee or a promise to infer hidden intent from arbitrary free text.
+
+Python entry point is async `rag_audit.answering.ask(store, subject, question, embedder, ...)`. CLI subjects are trusted local administration. The minimal HTTP API uses fake embeddings and normal fake generation; ingest with `--fake` first. Copy the synthetic `STUB_SIGNING_KEY` from `.env.example` into an existing local `.env` if needed; there is no runtime default key. Start `make run`, issue a local token, then:
+
+```sh
+TOKEN=$(UV_OFFLINE=1 make --silent stub-token ARGS='--subject synthetic-customer-a')
+curl -s http://127.0.0.1:8000/ask -H "Authorization: Bearer $TOKEN" \
+  -H 'Content-Type: application/json' -d '{"question":"payout synthetic-claim-0"}'
+```
+
+The token contains only subject; roles/teams come from PostgreSQL. Extra body fields are rejected. This stub has no expiry/replay protection and is not production authentication. Missing/forged tokens return generic 401, invalid bodies 400/413, infrastructure/verification failures 503; absent/inaccessible evidence returns the same HTTP 200 envelope. Every response requires committed trace storage, otherwise a generic error replaces it.
+
+Answer settings (environment names): `ANSWER_MODE=extractive`, `QUESTION_CHARACTERS=4000`, `HTTP_BODY_BYTES=16384`, `EVIDENCE_BYTES=12288`, `PROMPT_BYTES=32768`, `CONTEXT_CHUNKS=5`, `OUTPUT_UNITS=512`, `OUTPUT_BYTES=16384`, `MAX_STATEMENTS=5`, `STATEMENT_CHARACTERS=2048`, `PROVIDER_SECONDS=10`, `COST_CEILING=0.01`, and `STUB_SIGNING_KEY` (required for HTTP, at least 32 UTF-8 bytes). Evidence uses whole UTF-8 chunks: oversize chunks are skipped and ranking continues, never truncated. Full prompt/output bytes and synthetic output units are separately bounded. Fake usage is **synthetic UTF-8 bytes**, not vendor tokens. Unknown price stays null; known synthetic prices use Decimal preflight and reported-usage accounting. No default real prices, real provider, per-user rate limit or real-token spend guarantee exists.
+
+`instruction-echo-v1` blocks configured attack phrases/delimiters, including exact in-set quotations; benign discussions quoting these phrases can be overblocked. Delimiters alone are not security. General injection resistance, abstractive faithfulness, real-service validation, golden set, judge, evaluation, CI quality gate and sample audit report remain **Planned**. The future provider is an OpenAI-compatible Responses endpoint, configured by base URL, key variable and model name.
+
 ### Synthetic retrieval quickstart
 
 ```sh
@@ -61,9 +106,9 @@ make query ARGS='--subject synthetic-admin --query "water damage evidence"'
 make test-embeddings
 ```
 
-These commands retrieve evidence, not generated answers. Model setup explicitly downloads the pinned publisher tokenizer/ONNX export; ordinary tests do not. Source documents and model cache live in ignored `data/`. Ingestion atomically replaces the single managed synthetic corpus, including fixture identities; do not put unrelated data in the `demo_*` tables. Re-run `make db-init` for an existing foundation database without deleting its volume. Plain `make setup` may remove the optional environment; embedding commands explicitly request it again.
+These commands retrieve evidence, not generated answers. Model setup explicitly downloads the pinned publisher tokenizer/ONNX export; ordinary tests do not. Source documents and model cache live in ignored `data/`. Ingestion atomically replaces the managed synthetic corpus. Plain `make setup` may remove optional packages; use `uv run --frozen --extra embeddings python -m rag_audit.cli ingest` (or `query`) for real embeddings after setup. Fake `ingest`, `query` and `ask` never implicitly install embeddings.
 
-Customers/brokers cannot join staff teams, claims must be restricted, and broker/customer assignments are explicit. Scores, offsets and authorised returned chunk IDs support future answer-policy checks. Nearest neighbours may be irrelevant: semantic abstention is not implemented. This is not production authentication or constant-time execution. See the [access decision](docs/decisions/0014-query-access-control.md) and [measured runtime comparison](docs/decisions/0016-local-embedding-runtime.md).
+Customers/brokers cannot join staff teams, claims must be restricted, and broker/customer assignments are explicit. Raw retrieval is unchanged and can return irrelevant neighbours; `ask` applies the provisional gate and citation policy. This is not production authentication or constant-time execution. See the [access decision](docs/decisions/0014-query-access-control.md) and [measured runtime comparison](docs/decisions/0016-local-embedding-runtime.md).
 
 For mechanics-only testing, `uv run --frozen python -m rag_audit.cli ingest --fake` and the corresponding `query --fake` need no model runtime. Fake and real model identities cannot be mixed; re-ingest when switching.
 

@@ -4,6 +4,10 @@
 
 ## Runtime dependencies
 
+### Standard-library answering components
+
+No new third-party dependency was added for answering. Decimal provides the chosen monetary arithmetic, HMAC-SHA256 signs the subject-only local stub, asyncio bounds cooperative fake generation, and dataclasses define the provider contract. These choices are covered by [rules](../tests/test_rules.py), [HTTP](../tests/test_answer_http.py) and [provider/accounting tests](../tests/test_answering.py). JSONB stores ingestion-validated facts and trace snapshots through existing psycopg; exact database keys link facts to authoritative document ACLs. Revisit with production identity, traffic or a real provider. See [rules decision](decisions/0017-rules-routing-identity.md) and [tracing decision](decisions/0019-generation-tracing-accounting.md). These are local tested design decisions, not newly researched external claims.
+
 ### onnxruntime
 
 Optional CPU inference, pinned 1.30.0. Executes the immutable publisher ONNX export with CLS pooling and L2 normalisation; no remote Python model code. MIT licence; [upstream](https://github.com/microsoft/onnxruntime). [Measured alternatives](decisions/0016-local-embedding-runtime.md).
