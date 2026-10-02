@@ -25,6 +25,7 @@ Record significant product choices here. Preserve accepted decision text; dated 
 | [0017: Rules, routing and identity](0017-rules-routing-identity.md) | Accepted | October 2, 2026 |
 | [0018: Extractive answer policy](0018-extractive-answer-policy.md) | Accepted | October 2, 2026 |
 | [0019: Generation, tracing and accounting](0019-generation-tracing-accounting.md) | Accepted | October 2, 2026 |
+| [0020: Opt-in Responses integration](0020-opt-in-responses-provider.md) | Accepted | October 3, 2026 |
 
 ## Pending decisions
 
@@ -33,11 +34,11 @@ All entries are **Planned**, not accepted choices. Milestones describe product w
 | Question | Options to weigh and constraints | Decision milestone |
 | --- | --- | --- |
 | Reranker | None versus local cross-encoder; quality/latency trade-off | Retrieval evaluation |
-| Real provider default | Provider-neutral fake interface exists; real endpoint adapter and validated default remain undecided | Real-provider integration |
+| Production provider deployment | Opt-in local Responses integration exists; deployment and production identity remain undecided | Production design |
 | Judge and calibration | Candidate judge models, rubric, human calibration and error reporting | Evaluation harness |
 | CI gate thresholds | Zero-leak/citation/rule safety constraints plus evidence-based quality tolerance | Regression gate |
 | Profile calibration | Per-embedder provisional constants exist; labelled precision/recall calibration remains planned | Retrieval evaluation |
-| Real-provider accounting | Synthetic usage and versioned prices exist; verified real token bounds and unknown-price policy remain planned | Real-provider integration |
+| Billing and tighter token bounds | Versioned estimates and qualified byte bound exist; invoice reconciliation and verified tokenizer counter remain planned | Production accounting |
 | Workflow supply chain | Action SHA pins, update automation and image digests | CI hardening |
 | Runner image | Pin ubuntu-24.04 versus follow ubuntu-latest; migration compatibility | CI hardening |
 | Repository licence | Candidate permissive terms versus retaining current restrictions pending an explicit choice | Publication policy |

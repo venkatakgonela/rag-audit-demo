@@ -4,6 +4,10 @@
 
 ## Runtime dependencies
 
+### httpx
+
+Existing locked HTTP client promoted from development to runtime without a version change. Async bounded Responses requests use explicit timeouts, no redirects, no environment proxy inheritance and no retries. MockTransport exercises failures without network; standard-library worker threads were rejected because cancelling the await does not reliably stop underlying blocking I/O. See [adapter tests](../tests/test_responses.py). This is opt-in local integration, never a live CI dependency.
+
 ### Standard-library answering components
 
 No new third-party dependency was added for answering. Decimal provides the chosen monetary arithmetic, HMAC-SHA256 signs the subject-only local stub, asyncio bounds cooperative fake generation, and dataclasses define the provider contract. These choices are covered by [rules](../tests/test_rules.py), [HTTP](../tests/test_answer_http.py) and [provider/accounting tests](../tests/test_answering.py). JSONB stores ingestion-validated facts and trace snapshots through existing psycopg; exact database keys link facts to authoritative document ACLs. Revisit with production identity, traffic or a real provider. See [rules decision](decisions/0017-rules-routing-identity.md) and [tracing decision](decisions/0019-generation-tracing-accounting.md). These are local tested design decisions, not newly researched external claims.
@@ -73,4 +77,4 @@ PostgreSQL driver with the `binary` installation extra (`psycopg-binary` in the 
 | Keep a Changelog | Reader-oriented Unreleased record | Raw commit history; manual curation accepted | Release process changes; [0001](decisions/0001-record-architecture-decisions.md), [standard](https://keepachangelog.com/en/1.1.0/) |
 | ADRs | Context/options/decision/consequence records | Commit-only rationale or one growing overview; maintenance cost accepted | Decision discoverability worsens; [0001](decisions/0001-record-architecture-decisions.md), [original discussion](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) |
 
-**Planned, not dependencies:** embedding models, provider SDKs, rerankers and judge services. See [pending decisions](decisions/README.md#pending-decisions), not an invented implemented catalogue entry. None of the alternatives has been workload-benchmarked here.
+**Planned, not dependencies:** provider SDKs, rerankers and judge services. Local embedding runtime and the SDK-free opt-in Responses adapter are implemented. See [pending decisions](decisions/README.md#pending-decisions); the local smoke is not a comparative quality benchmark.

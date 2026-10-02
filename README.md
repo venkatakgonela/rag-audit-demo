@@ -1,6 +1,6 @@
 # rag-audit-demo
 
-A synthetic, offline answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Real generation, calibrated evaluation and regression gating remain planned.
+A synthetic answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Offline fake generation is the default; real Responses generation is opt-in local use only, never exercised in CI. Calibrated evaluation and regression gating remain planned.
 
 > **All data is synthetic.** The generated corpus models a fictional insurer. Nothing here is real customer, policy or claims data. Database credentials and identifiers are synthetic, disposable and local-only.
 
@@ -13,7 +13,7 @@ Under active development. Nothing below is claimed as working until it ships wit
 | Project skeleton, Docker Compose + pgvector, CI | foundation implemented; local checks verified; hosted CI verified (private repository run) |
 | Synthetic corpus and ACL model | implemented, synthetic fixture identities only |
 | Hybrid retrieval with pre-filter access control | implemented, exact CPU vectors + full-text RRF |
-| Rules layer and extractive answer policy | implemented with offline fake generation |
+| Rules layer and extractive answer policy | implemented; fake default and opt-in local Responses generation |
 | Evaluation harness and golden set | planned |
 | CI regression gate | planned |
 | Cost and latency tracing | implemented; synthetic usage, unknown price is null |
@@ -47,6 +47,39 @@ make setup && make lint && make typecheck && make test
 
 ## Configuration
 
+### Opt-in local Responses provider
+
+The real adapter is implemented for **opt-in local use only, not exercised in CI**. It sends strict structured output to an OpenAI-compatible Responses endpoint. Existing access, rule, quotation, abstention and trace-release policies do not change. See [integration decision](docs/decisions/0020-opt-in-responses-provider.md).
+
+Configure the following using neutral operator-selected values; no private endpoint/model or key is bundled:
+
+```sh
+export GENERATION_BACKEND=responses
+export GENERATION_BASE_URL=https://your-endpoint.example/v1
+export GENERATION_MODEL=your-requested-model
+export GENERATION_REPORTED_MODEL=your-exact-reported-model
+export GENERATION_KEY_ENV=YOUR_PROVIDER_KEY
+export GENERATION_REASONING_EFFORT=medium
+export GENERATION_PRICE_VERSION=your-versioned-price-table
+export GENERATION_PRICE_SOURCE='Operator-supplied dated list estimate; not verified billing'
+```
+
+Set `YOUR_PROVIDER_KEY` securely in the process environment, never in a file, command-line argument, log or pasted terminal transcript. Set `GENERATION_INPUT_PRICE`, `GENERATION_CACHED_PRICE`, `GENERATION_WRITE_PRICE`, `GENERATION_OUTPUT_PRICE` to your verified nonnegative decimal **USD per million token** configuration. Missing pricing/key/model configuration fails closed. All displayed costs are operator-supplied list-price estimates, not verified billing. Cache reads/writes are disjoint input subsets; unknown or conflicting fields are rejected. The supported usage mapping requires cache-write counters, including explicit zero, and reasoning reported inside output totals.
+
+With the existing model already cached and optional embedding dependencies installed:
+
+```sh
+uv run --frozen --extra embeddings python -m rag_audit.cli ingest
+uv run --frozen --extra embeddings python -m rag_audit.cli ask --subject synthetic-customer-a --query 'public procedure'
+make test-live-config
+```
+
+No model download occurs in these commands; missing model artifacts fail. `test-live-config` only checks configuration, makes no paid call, and skips without both explicit opt-in and the environment key. Private live-smoke harnesses and task-spend ledgers are deliberately not shipped. A configured CLI ask may incur charges; callers must enforce their own aggregate budget. The HTTP API selects real cached embeddings when the operator configures Responses; body fields cannot select providers or permissions.
+
+Real defaults: `GENERATION_OUTPUT_TOKENS=2048`, `GENERATION_SECONDS=60`, `GENERATION_COST_CEILING=0.55` USD per call. Configured maxima are 4,096 and USD 0.65; no adaptive raising or retries. Input bound is actual serialized UTF-8 request bytes plus 1,024 tokens, with a 32 KiB request cap. This is a qualified assumption, not a verified tokenizer counter. Exceeding the reported-input bound or 272,000-token supported-price limit fails closed. Incomplete and rejected generations retain valid usage/cost; timeouts may still be billable and are not retried. Exact expected reported model mapping rejects substitutions. A deployment using different usage semantics needs separate validation.
+
+The first small local smoke found substantial natural-question abstention and rejected exact instruction quotations. It is not calibrated evaluation or proof of general injection resistance. Golden set, judge, calibration, reranker and quality gate remain Planned.
+
 ### Offline answering quickstart
 
 With locked dependencies and the PostgreSQL image already cached, this sequence needs no downloads or API keys:
@@ -78,7 +111,7 @@ Corpus **v2 only**: 50 synthetic documents, ten structured policies and ten clai
 
 Rules recognise status, payout/payable, eligibility/eligible with one synthetic claim ID and optional matching policy ID. Default wording is code-owned; no provider calculation. Explicit hidden/absent entity references never fall back to public neighbours. No-answer equality is not a constant-time guarantee or a promise to infer hidden intent from arbitrary free text.
 
-Python entry point is async `rag_audit.answering.ask(store, subject, question, embedder, ...)`. CLI subjects are trusted local administration. The minimal HTTP API uses fake embeddings and normal fake generation; ingest with `--fake` first. Copy the synthetic `STUB_SIGNING_KEY` from `.env.example` into an existing local `.env` if needed; there is no runtime default key. Start `make run`, issue a local token, then:
+Python entry point is async `rag_audit.answering.ask(store, subject, question, embedder, ...)`. CLI subjects are trusted local administration. By default the minimal HTTP API uses fake embeddings and fake generation; ingest with `--fake` first. The opt-in Responses configuration instead selects cached real embeddings. Copy the synthetic `STUB_SIGNING_KEY` from `.env.example` into an existing local `.env` if needed; there is no runtime default key. Start `make run`, issue a local token, then:
 
 ```sh
 TOKEN=$(UV_OFFLINE=1 make --silent stub-token ARGS='--subject synthetic-customer-a')
@@ -88,9 +121,9 @@ curl -s http://127.0.0.1:8000/ask -H "Authorization: Bearer $TOKEN" \
 
 The token contains only subject; roles/teams come from PostgreSQL. Extra body fields are rejected. This stub has no expiry/replay protection and is not production authentication. Missing/forged tokens return generic 401, invalid bodies 400/413, infrastructure/verification failures 503; absent/inaccessible evidence returns the same HTTP 200 envelope. Every response requires committed trace storage, otherwise a generic error replaces it.
 
-Answer settings (environment names): `ANSWER_MODE=extractive`, `QUESTION_CHARACTERS=4000`, `HTTP_BODY_BYTES=16384`, `EVIDENCE_BYTES=12288`, `PROMPT_BYTES=32768`, `CONTEXT_CHUNKS=5`, `OUTPUT_UNITS=512`, `OUTPUT_BYTES=16384`, `MAX_STATEMENTS=5`, `STATEMENT_CHARACTERS=2048`, `PROVIDER_SECONDS=10`, `COST_CEILING=0.01`, and `STUB_SIGNING_KEY` (required for HTTP, at least 32 UTF-8 bytes). Evidence uses whole UTF-8 chunks: oversize chunks are skipped and ranking continues, never truncated. Full prompt/output bytes and synthetic output units are separately bounded. Fake usage is **synthetic UTF-8 bytes**, not vendor tokens. Unknown price stays null; known synthetic prices use Decimal preflight and reported-usage accounting. No default real prices, real provider, per-user rate limit or real-token spend guarantee exists.
+Answer settings (environment names): `ANSWER_MODE=extractive`, `QUESTION_CHARACTERS=4000`, `HTTP_BODY_BYTES=16384`, `EVIDENCE_BYTES=12288`, `PROMPT_BYTES=32768`, `CONTEXT_CHUNKS=5`, `OUTPUT_UNITS=512`, `OUTPUT_BYTES=16384`, `MAX_STATEMENTS=5`, `STATEMENT_CHARACTERS=2048`, `PROVIDER_SECONDS=10`, `COST_CEILING=0.01`, and `STUB_SIGNING_KEY` (required for HTTP, at least 32 UTF-8 bytes). Evidence uses whole UTF-8 chunks: oversize chunks are skipped and ranking continues, never truncated. Fake usage is **synthetic UTF-8 bytes**, not vendor tokens. Unknown fake price stays null; real calls require configured prices and use the separate real limits described above. There are no default real prices, per-user rate limits or verified billing guarantees.
 
-`instruction-echo-v1` blocks configured attack phrases/delimiters, including exact in-set quotations; benign discussions quoting these phrases can be overblocked. Delimiters alone are not security. General injection resistance, abstractive faithfulness, real-service validation, golden set, judge, evaluation, CI quality gate and sample audit report remain **Planned**. The future provider is an OpenAI-compatible Responses endpoint, configured by base URL, key variable and model name.
+`instruction-echo-v1` blocks configured attack phrases/delimiters, including exact in-set quotations; benign discussions quoting these phrases can be overblocked. Delimiters alone are not security. An initial opt-in local real-service smoke is complete, not calibrated evaluation. General injection resistance, abstractive faithfulness, golden set, judge, evaluation, CI quality gate and sample audit report remain **Planned**.
 
 ### Synthetic retrieval quickstart
 

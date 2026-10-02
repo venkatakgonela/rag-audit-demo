@@ -6,6 +6,10 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Added
 
+- Opt-in local OpenAI-compatible Responses adapter with strict schemas, environment-only key, exact model mapping, bounded async HTTP and no retries; real service is never exercised by CI.
+- Real-token pricing with disjoint cache-read/write subsets, output reasoning accounting, qualified pre-dispatch byte bound and explicit unknown-price/input-tier rejection. Costs remain operator-supplied list estimates, not verified billing.
+- Offline mocked transport/network-trap checks and an explicitly gated, no-spend live-configuration check. Access, rule, citation and abstention policies are unchanged.
+
 - Corpus v2 with 50 synthetic documents, structured policies/claims and visible role differentiation; v1 is no longer supported.
 - Access-scoped Decimal status, payout and eligibility rules; deterministic entity routing and code-owned wording.
 - Offline fake generation, extractive citation verification, versioned provisional evidence profiles and identical absent/inaccessible no-answer envelopes.
