@@ -1,0 +1,1 @@
+- Harden workflow supply chain: SHA pins and Dependabot.
