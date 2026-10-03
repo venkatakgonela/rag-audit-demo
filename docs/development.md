@@ -10,6 +10,9 @@ The README fake-answering path requires Git, Make, uv with Python3.12 and a runn
 Docker engine with Compose. It needs neither a provider key nor a model download.
 macOS is locally tested; Linux and Windows quickstarts are not locally tested.
 Hosted Linux CI is separate evidence, not a Windows or newcomer test.
+Verify `docker compose version` and `docker info` before starting. If a fresh
+user or temporary home cannot find Compose, configure the already installed
+Compose plugin for that user; the Docker engine alone is not sufficient.
 Initial locked-package/image setup may download; cached package operations can
 use `UV_OFFLINE=1`. The repository requires access while private.
 
