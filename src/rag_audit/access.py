@@ -9,7 +9,7 @@ ACL_SQL = """(
  SELECT 1 FROM demo_brokers b WHERE b.broker=%(subject)s AND b.customer=d.owner)))"""
 
 TIERS = {
-    "customer": ("public",),
+    "customer": ("public", "restricted"),
     "broker": ("public", "broker"),
     "underwriter": ("public", "internal"),
     "admin": ("public", "broker", "internal", "restricted"),
