@@ -13,6 +13,13 @@ def measures(rows: list[dict]) -> dict:
             group = metrics["groups"].get(f"{split}/{style}", {})
             for name in ("evidence_sufficient", "correct_answer"):
                 values[f"{split}/{style}/{name}"] = group.get(name, {}).get("hits", 0)
+            for name in (
+                "false_answer",
+                "missed_answer",
+                "correct_abstention",
+                "model_abstention",
+            ):
+                values[f"{split}/{style}/{name}"] = group.get(name, {}).get("hits", 0)
         group = metrics["groups"].get(f"split:{split}", {})
         values[f"{split}/recall_hits"] = group.get("recall@5", {}).get("hits", 0)
         retrieval = [
@@ -29,6 +36,11 @@ def measures(rows: list[dict]) -> dict:
         for subtype in ("off_domain", "id_lookup", "free_text", "near_miss"):
             values[f"{split}/false_evidence/{subtype}"] = sum(
                 bool(row["trace"]["sent_ids"])
+                for row in selected
+                if row["challenge_kind"] == subtype
+            )
+            values[f"{split}/false_answer/{subtype}"] = sum(
+                row["assessment"]["false_answer"]
                 for row in selected
                 if row["challenge_kind"] == subtype
             )
@@ -93,8 +105,14 @@ def check_rows(
     current = measures(rows)
     for name, before in baseline["measures"].items():
         after = current[name]
-        if "/false_evidence/" in name or name.endswith("unknown_cost"):
+        if (
+            "/false_evidence/" in name
+            or "/false_answer/" in name
+            or name.endswith(("unknown_cost", "false_answer", "missed_answer"))
+        ):
             passed = after <= before
+        elif name.endswith("model_abstention"):
+            passed = after == before
         elif "/verification/" in name:
             passed = after <= before + tolerance
         elif name.endswith("cost_per_call"):

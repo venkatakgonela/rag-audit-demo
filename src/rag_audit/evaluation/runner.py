@@ -20,7 +20,21 @@ class ObservedStore(PostgresStore):
         return self.observed
 
 
-async def run_phrasing(
+async def run_phrasing(*args, **kwargs):
+    live = kwargs.get("live")
+    pacing = getattr(live[2], "pacing", None) if live else None
+    while True:
+        if pacing:
+            await pacing.before()
+        row = await _run_phrasing(*args, **kwargs)
+        if not pacing or not pacing.retry():
+            if pacing and row["response"]["decision"] == "error":
+                assert live is not None
+                live[2].ledger.stopped = True
+            return row
+
+
+async def _run_phrasing(
     connection,
     embedder,
     case: Case,
@@ -29,6 +43,7 @@ async def run_phrasing(
     gate: Gate | None,
     *,
     live=None,
+    consumer_side="primary",
     reranker=None,
 ) -> dict:
     provider = live[0] if live else BaselineGenerator()
@@ -36,6 +51,8 @@ async def run_phrasing(
     before_calls = counter.calls
     if live and hasattr(counter, "context"):
         counter.context = f"{case.id}/{style}"
+    if live and hasattr(counter, "bind"):
+        counter.bind(case.id, style, consumer_side)
     prices = (
         live[1]
         if live
@@ -98,6 +115,12 @@ async def run_phrasing(
         generation_requests=[asdict(request) for request in provider.requests]
         if isinstance(provider, BaselineGenerator)
         else [],
+        provider_requests=[
+            entry["request_hash"]
+            for entry in counter.consumers[-(counter.calls - before_calls) :]
+        ]
+        if hasattr(counter, "consumers") and counter.calls > before_calls
+        else [],
     )
 
 
@@ -151,11 +174,18 @@ def run_cases(
                             question,
                             gate,
                             live=live,
+                            consumer_side="paired",
                             reranker=reranker,
                         )
                     )
                     if row["response_bytes"] != paired["response_bytes"]:
                         row["hard_failures"].append("counterfactual_bytes")
+                    if hidden and row.get("provider_requests"):
+                        row["identical_provider_pair"] = row[
+                            "provider_requests"
+                        ] == paired.get("provider_requests")
+                        if not row["identical_provider_pair"]:
+                            row["hard_failures"].append("counterfactual_requests")
                     if hidden and (
                         row["chunks"] != paired["chunks"]
                         or row["lexical_coverage"] != paired["lexical_coverage"]

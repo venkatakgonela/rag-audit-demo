@@ -8,7 +8,14 @@ from datetime import UTC, datetime
 from rag_audit.accounting import Price, estimate, preflight, validate_usage
 from rag_audit.embeddings import Embedder
 from rag_audit.gate import Gate
-from rag_audit.generation import Evidence, FakeGenerator, GenerationRequest, Generator
+from rag_audit.generation import (
+    RULE_SYSTEM,
+    SYSTEM,
+    Evidence,
+    FakeGenerator,
+    GenerationRequest,
+    Generator,
+)
 from rag_audit.policy import (
     CONFIGURATION_VERSION,
     ECHO_VERSION,
@@ -178,6 +185,7 @@ async def ask(
                 CONFIGURATION_VERSION,
                 choices,
                 settings.answer_mode.value,
+                system=RULE_SYSTEM if choices else SYSTEM,
             )
             trace["requested_provider"] = provider.identity
             trace["requested_model"] = provider.model
@@ -288,13 +296,19 @@ async def ask(
                     statements = verify(
                         result.payload, set(trace["retrieved_ids"]), selected, settings
                     )
-                    response = envelope(
-                        "answered",
-                        "\n".join(item["text"] for item in statements),
-                        statements,
+                    response = (
+                        envelope(
+                            "answered",
+                            "\n".join(item["text"] for item in statements),
+                            statements,
+                        )
+                        if statements
+                        else envelope()
                     )
                     trace["cited_ids"] = [item["chunk_id"] for item in statements]
-                    trace["reason"] = "citations_verified"
+                    trace["reason"] = (
+                        "citations_verified" if statements else "model_abstained"
+                    )
             except VerificationError as error:
                 trace["verification_reason"] = error.reason.value
                 raise

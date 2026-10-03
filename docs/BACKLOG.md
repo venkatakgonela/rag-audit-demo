@@ -1,4 +1,6 @@
 - Confirm cache-backed replay on the first hosted CPU run; measure cold/warm timing and provisional zero tolerances.
+- Independently review labels and repeat a preregistered abstention study on newly held-out data; do not tune on the twice-exposed historical test split.
+- Produce the release audit report and publication-focused README/licence review separately; dev-selected abstention is not a release certification.
 - Evaluate sentence-aware long-section boundaries and native Linux performance with a labelled retrieval set.
 - Harden workflow supply chain: action SHA pins, dependency update automation and container image digests.
 - Replace the deprecated httpx-based Starlette TestClient dependency (Starlette suggests httpx2) when it is safe.

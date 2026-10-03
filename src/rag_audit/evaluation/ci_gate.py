@@ -12,6 +12,9 @@ from rag_audit.evaluation.gate_checks import check_rows, measures
 from rag_audit.evaluation.regression import evaluate
 from rag_audit.evaluation.validation import policy_configuration
 from rag_audit.evaluation_data import digest, read_json
+from rag_audit.generation import SYSTEM
+from rag_audit.policy import CONFIGURATION_VERSION
+from rag_audit.responses import schema
 from rag_audit.settings import Settings
 
 
@@ -44,7 +47,10 @@ def configuration(root: Path) -> dict:
                 "generation_output_price",
             )
         },
-        replay_contract="neutral-http-v1",
+        replay_contract="neutral-http-v2",
+        answer_contract=dict(
+            version=CONFIGURATION_VERSION, system=SYSTEM, schema=schema(False)
+        ),
     )
 
 

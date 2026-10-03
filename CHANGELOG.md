@@ -6,6 +6,8 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Added
 
+- `ci-abstention-v2`: explicit model abstention with strict local outcome validation, unchanged no-answer bytes, separate reason metrics and context-bound replay. Rejected-only paced evaluation retries retain unknown holds; production requests do not retry.
+
 - Read-only real-embedding HTTP replay regression checks, fault-injection self-tests, trusted model verification and explicitly guarded local recording/rebaseline commands. All CI jobs pin Ubuntu 24.04; hosted validation remains pending.
 
 - `ci-baseline-v1`: initial replay regression baseline from frozen recorded behaviour, with zero measured-drift tolerances provisional until the first hosted CPU run. Historical baseline exposures are unchanged.
@@ -17,6 +19,8 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 - Offline schema/fact/profile-reference checks and independent rule oracles; SQL comparison covers every document and fixture subject. Canonical test baselines and release gating remain pending.
 
 ### Changed
+
+- Adopted `local-calibrated-v2`: complete dev-only comparison selects V1 cosine >=0.70 with explicit abstention (9/18 natural correct versus historical 5/18; zero dev false answers). Lower candidates are rejected for hidden-intent free-text false answers. Final and hosted verification are separate evidence, not implied by selection.
 
 - Adopted `local-calibrated-v1`: pinned real embeddings use cosine >=0.75 without the lexical conjunction; fake profile, retrieval ACLs, rules and verification remain unchanged. Added isolated held-out exposure logging, explicit partial coverage, forecast matching and private live recording safeguards. CPU reranker remains not adopted.
 - Candidate labels revised before acceptance to add six free-text hidden-answer traps, six in-domain near misses and four ordinary injection questions; still 60 cases, 40 dev/20 test, with unchanged corpus and subject allocation. Candidate semantic digests regenerated for the new coverage and explicit acceptable-decision/forbidden-fact labels; all labels remain drafted.

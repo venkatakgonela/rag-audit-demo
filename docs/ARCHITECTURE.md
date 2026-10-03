@@ -1,6 +1,6 @@
 # Architecture: synthetic RAG audit demonstration
 
-The [evaluation harness](evaluation.md), three [canonical baselines](evaluation-results.md) and `local-calibrated-v1` default (V1 cosine >=0.75) are Implemented. Fake stays untuned. Reranker not adopted. [ADR 0025](decisions/0025-calibrated-local-gate.md) records the profile adoption. CI gates/replay remain Planned.
+The [evaluation harness](evaluation.md), versioned [baselines](evaluation-results.md), recorded replay gate and `local-calibrated-v2` default (V1 cosine >=0.70 with explicit abstention) are Implemented. Fake stays untuned. Reranker not adopted. [ADR 0030](decisions/0030-abstention-recalibration.md) records the dev-only profile selection. Hosted verification of this revision remains pending.
 
 Dev calibration and an experimental pairwise CPU reranker are Implemented. The reranker sees only the existing top-20 authorised candidates; it does not expand retrieval or change rules/verification. The [trial](reranker-dev.md) did not meet adoption criteria ([ADR 0023](decisions/0023-cpu-reranker-trial.md)); it is not deployed by default.
 
@@ -63,7 +63,7 @@ flowchart LR
     eligible --> ranking["Exact cosine plus full-text ranks"]
     ranking --> result["RRF and eligible-only raw signals"]
     eligible --> rules["Authorised structured Decimal rules"]
-    result --> gate["Calibrated real cosine 0.75; fake demo gate; byte budgets"]
+    result --> gate["Calibrated real cosine 0.70; fake demo gate; byte budgets"]
     labels --> evaluator["Isolated evaluator; dev calibration; logged test runs"]
     evaluator --> subject
     trace --> metrics["Independent facts, rules and counterfactual metrics"]
@@ -98,8 +98,11 @@ sequenceDiagram
         Rules-->>Policy: Fixed result and template
     else Sufficient evidence
         Policy->>Model: Price preflight and bounded untrusted evidence
-    Model-->>Policy: Structured extractive statements
-        Policy->>Policy: Verify whole output
+        Model-->>Policy: Explicit answer or insufficient_evidence outcome
+        Policy->>Policy: Validate outcome and all statements
+        opt Valid model abstention
+            Policy->>Policy: Fixed no-answer with private model_abstained reason
+        end
     else Missing or weak evidence
         Policy->>Policy: Fixed no-answer envelope
     end

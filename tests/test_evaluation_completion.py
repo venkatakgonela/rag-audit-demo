@@ -43,6 +43,7 @@ def example():
         durations={"total": 1},
         gate_duration=0.1,
         verification_reason=None,
+        reason="citations_verified",
         usage=dict(input=2, output=3),
         cost_usd="0",
     )

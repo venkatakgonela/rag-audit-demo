@@ -6,7 +6,7 @@ from rag_audit.embeddings import MODEL, REVISION, FakeEmbedder
 from rag_audit.gate import Gate
 from rag_audit.settings import AnswerMode, Settings
 
-CONFIGURATION_VERSION = "extractive-policy-v1"
+CONFIGURATION_VERSION = "extractive-policy-v2"
 ECHO_VERSION = "instruction-echo-v1"
 ECHO_PHRASES = (
     "ignore previous instructions",
@@ -41,7 +41,7 @@ class Profile:
 
 PROFILES = {
     FakeEmbedder.identity: Profile("fake-demo-v1", 0.15),
-    f"{MODEL}@{REVISION}:cls:l2:section-v1": Profile("local-calibrated-v1", 0.75, "V1"),
+    f"{MODEL}@{REVISION}:cls:l2:section-v1": Profile("local-calibrated-v2", 0.70, "V1"),
 }
 
 
@@ -130,11 +130,14 @@ def verify(
         data = strict_json(payload)
     except ValueError:
         raise VerificationError(VerificationReason.SCHEMA, "Invalid JSON") from None
-    if type(data) is not dict or set(data) != {"statements"}:
+    if type(data) is not dict or set(data) != {"outcome", "statements"}:
         raise VerificationError(VerificationReason.SCHEMA, "Invalid schema")
     statements = data["statements"]
+    if data["outcome"] == "insufficient_evidence" and statements == []:
+        return []
     if (
-        type(statements) is not list
+        data["outcome"] != "answer"
+        or type(statements) is not list
         or not 1 <= len(statements) <= settings.max_statements
     ):
         raise VerificationError(VerificationReason.SCHEMA, "Invalid statements")

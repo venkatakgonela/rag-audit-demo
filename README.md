@@ -1,6 +1,6 @@
 # rag-audit-demo
 
-A synthetic answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Offline fake generation is the default; live Responses generation is opt-in local only. [Evaluation](docs/evaluation.md) includes calibration and a recorded-HTTP regression gate; the real profile is `local-calibrated-v1`, cosine >=0.75. CI exercises the real adapter with recorded responses, not live generation; hosted validation is pending.
+A synthetic answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Offline fake generation is the default; live Responses generation is opt-in local only. [Evaluation](docs/evaluation.md) includes explicit model abstention and a recorded-HTTP regression gate; the dev-selected real profile is `local-calibrated-v2`, cosine >=0.70. CI exercises the real adapter with recorded responses, not live generation; hosted validation of this revision is pending.
 
 Regression commands: `make eval-runtime`, `make eval-model ARGS="--provision"` (first cache only), `make db-init`, `make eval-gate`, `make eval-selftest`. Configure an isolated `DATABASE_URL`; no provider key is needed. Read the [failure and re-baseline protocol](docs/evaluation.md#failure-and-re-baseline-protocol) before explicit local `make eval-record` or `make eval-rebaseline`. Neither runs in CI.
 

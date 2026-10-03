@@ -64,5 +64,9 @@ Definitions describe the design vocabulary; they do not imply implementation. Fo
 | Token upper bound | Serialized request UTF-8 bytes plus a fixed margin here; qualified conservative assumption, not a universal tokenizer proof. |
 | List-price estimate | Provider usage multiplied by dated operator-supplied rates, not a verified invoice or billing guarantee. |
 | Trace-before-release | Commit the decision record before returning a response; storage failure replaces it with a generic error. |
+| Model abstention | Valid explicit insufficient-evidence outcome, shown as the standard no-answer; quality behaviour, not an access-control boundary. |
+| Gate abstention | No answer because the deterministic evidence gate selected no usable context, before model generation. |
+| Context-bound replay | A recorded response may be consumed only by declared case/style/pair-side contexts, with exact expected counts. |
+| Retained unknown hold | Conservative reservation kept for an attempt whose cost cannot be established; not a claim of billing. |
 | Subject-only stub | Signed synthetic identifier; roles/teams are resolved from PostgreSQL, without production expiry/replay protections. |
 | p50 / p95 | Median and 95th-percentile measurements, planned for latency reporting; no numbers measured for RAG yet. |

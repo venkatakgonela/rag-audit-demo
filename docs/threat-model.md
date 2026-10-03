@@ -62,6 +62,10 @@ OWASP references below use the [2025 LLM Top 10](https://genai.owasp.org/llm-top
 
 ## Assumptions and limits
 
+Explicit model abstention is **not a safety control**. Authorised but irrelevant evidence can still yield a wrong answer. Local outcome validation rejects malformed answers/abstentions; valid refusal uses the unchanged no-answer bytes with a private reason ([tests](../tests/test_model_abstention.py)). Citation, quotation, echo and rule checks are unchanged.
+
+Live nondeterminism can make two identical requests return different bytes. Evaluation independently constructs both protected-pair requests, compares their full identities, and shares one sample only when byte-identical. Context-bound replay rejects unexpected consumers and missing/extra consumptions ([tests](../tests/test_pair_replay.py)); this establishes conditional request noninterference, not universal model safety or constant-time behaviour. Looser gates failed hidden-intent free-text quality eligibility despite passing hard noninterference checks; see [decision 0030](decisions/0030-abstention-recalibration.md).
+
 The machine/operator and repository reviewers are trusted; synthetic passwords are not deployment secrets. Real generation is opt-in local only and is never exercised in CI. Production identity, rate limiting and calibrated evaluation remain Planned. Model artifacts are revision-pinned with local hash verification, but initial HTTPS downloads trust the publisher and cache metadata is not signed. [Adapter smoke tests](../tests/test_embedding_adapter.py) cover shape, offsets and query prefixes, not complete supply-chain defence. The [backlog](BACKLOG.md) records unresolved work.
 
 ## Opt-in Responses boundary

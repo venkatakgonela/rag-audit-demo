@@ -10,7 +10,7 @@ from rag_audit.evaluation.data import load_split
 from rag_audit.evaluation.gate_checks import check_rows
 from rag_audit.evaluation.metrics import assess
 from rag_audit.evaluation.oracle import rule_failures
-from rag_audit.evaluation.regression import evaluate
+from rag_audit.evaluation.regression import active_live_baseline, evaluate
 from rag_audit.evaluation.replay import fixture_entries
 from rag_audit.evaluation.reporting import deterministic_metrics
 from rag_audit.evaluation_data import read_json
@@ -48,10 +48,12 @@ def test_current_pipeline_exact_replay_identity_and_live_equality(replay_result)
     result = replay_result[0]
     entries = fixture_entries(ROOT / "datasets/evaluation/replay")
     assert sorted(result["consumed"]) == sorted(
-        entry["request_hash"] for entry in entries
+        entry["request_hash"]
+        for entry in entries
+        for _ in range(entry.get("expected_consumptions", 1))
     )
     assert not result["replay_failures"]
-    live = read_json(ROOT / "datasets/evaluation/baselines/live-v1.json")
+    live = active_live_baseline(ROOT)
     assert deterministic_metrics(result["metrics"]) == deterministic_metrics(
         live["metrics"]
     )
