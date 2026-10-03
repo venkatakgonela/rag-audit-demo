@@ -274,6 +274,8 @@ async def ask(
     except Exception:
         if trace["rule"] is not None:
             trace["reason"] = "rule_template_fallback"
+        elif trace["reason"] == "verification_failed":
+            response = envelope()
         else:
             response = envelope("error")
     return finalize(store, request_id, trace, response)

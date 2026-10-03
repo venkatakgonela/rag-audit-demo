@@ -193,7 +193,7 @@ def test_incomplete_retains_usage_and_cost():
 def test_output_schema_rejected_by_unchanged_policy(payload):
     assert (
         run(provider(lambda _: httpx.Response(200, json=response(payload))))["decision"]
-        == "error"
+        == "no_answer"
     )
 
 

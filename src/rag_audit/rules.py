@@ -49,7 +49,7 @@ class RuleResult:
     inputs: dict
     value: str
     corpus_version: str
-    version: str = "synthetic-rules-v1"
+    version: str = "synthetic-rules-v2"
 
 
 def calculate(
@@ -78,6 +78,9 @@ def calculate(
         "window": policy["window"],
     }
     if operation == "payout":
+        if claim["status"] not in STATUSES:
+            raise ValueError("Invalid status")
+        inputs["status"] = claim["status"]
         value = str(
             payout(
                 money(claim["loss"]), money(policy["excess"]), money(policy["limit"])
@@ -101,6 +104,14 @@ def calculate(
 
 
 def templates(result: RuleResult) -> tuple[str, str]:
+    if result.name == "payout":
+        status = result.inputs["status"]
+        if status not in STATUSES:
+            raise ValueError("Invalid status")
+        text = (
+            f"Payout in GBP: {result.value} (calculation only; claim status: {status})."
+        )
+        return text, f"Synthetic result — {text}"
     label = {
         "status": "Claim status",
         "payout": "Payout in GBP",
