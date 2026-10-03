@@ -4,6 +4,10 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ## [Unreleased]
 
+### Added
+
+- Record of an AI reviewer's check of all 65 labels (`docs/audit/label-review.md`): no disagreement found, three wording notes; labels stay `drafted` and no human review is claimed.
+
 ### Fixed
 
 - Audit category tables now distinguish correct answers from permitted refusals

@@ -21,7 +21,7 @@ A synthetic demonstration of how to **test and audit a retrieval-augmented answe
 
 Source: `datasets/evaluation/baselines/live-v1.json` at `cfd53ff`, `datasets/evaluation/baselines/live-v2.json` at `cfd53ff`. Full hashes: docs/audit/evidence-manifest.json.
 
-These are correct answerable single/multi phrasings, not system-wide accuracy. Explicit refusal plus dev-selected calibration improved this single recorded comparison; two other test phrasings regressed. Small authored samples, repeated test exposure and cached dev responses limit inference. **No label has been reviewed by anyone other than the author (65 labels).**
+These are correct answerable single/multi phrasings, not system-wide accuracy. Explicit refusal plus dev-selected calibration improved this single recorded comparison; two other test phrasings regressed. Small authored samples, repeated test exposure and cached dev responses limit inference. **No label has been reviewed by anyone other than the author (65 labels).** An AI reviewer checked all 65 labels against their sources and found no factual, outcome or visibility disagreement and three wording notes ([record](docs/audit/label-review.md)); that is not human review and not independent of the AI-assisted build, and every label remains `drafted`.
 
 ## Try it locally
 

@@ -46,6 +46,8 @@ It reuses existing read-only freeze and metric helpers, never evaluates new
 requests. The [tests](../../tests/test_audit.py) exercise tampered hashes/tables,
 missing findings, inventory omissions and review-status regeneration.
 
+An AI reviewer's check of all 65 labels is recorded in [label-review.md](label-review.md); it is not human review and does not change any label status.
+
 Owner review status is deliberately excluded from frozen semantic digests.
 An authorised status-only update followed by `make audit-report` changes the
 derived wording without rewriting the report; review never implies independence.

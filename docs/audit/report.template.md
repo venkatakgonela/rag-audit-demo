@@ -161,7 +161,7 @@ Monitoring suggestions for a later service: separately track gate refusal, model
 
 Cumulative retained estimate: USD {{retained_estimate}}; final phase: USD {{final_spend}}. Source: `live.retained_estimate` and `live.phase_spend.final` in `datasets/evaluation/baselines/live-v2.json` at `{{commit}}`. These are operator estimates, not billing.
 
-This is a builder's self-assessment of synthetic examples, not an independent audit. AI coding assistants were used under the author's direction; two early commit messages name one of them. **{{review}}** Owner review does not make the project or its audit independent.
+This is a builder's self-assessment of synthetic examples, not an independent audit. AI coding assistants were used under the author's direction; two early commit messages name one of them. **{{review}}** An AI reviewer checked all 65 labels against their sources and found no factual, outcome or visibility disagreement and three wording notes ([record](label-review.md)); that is not human review and not independent of the AI-assisted build, and every label remains `drafted`. Owner review does not make the project or its audit independent.
 
 The committed canonical log contains {{exposures}} test-start events, including {{live_exposures}} live references. The split is visible and repeatedly exposed, not a pristine blind benchmark. Final dev reused samples; one successful draw per distinct request is not an estimated success probability. A later separately reported reviewer spot check is not a new canonical baseline or part of an independent sample-size claim.
 
