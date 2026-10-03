@@ -59,6 +59,6 @@ the PNGs directly. Use `mmdc -i docs/audit/figures/components.mmd -o
 docs/audit/figures/components.png` (and the sequence equivalent) only when
 intentionally revising figures; no automatic package or browser provisioning.
 
-See [notices](../third-party-notices.md), [publication checklist](../PUBLISHING.md)
+See [notices](../third-party-notices.md), [publication provenance](../PUBLISHING.md)
 and the [evidence tables](tables.json). Existing recorded replay is not live
 monitoring and must never be counted as extra independent samples.

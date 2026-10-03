@@ -4,6 +4,14 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ## [Unreleased]
 
+### Changed
+
+- Pin workflow actions and configure bounded weekly action/uv dependency updates.
+- Add contribution and issue guidance; shorten the quickstart and retain public
+  provenance while separating owner-only release instructions.
+- Compose temporary evaluation schema identifiers safely and retain constant,
+  parameter-bound retrieval queries without changing evaluation or access policy.
+
 ### Added
 
 - Record of an AI reviewer's check of all 65 labels (`docs/audit/label-review.md`): no disagreement found, three wording notes; labels stay `drafted` and no human review is claimed.

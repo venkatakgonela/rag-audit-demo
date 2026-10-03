@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_ci_pins_and_unconditional_model_verification():
     workflow = yaml.safe_load((ROOT / ".github/workflows/ci.yml").read_text())
+    assert set(workflow["jobs"]) == {"checks", "integration", "evaluation"}
     assert workflow["permissions"] == {"contents": "read"}
     for job in workflow["jobs"].values():
         assert job["runs-on"] == "ubuntu-24.04"
@@ -20,6 +21,9 @@ def test_ci_pins_and_unconditional_model_verification():
             if step.get("uses", "").startswith("actions/checkout")
         )
         assert checkout["with"]["persist-credentials"] is False
+        assert checkout["uses"] == (
+            "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803"
+        )
     steps = workflow["jobs"]["evaluation"]["steps"]
     verify = next(step for step in steps if "eval-model" in step.get("run", ""))
     assert "if" not in verify

@@ -37,3 +37,16 @@ First hosted run, Ubuntu support/runtime changes, unexplained drift, or supply-c
 
 - [Workflow](../../.github/workflows/ci.yml), [guards](../../tests/test_ci_gate_configuration.py).
 - [Runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners), [cache v4](https://github.com/actions/cache/blob/v4/README.md), [cache scope](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching).
+
+## Clarification: October 3, 2026 — action hardening
+
+The original runner/cache decision remains accepted. Actions now use full commit
+SHAs resolved from the previously selected checkout v6, setup-uv v7 and cache v4
+tags, retaining version comments. Job names, steps, runner and permissions are
+unchanged. Weekly Dependabot updates cover `github-actions` and `uv`, limited to
+three open pull requests per ecosystem; there is no automatic merge.
+This replaces mutable action tags with reviewable updates without a major-version
+upgrade. Container image digests remain open hardening work, and a pinned action
+does not certify its dependencies. [Policy tests](../../tests/test_launch_readiness.py)
+reject unpinned or unexpected action revisions and missing update configuration.
+Hosted execution of these changes remains unverified until the next reviewed push.

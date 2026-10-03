@@ -4,6 +4,48 @@ Historical configuration and command reference, retained from the audited revisi
 
 # rag-audit-demo
 
+## Quickstart prerequisites and platforms
+
+The README fake-answering path requires Git, Make, uv with Python3.12 and a running
+Docker engine with Compose. It needs neither a provider key nor a model download.
+macOS is locally tested; Linux and Windows quickstarts are not locally tested.
+Hosted Linux CI is separate evidence, not a Windows or newcomer test.
+Verify `docker compose version` and `docker info` before starting. If a fresh
+user or temporary home cannot find Compose, configure the already installed
+Compose plugin for that user; the Docker engine alone is not sufficient.
+Initial locked-package/image setup may download; cached package operations can
+use `UV_OFFLINE=1`. The repository requires access while private.
+
+If port5433 is occupied, change both `POSTGRES_PORT` and the port inside
+`DATABASE_URL` in the generated `.env` before `make up`. For parallel copies,
+also give `COMPOSE_PROJECT_NAME` a distinct value so one copy does not operate
+another's database. `make down` preserves the synthetic database volume.
+
+## Recorded CI and optional embeddings
+
+The frozen synthetic corpus, labels and versioned baselines preserve failed and
+successful outcomes. Development data selects thresholds; test results do not.
+Release checks replay recorded HTTP responses through the real adapter, enforce
+hard constraints and compare quality without tolerances. This tests recorded
+behaviour, not future model behaviour. Hosted reference/proof results are in the
+[audit](audit/report.md); changing a baseline is an explicit logged local operation,
+never a shortcut to make failures green.
+
+Optional real embeddings require `make eval-runtime` and explicit one-time
+`make eval-model ARGS="--provision"`. With cached weights, `make eval-model`
+verifies them; `make eval-gate` and `make eval-selftest` use recorded responses
+without a provider key. Real generation is separately opt-in, not needed for
+the fake demonstration.
+
+## Repository map
+
+- `src/rag_audit/`: retrieval, rules, answering, traces and local API.
+- `tests/`: unit, database integration and deliberate gate faults.
+- `datasets/evaluation/`: immutable references, labels and exposure history.
+- `docs/audit/`: sources, generated tables, evidence index, report and local assets.
+- `docs/decisions/`: choices, alternatives and revisit triggers.
+- `scripts/`: reproducible report and inventory checks.
+
 A synthetic answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Offline fake generation is the default; live Responses generation is opt-in local only. [Evaluation](evaluation.md) includes explicit model abstention and a recorded-HTTP regression gate; the dev-selected real profile is `local-calibrated-v2`, cosine >=0.70. CI exercises the real adapter with recorded responses, not live generation; hosted validation of this revision is pending.
 
 Regression commands: `make eval-runtime`, `make eval-model ARGS="--provision"` (first cache only), `make db-init`, `make eval-gate`, `make eval-selftest`. Configure an isolated `DATABASE_URL`; no provider key is needed. Read the [failure and re-baseline protocol](evaluation.md#failure-and-re-baseline-protocol) before explicit local `make eval-record` or `make eval-rebaseline`. Neither runs in CI.
