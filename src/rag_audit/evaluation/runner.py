@@ -29,6 +29,7 @@ async def run_phrasing(
     gate: Gate | None,
     *,
     live=None,
+    reranker=None,
 ) -> dict:
     provider = live[0] if live else BaselineGenerator()
     counter = live[2] if live else provider
@@ -50,6 +51,7 @@ async def run_phrasing(
         gate=gate,
         id_factory=lambda: request_id,
         prices=prices,
+        reranker=reranker,
     )
     stored = connection.execute(
         "SELECT payload FROM demo_traces WHERE request_id=%s", (request_id,)
@@ -105,6 +107,7 @@ def run_cases(
     *,
     live=None,
     checkpoint=None,
+    reranker=None,
 ) -> list[dict]:
     rows: list[dict] = []
     for case in cases:
@@ -120,6 +123,7 @@ def run_cases(
                     phrasing.text,
                     gate,
                     live=live,
+                    reranker=reranker,
                 )
             )
             if case.category == "unauthorised":
@@ -145,6 +149,7 @@ def run_cases(
                             question,
                             gate,
                             live=live,
+                            reranker=reranker,
                         )
                     )
                     if row["response_bytes"] != paired["response_bytes"]:
@@ -152,6 +157,8 @@ def run_cases(
                     if hidden and (
                         row["chunks"] != paired["chunks"]
                         or row["lexical_coverage"] != paired["lexical_coverage"]
+                        or row["trace"].get("reranker_scores")
+                        != paired["trace"].get("reranker_scores")
                     ):
                         row["hard_failures"].append("counterfactual_signals")
                     row["counterfactual"] = paired

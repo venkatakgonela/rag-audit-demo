@@ -3,6 +3,7 @@ import asyncio
 import pytest
 from test_answer_database import database as database
 from test_evaluation_harness import ROOT
+from test_reranking import FixedReranker
 
 from rag_audit.embeddings import FakeEmbedder
 from rag_audit.evaluation.data import load_split
@@ -13,6 +14,24 @@ from rag_audit.evaluation_data import read_json
 from rag_audit.gate import Gate
 
 pytestmark = pytest.mark.integration
+
+
+def test_reranker_hidden_removal_invariance(database):
+    connection, _ = database
+    cases = [
+        case for case in load_split(ROOT, "dev") if case.challenge_kind == "free_text"
+    ]
+    rows = run_cases(
+        connection, FakeEmbedder(), cases, Gate("V4a", 0.5), reranker=FixedReranker()
+    )
+    assert len(rows) == 10
+    for row in rows:
+        assert row["trace"]["reranker_scores"]
+        assert (
+            row["trace"]["reranker_scores"]
+            == row["counterfactual"]["trace"]["reranker_scores"]
+        )
+        assert not row["hard_failures"]
 
 
 def test_real_pipeline_dev_and_counterfactual(database):

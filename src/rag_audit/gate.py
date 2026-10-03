@@ -30,7 +30,7 @@ class Gate:
     fraction: float = 0.0
 
     def __post_init__(self):
-        if self.variant not in ("V0", "V1", "V2", "V3"):
+        if self.variant not in ("V0", "V1", "V2", "V3", "V4a", "V4b"):
             raise ValueError("Unknown gate variant")
         if not all(math.isfinite(value) for value in (self.threshold, self.fraction)):
             raise ValueError("Invalid gate threshold")
@@ -39,6 +39,15 @@ class Gate:
         cosine, keyword = chunk["cosine_similarity"], chunk["keyword_score"]
         if not math.isfinite(cosine) or not math.isfinite(keyword):
             return False
+        if self.variant in ("V4a", "V4b"):
+            relevance = chunk.get("reranker_score")
+            return (
+                relevance is not None
+                and math.isfinite(relevance)
+                and 0 <= relevance <= 1
+                and relevance >= self.threshold
+                and (self.variant == "V4a" or cosine >= self.fraction)
+            )
         coverage = lexical_coverage(question, chunk)
         if self.variant == "V0":
             return (
