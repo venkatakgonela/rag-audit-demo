@@ -12,6 +12,14 @@ All domain data is synthetic. **Implemented** controls are scoped to current off
 
 ## Threats, controls and test evidence
 
+Implemented data controls: static synthetic corpus bindings reject prose/record drift; authored visibility and profile-qualified leak references are checked independently of retrieval success. [Dataset tests](../tests/test_evaluation_data.py) cover wrong facts, IDs, visibility, chunk IDs and freeze digests; [SQL intent comparison](../tests/integration/test_evaluation_visibility.py) covers all 504 document/subject pairs. These controls do not eliminate same-author optimistic bias or prove semantic unanswerability. Labels remain drafted.
+
+Implemented contamination boundary: evaluation files are separate from the corpus manifest and are never ingested. The isolation check in [dataset tests](../tests/test_evaluation_data.py) asserts that the corpus lists only document Markdown and that ingestion/generation do not import evaluation data. Maintainers can see both splits; test isolation is procedural, not secrecy. Do not tune wording or gates from the held-out split.
+
+Implemented presentation: [rejection tests](../tests/test_answer_presentation.py) assert exact no-answer bytes for extractive verification rejection with a distinct trace reason, HTTP 200, and retained trace-write error. Operators and future evaluation must distinguish `verification_failed` from no eligible evidence using traces. Rule rephrase rejection remains a deterministic answered fallback. Payout templates state claim status and calculation-only; this is not settlement approval.
+
+Unchanged access observation: staff team membership is an OR grant across every tier, including broker guides and restricted claims. Both underwriters see internal-tier documents regardless of team. The [intent matrix](evaluation-data.md) exposes this for review; whether team ownership should override every tier remains an audit design question, not a change made by this dataset.
+
 OWASP references below use the [2025 LLM Top 10](https://genai.owasp.org/llm-top-10/) consulted October 2, 2026. Mapping indicates relevance, not demonstrated compliance.
 
 | Status / threat | Mitigation or design requirement | Enforced by test | Residual risk / reference |
