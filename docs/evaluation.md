@@ -6,7 +6,7 @@ Implemented: isolated CLI, dev calibration, hard checks, calibrated local gate a
 
 After `make setup`, run `make eval-runtime`, then `make eval-model ARGS="--provision"` for first-time trusted model provisioning. Subsequent `make eval-model` verifies bytes, including cache hits; existing corrupt/incomplete directories fail without automatic repair. With isolated `DATABASE_URL`, run `make db-init`, `make eval-gate` and `make eval-selftest`. No provider key is needed. Bootstrap may download dependencies/model; replay traps Python networking except the database connection opened beforehand. Default unit/lint/type checks need neither model nor Docker. Integration skips expensive self-tests unless `SYNTHETIC_MODEL_DIRECTORY` is explicit; `eval-selftest` supplies it.
 
-All 35 neutral responses pass through the real Responses adapter across 130 primary phrasings and 22 probes. Replay matches `live-v1.json` metrics except latency on both measured platforms. This checks **recorded model behaviour**, not new model behaviour. Cost uses recorded usage/operator prices (not billing); replay spends nothing. Request hashes cover prompt/schema/settings/evidence and must match exactly once. Unknown, duplicate and unused requests are staleness, never tolerance issues.
+The current 66 neutral responses pass through the real Responses adapter across 130 primary phrasings and 22 probes (68 provider consumptions, including two identical paired requests). Replay matches `live-v2.json` metrics except latency on macOS ARM64 and emulated Linux AMD64. This checks **recorded model behaviour**, not new model behaviour. Cost uses recorded usage/operator prices (not billing); replay spends nothing. Request hashes cover prompt/schema/settings/evidence. Every entry must be consumed exactly by its declared case/style/pair-side contexts and count. Unknown, repeated-context and unused requests are staleness, never tolerance issues. The previous 35-entry fixture and gate baseline are preserved byte-for-byte in `datasets/evaluation/archive/pre-abstention-v1/`; historical fake/real/live-v1 and exposure-log prefixes are unchanged.
 
 | Check family | Rule |
 | --- | --- |
@@ -15,6 +15,8 @@ All 35 neutral responses pass through the real Responses adapter across 130 prim
 | Sufficiency and correct answered per split/style | No count decrease |
 | Document recall@5 hits and MRR sum | No decrease; denominators exact |
 | False evidence by off-domain/ID/free-text/near-miss | No increase |
+| False answers by style/subtype; missed answers | No increase |
+| Correct abstention; model abstention | No decrease; exact recorded model-abstention count respectively |
 | Verification sub-reasons; Decimal cost/call; unknown cost | No increase |
 | Latency | Informational |
 
@@ -51,7 +53,21 @@ Live additionally needs explicit environment provider configuration and `--gener
 
 ## Calibration and baseline limitations
 
-The [114-row dev table](calibration-dev.md) follows the minimum-to-minimum+1 false-evidence band, natural then keyword sufficiency, fewer near misses, simpler variant and stricter thresholds. [local-calibrated-v1](decisions/0025-calibrated-local-gate.md) is cosine-only >=0.75. The [44-row reranker trial](reranker-dev.md) failed its gain condition. No test result chooses a threshold.
+The historical [114-row dev table](calibration-dev.md) selected [local-calibrated-v1](decisions/0025-calibrated-local-gate.md), cosine-only >=0.75. The [44-row reranker trial](reranker-dev.md) failed its gain condition. The subsequent complete four-candidate live dev trial selects [local-calibrated-v2](decisions/0030-abstention-recalibration.md), cosine-only >=0.70 with explicit model abstention. No test result chooses a threshold.
+
+## Explicit abstention and second live reference
+
+The model returns `answer` with 1–5 statements or `insufficient_evidence` with none. Local validation, not provider schema acceptance, enforces the combination. A valid refusal maps to unchanged no-answer bytes with a private `model_abstained` reason. Gate abstention, model abstention, verification rejection and operational error are reported separately; abstention is not a safety control. Existing citation/quotation/echo/rule checks remain unchanged.
+
+The predeclared dev candidates were V1 0.75, 0.70, 0.65 and 0.60. Eligibility required complete error-free coverage, no hard failures, and zero off-domain/ID/free-text false answers. Ranking used natural correct, keyword correct, fewer near-miss false answers, then stricter gate. Adoption required at least 8/18 natural correct and at most one near-miss false answer. The selected 0.70 achieved 9/18 and zero. Lower candidates failed free-text eligibility. See the additive before/after tables in [results](evaluation-results.md).
+
+One sample per distinct full request was cached across dev candidates. Final dev reuses those samples; only 21 previously unseen final test requests were dispatched. Exactly one new held-out start and completion were appended. This is the second live exposure of these author-written labels, not a fresh blind test. One draw, small n and zero human label review preclude generalised reliability or significance claims.
+
+A confirmed HTTP 429 interrupted the original grid. The retry policy was amended **after observing that failure**, only for confirmed rate-limit rejections: maximum three retries, same bytes, Retry-After or 30/60/120 seconds with a 60-second minimum, and at least five seconds between dispatches. No retry for timeout, 5xx, connection failure or malformed/invalid generation. Unknown holds are retained; above USD 0.60 stops. Total/dev/final caps are USD 5/3.50/1.50, unchanged by resumption. Final retained estimate USD 1.7899175 includes USD 0.1460375 unknown hold; known estimates USD 1.64388. Estimates are not billing. Production generation still never retries.
+
+### Hosted comparison for the new reference
+
+Local verification is not hosted certification. The operator pushes the reviewed branch and runs the existing evaluation job without a provider key, checks `make eval-gate` and `make eval-selftest`, and compares request counts (66 entries/68 consumptions), 130 primaries/22 probes, complete coverage and all non-latency metrics with `live-v2.json`. Keep zero tolerances; if hosted numerics differ, preserve logs and investigate before any explicit reviewed rebaseline. Do not modify the existing proof branches to manufacture new proof.
 
 `sentence-overlap-v1` examines the first sent chunk only; splits at punctuation followed by whitespace or newline; picks a <=2,048-character span with greatest unique non-stopword ASCII-token overlap; ties use source position. Zero-overlap spans are allowed. No label/attack filtering; unchanged verifier may reject output. It cannot combine multi-chunk facts and is not an LLM quality measure.
 

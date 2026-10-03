@@ -1,8 +1,8 @@
 # 0029: Explicit model abstention and identical-request evaluation
 
-Status: Proposed
+Status: Accepted
 
-Recorded: October 3, 2026. Implementation under evaluation; adoption not yet established.
+Recorded: October 3, 2026. Accepted after the complete predeclared dev grid; final held-out verification is a separate step.
 
 ## Context
 
@@ -10,7 +10,7 @@ The extractive model previously had to supply cited statements. The local eviden
 
 ## Decision drivers
 
-Unchanged access filtering, literal citations, instruction-echo protection, deterministic rules, generic no-answer bytes and accounting. Honest single-draw evaluation with no test-based candidate selection. Finite explicit spend and no retries.
+Unchanged access filtering, literal citations, instruction-echo protection, deterministic rules, generic no-answer bytes and accounting. Honest single-draw evaluation with no test-based candidate selection. Finite explicit spend; retry only confirmed rate-limit rejections, never ambiguous generation failures.
 
 ## Options considered
 

@@ -34,10 +34,12 @@ Record significant product choices here. Preserve accepted decision text; dated 
 | [0026: Regression CI gate](0026-regression-ci-gate.md) | Accepted; hosted numerics pending | October 3, 2026 |
 | [0027: HTTP recorded replay](0027-http-recorded-replay.md) | Accepted | October 3, 2026 |
 | [0028: Runner and model cache](0028-runner-and-model-cache.md) | Accepted; hosted execution pending | October 3, 2026 |
+| [0029: Explicit model abstention](0029-explicit-model-abstention.md) | Accepted | October 3, 2026 |
+| [0030: Abstention recalibration](0030-abstention-recalibration.md) | Accepted | October 3, 2026 |
 
 ## Pending decisions
 
-Explicit model abstention is under a predeclared dev trial; see [0029](0029-explicit-model-abstention.md). No adoption or new hosted result is implied by its implementation.
+Explicit model abstention is accepted in [0029](0029-explicit-model-abstention.md); [0030](0030-abstention-recalibration.md) selects V1 0.70 from the complete dev grid. Hosted verification remains pending.
 
 All entries are **Planned**, not accepted choices. Milestones describe product work, not implementation commitments.
 

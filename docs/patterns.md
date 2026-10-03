@@ -28,4 +28,6 @@ Status labels describe this repository, not general pattern maturity. Source lin
 
 The [threat model](threat-model.md) separates automated evidence from inspection, historical run evidence and planned controls. No row implies total prevention beyond its stated scope.
 
+Implemented: explicit outcome validation distinguishes valid model refusal from malformed answers without changing public no-answer bytes ([tests](../tests/test_model_abstention.py)). Evaluation-only content-addressed samples and context-bound replay prevent duplicate paid sampling and accidental pair reuse ([tests](../tests/test_pair_replay.py), [ledger tests](../tests/test_abstention_trial.py)). A bounded paced retry wrapper retries only HTTP 429 and retains every unknown hold ([tests](../tests/test_rate_limit.py)); production transport has no retry loop.
+
 Implemented deterministic generation/chunking and atomic snapshot replacement are checked by [unit tests](../tests/test_retrieval_core.py) and [idempotence/rollback tests](../tests/integration/test_retrieval.py). Generation has fake and opt-in local Responses implementations. Pricing/category semantics and the qualified byte bound are described in [decision 0020](decisions/0020-opt-in-responses-provider.md).
