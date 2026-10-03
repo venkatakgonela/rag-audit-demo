@@ -67,6 +67,8 @@ class PacedAttempts:
                         event="dispatch",
                         request_hash=identity,
                         attempt=owner.attempts[identity],
+                        monotonic_seconds=owner.clock(),
+                        recorded_at=datetime.now(UTC).isoformat(),
                     ),
                 )
                 response = await self.inner.handle_async_request(request)
@@ -78,6 +80,8 @@ class PacedAttempts:
                         request_hash=identity,
                         status=response.status_code,
                         retry_after=response.headers.get("Retry-After"),
+                        monotonic_seconds=owner.clock(),
+                        recorded_at=datetime.now(UTC).isoformat(),
                     ),
                 )
                 if response.status_code == 429:
@@ -119,12 +123,10 @@ def resume_rejected_ledger(old_path, raw_path, new_path):
         raise ValueError("retry_resume: preserve previous continuation")
     events = [json.loads(line) for line in old_path.read_text().splitlines()]
     responses = [json.loads(line) for line in raw_path.read_text().splitlines()]
-    statuses = {}
+    statuses: dict[str, list[int]] = {}
     for row in responses:
         identity = row["request_hash"]
-        if identity in statuses:
-            raise ValueError("retry_resume: duplicate original request")
-        statuses[identity] = row["http_status"]
+        statuses.setdefault(identity, []).append(row["http_status"])
     ledger = TrialLedger.__new__(TrialLedger)
     ledger.path = new_path
     ledger.cap = Decimal("5.00")
@@ -135,28 +137,37 @@ def resume_rejected_ledger(old_path, raw_path, new_path):
     ledger.limits = {"dev": Decimal("3.50"), "final": Decimal("1.50")}
     ledger.inflight = None
     holds = Decimal(0)
-    seen = set()
+    seen: Counter[str] = Counter()
+    prior_status: dict[str, int] = {}
     if events[0].get("cap") != "5.00":
         raise ValueError("retry_resume: incompatible cap")
     for event in events[1:]:
         identity = event.get("request_hash")
         if event["event"] == "reserved":
-            if ledger.inflight or identity in seen:
+            if (
+                ledger.inflight
+                or (seen[identity] and prior_status.get(identity) != 429)
+                or seen[identity] >= 4
+            ):
                 raise ValueError("retry_resume: ambiguous reservation")
-            seen.add(identity)
+            seen[identity] += 1
             ledger.inflight = identity
             reserved = Decimal(event["amount"])
             ledger.total += reserved
         elif event["event"] == "settled":
             if ledger.inflight != identity:
                 raise ValueError("retry_resume: unmatched settlement")
+            if not statuses.get(identity):
+                raise ValueError("retry_resume: missing response status")
+            status = statuses[identity].pop(0)
+            prior_status[identity] = status
             if event["actual"] is None:
-                if statuses.get(identity) != 429:
+                if status != 429:
                     raise ValueError("retry_resume: only confirmed 429 allowed")
                 holds += reserved
             else:
                 actual = Decimal(event["actual"])
-                if statuses.get(identity) != 200 or not 0 <= actual <= reserved:
+                if status != 200 or not 0 <= actual <= reserved:
                     raise ValueError("retry_resume: invalid known settlement")
                 ledger.total += actual - reserved
             ledger.inflight = None
@@ -171,5 +182,7 @@ def resume_rejected_ledger(old_path, raw_path, new_path):
     ):
         raise ValueError("retry_resume: unresolved or over limit")
     ledger.spent["dev"] = ledger.total
+    if any(statuses.values()):
+        raise ValueError("retry_resume: extra response status")
     new_path.write_bytes(old_path.read_bytes())
-    return ledger, Counter({identity: 1 for identity in seen})
+    return ledger, seen

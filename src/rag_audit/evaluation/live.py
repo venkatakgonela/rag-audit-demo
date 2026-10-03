@@ -129,6 +129,8 @@ class RecordingTransport(httpx.AsyncBaseTransport):
                     http_status=response.status_code,
                 ),
             )
+            if response.status_code != 200:
+                raise ValueError("Provider rejected request; retain unknown hold")
             usage = parse_usage(decoded["usage"])
             actual = estimate(usage, self.prices.get(decoded.get("model")))
             if (

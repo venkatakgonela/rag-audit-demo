@@ -84,3 +84,95 @@ def test_pacing_and_429_only_attempt_limits(tmp_path):
         assert not pacing.retry()
 
     asyncio.run(run())
+
+
+def test_resume_rejected_then_successful_same_request(tmp_path):
+    old = tmp_path / "old.jsonl"
+    ledger = TrialLedger(old, {})
+    hold = ledger.reserve(100, 10, "same")
+    ledger.settle(hold, None, "same")
+    ledger.stopped = False
+    second = ledger.reserve(100, 10, "same")
+    ledger.settle(second, Decimal("0.0001"), "same")
+    raw = tmp_path / "raw.jsonl"
+    raw.write_text(
+        "".join(
+            json.dumps(dict(request_hash="same", http_status=status)) + "\n"
+            for status in (429, 200)
+        )
+    )
+    resumed, attempts = resume_rejected_ledger(old, raw, tmp_path / "new.jsonl")
+    assert attempts["same"] == 2
+    assert resumed.total == hold + Decimal("0.0001")
+    resumed.final_phase()
+    assert resumed.spent["final"] == 0
+    assert resumed.spent["dev"] == resumed.total
+    raw.write_text(
+        raw.read_text() + json.dumps(dict(request_hash="extra", http_status=200)) + "\n"
+    )
+    with pytest.raises(ValueError, match="extra response"):
+        resume_rejected_ledger(old, raw, tmp_path / "bad.jsonl")
+    assert not (tmp_path / "bad.jsonl").exists()
+
+
+@pytest.mark.parametrize("status", [200, 429, 500])
+def test_runner_retries_only_rejected_attempts(tmp_path, monkeypatch, status):
+    from types import SimpleNamespace
+
+    from rag_audit.evaluation import runner
+
+    ledger = TrialLedger(tmp_path / "ledger.jsonl", {})
+    now = [0.0]
+
+    async def sleep(seconds):
+        now[0] += seconds
+
+    pacing = PacedAttempts(
+        ledger, tmp_path / "attempts.jsonl", clock=lambda: now[0], sleep=sleep
+    )
+    calls = []
+
+    async def phrasing(*args, **kwargs):
+        calls.append(now[0])
+        pacing.attempts["same"] += 1
+        pacing.last = ("same", status)
+        pacing.ready = now[0] + 60
+        held = ledger.reserve(100, 10, "same")
+        ledger.settle(held, None, "same")
+        return {"response": {"decision": "error"}}
+
+    monkeypatch.setattr(runner, "_run_phrasing", phrasing)
+    asyncio.run(
+        runner.run_phrasing(
+            live=(None, None, SimpleNamespace(ledger=ledger, pacing=pacing))
+        )
+    )
+    assert len(calls) == (4 if status == 429 else 1)
+    assert ledger.stopped
+    if status == 429:
+        assert calls == [0, 60, 120, 180]
+
+
+@pytest.mark.parametrize("status", [429, 500])
+def test_rejected_response_never_settles_even_with_usage(tmp_path, status):
+    from rag_audit.evaluation.live import RecordingTransport
+
+    ledger = TrialLedger(tmp_path / "ledger.jsonl", {})
+    recorder = RecordingTransport(
+        ledger,
+        {},
+        tmp_path / "raw.jsonl",
+        "synthetic-secret",
+        transport_factory=lambda: httpx.MockTransport(
+            lambda request: httpx.Response(
+                status, json={"usage": {"input_tokens": 1, "output_tokens": 1}}
+            )
+        ),
+    )
+    request = httpx.Request(
+        "POST", "https://synthetic.invalid", json={"max_output_tokens": 10}
+    )
+    with pytest.raises(ValueError, match="rejected request"):
+        asyncio.run(recorder.handle_async_request(request))
+    assert ledger.stopped and ledger.total > 0
+    assert json.loads(ledger.path.read_text().splitlines()[-1])["actual"] is None

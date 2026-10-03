@@ -28,6 +28,9 @@ async def run_phrasing(*args, **kwargs):
             await pacing.before()
         row = await _run_phrasing(*args, **kwargs)
         if not pacing or not pacing.retry():
+            if pacing and row["response"]["decision"] == "error":
+                assert live is not None
+                live[2].ledger.stopped = True
             return row
 
 

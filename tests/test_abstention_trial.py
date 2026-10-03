@@ -49,6 +49,32 @@ def test_forecast_miss_stops_before_dispatch(tmp_path):
     assert registry.ledger.stopped and registry.calls == 0
 
 
+def test_cache_reconstruction_requires_original_hash_and_semantics(tmp_path):
+    import hashlib
+
+    body = b'{"model":"synthetic","input":"question"}'
+    path = tmp_path / "cache.jsonl"
+    path.write_text(
+        json.dumps(
+            dict(
+                body=json.loads(body),
+                request_hash=hashlib.sha256(body).hexdigest(),
+                status=200,
+                response={},
+            ),
+            sort_keys=True,
+        )
+        + "\n"
+    )
+    registry = RequestRegistry(tmp_path)
+    registry.restore_cache(path, body_builder=lambda data: body)
+    assert list(registry.bodies.values()) == [body]
+    with pytest.raises(ValueError, match="differs"):
+        RequestRegistry(tmp_path).restore_cache(path, body_builder=lambda data: b"{}")
+    with pytest.raises(ValueError, match="identity"):
+        RequestRegistry(tmp_path).restore_cache(path)
+
+
 def test_shared_ledger_phase_limits_unknown_usage_and_one_settlement(tmp_path):
     ledger = TrialLedger(tmp_path / "ledger.jsonl", {})
     hold = ledger.reserve(100, 10, "first")
