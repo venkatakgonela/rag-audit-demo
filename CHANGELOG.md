@@ -4,6 +4,12 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ## [Unreleased]
 
+### Fixed
+
+- Audit category tables now distinguish correct answers from permitted refusals
+  and injection outcomes; hosted results label deliberate proof runs explicitly.
+- Fake-mode quickstart demonstrates an answer, a refusal and a calculated payout.
+
 ## [0.1.0] - 2026-10-03
 
 Prepared release; owner tagging and publication are pending. Existing entries

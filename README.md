@@ -30,9 +30,22 @@ Prerequisites: Git, Make, uv/Python 3.12 and Docker Compose. Initial dependency/
 ```sh
 make setup
 make up
+make generate-corpus
 make ingest ARGS="--fake"
-make ask ARGS='--fake --subject synthetic-customer-a --query "What does the drying diary need?"'
+make ask ARGS='--fake --subject synthetic-customer-a --query "Synthetic Hearth edition 1 drying diary reading"'
 ```
+
+The answer includes: “The drying diary must show a reading every 24 hours.”
+For the same customer, contrast a restricted-topic request with a code-calculated payout:
+
+```sh
+make ask ARGS='--fake --subject synthetic-customer-a --query "broker reconciliation"'
+make ask ARGS='--fake --subject synthetic-customer-a --query "payout synthetic-claim-0"'
+```
+
+The first returns “I cannot answer from the available evidence.” The second returns
+“Payout in GBP: 400.00 (calculation only; claim status: pending).” These are synthetic
+demonstration outputs, not insurance advice or an eligibility decision.
 
 The default database binds to loopback. `make down` stops it without deleting its volume. For checks without Docker: `make lint typecheck test`. See [developer setup and configuration](docs/development.md) for explicit ports, isolated databases and commands.
 

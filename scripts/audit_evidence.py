@@ -13,6 +13,22 @@ BASE = "cfd53ff1cf8028dba24e44008f1c910f31de8132"
 ATTESTATION = "e33d5806bd659eb7cbe39eb0b954461e2cdd1416"
 DATE = "2026-10-03"
 BASELINES = ("fake-v1", "real-v1", "live-v1", "live-v2")
+REFERENCE_REVISIONS = {BASE, "0bfc8364007b9478fa455102c1f3299b9faff02c"}
+PROOF_REVISIONS = {
+    "c8e09bc57c84b78122889e26a8ed3dab298733f8",
+    "ab513be090b063f22de0478d8c04895e9e2ff460",
+}
+
+
+def run_type(entry):
+    revisions = {job["head_sha"] for job in entry["jobs"]}
+    if len(revisions) != 1:
+        raise ValueError("audit_run_type: inconsistent revisions")
+    if revisions <= REFERENCE_REVISIONS:
+        return "Reference"
+    if revisions <= PROOF_REVISIONS:
+        return "Deliberate proof"
+    raise ValueError("audit_run_type: unclassified revision")
 
 
 def review_wording(reviewed, total):
@@ -142,7 +158,34 @@ def collect(root=ROOT):
                     f"{sum(row['assessment']['correct'] for row in chosen)}"
                     f"/{len(chosen)}"
                 )
-            categories.append([split, category, *values])
+            final_rows = [
+                row
+                for row in after
+                if row["split"] == split and row["category"] == category
+            ]
+            refusals = sum(
+                row["response"]["decision"] == "no_answer"
+                and row["assessment"]["allowed"]
+                for row in final_rows
+            )
+            allowed = sum(
+                row["assessment"]["allowed"]
+                and not row["hard_failures"]
+                and (
+                    row["response"]["decision"] != "answered"
+                    or row["assessment"]["correct"]
+                )
+                for row in final_rows
+            )
+            categories.append(
+                [
+                    split,
+                    category,
+                    *values,
+                    f"{refusals}/{len(final_rows)}",
+                    f"{allowed}/{len(final_rows)}" if category == "injection" else "—",
+                ]
+            )
     outcomes = []
     for split in ("dev", "test"):
         group = baselines["live-v2"]["metrics"]["groups"]["split:" + split]
@@ -216,6 +259,7 @@ def collect(root=ROOT):
     runs = [
         [
             entry["run_id"],
+            run_type(entry),
             ", ".join(job["name"] + ": " + job["conclusion"] for job in entry["jobs"]),
         ]
         for entry in verification["observations"]
@@ -274,7 +318,15 @@ def collect(root=ROOT):
         )
         + source_note(sources[2:]),
         categories=markdown_table(
-            ["Split", "Category", "Before correct", "After correct"], categories
+            [
+                "Split",
+                "Category",
+                "Before answered correctly",
+                "After answered correctly",
+                "After correct refusals",
+                "After injection allowed outcomes",
+            ],
+            categories,
         )
         + source_note(sources[2:]),
         outcomes=markdown_table(
@@ -310,7 +362,7 @@ def collect(root=ROOT):
             ],
         )
         + source_note(["docs/decisions/0030-abstention-recalibration.md"]),
-        runs=markdown_table(["Hosted run", "Job conclusions"], runs)
+        runs=markdown_table(["Hosted run", "Run type", "Job conclusions"], runs)
         + source_note(["docs/audit/verification-evidence.json"]),
         proof=markdown_table(
             ["Proof run", "Failed gate check", "Reference", "Observed"], proof_rows

@@ -115,24 +115,26 @@ Eligibility excluded off-domain and unauthorised false answers and required comp
 
 # 5. Results that must not be hidden
 
-| Split | Category | Before correct | After correct |
-| --- | --- | --- | --- |
-| dev | injection | 4/12 | 5/12 |
-| dev | multi | 0/10 | 0/10 |
-| dev | rules | 8/8 | 8/8 |
-| dev | single | 10/26 | 18/26 |
-| dev | unanswerable | 0/14 | 0/14 |
-| dev | unauthorised | 0/14 | 0/14 |
-| test | injection | 3/6 | 3/6 |
-| test | multi | 0/6 | 0/6 |
-| test | rules | 4/4 | 4/4 |
-| test | single | 5/14 | 10/14 |
-| test | unanswerable | 0/8 | 0/8 |
-| test | unauthorised | 0/8 | 0/8 |
+| Split | Category | Before answered correctly | After answered correctly | After correct refusals | After injection allowed outcomes |
+| --- | --- | --- | --- | --- | --- |
+| dev | injection | 4/12 | 5/12 | 7/12 | 12/12 |
+| dev | multi | 0/10 | 0/10 | 0/10 | — |
+| dev | rules | 8/8 | 8/8 | 0/8 | — |
+| dev | single | 10/26 | 18/26 | 0/26 | — |
+| dev | unanswerable | 0/14 | 0/14 | 14/14 | — |
+| dev | unauthorised | 0/14 | 0/14 | 14/14 | — |
+| test | injection | 3/6 | 3/6 | 3/6 | 6/6 |
+| test | multi | 0/6 | 0/6 | 0/6 | — |
+| test | rules | 4/4 | 4/4 | 0/4 | — |
+| test | single | 5/14 | 10/14 | 0/14 | — |
+| test | unanswerable | 0/8 | 0/8 | 8/8 | — |
+| test | unauthorised | 0/8 | 0/8 | 8/8 | — |
 
 Source: `datasets/evaluation/baselines/live-v1.json` at `cfd53ff`, `datasets/evaluation/baselines/live-v2.json` at `cfd53ff`. Full hashes: docs/audit/evidence-manifest.json.
 
-Correct includes code-produced rule answers. Multi-fact coverage remains poor. Both case-058 test phrasings regress: output text differs from its quote, so unchanged verification rejects it. This is retained, not repaired or resampled. Per-style detail and intervals remain in the canonical baseline group metrics and `docs/evaluation-results.md`.
+For unanswerable, unauthorised and ordinary-injection cases, refusal is the right outcome, shown separately from correct answers; injection allowed outcomes include correct answers or permitted refusals without hard failures. Counts cover all phrasings in each category; “After” is the final reference, not extra trials.
+
+Answers include code-produced rules. Multi-fact coverage remains poor. Both case-058 test phrasings regress because output differs from its quote; unchanged verification rejects it. Failures remain in `docs/evaluation-results.md`.
 
 | Split | Model refusal | Gate refusal | Rejected | False answers | False evidence |
 | --- | --- | --- | --- | --- | --- |
@@ -153,8 +155,6 @@ False evidence means material was selected for a negative case; a subsequent ref
 | live-v2 | test | 21 | 0.18831 | 0 | 2.8977 | 4.1768 |
 
 Source: `datasets/evaluation/baselines/live-v1.json` at `cfd53ff`, `datasets/evaluation/baselines/live-v2.json` at `cfd53ff`. Full hashes: docs/audit/evidence-manifest.json.
-
-Cumulative retained estimate: USD 1.7899175; final phase: USD 0.1883100. Source: `live.retained_estimate` and `live.phase_spend.final` in the final baseline cited above.
 
 Costs use operator prices, not invoices. Logical calls are not billable dispatch counts. Final dev latency mostly measures cache reuse, not a network speedup. Percentiles describe these runs only. No new model call was made for this report.
 
@@ -344,12 +344,12 @@ These observations describe implemented controls, not complete prevention. Prese
 
 With a disposable `DATABASE_URL` and verified cached model, run `make eval-gate` and `make eval-selftest`. No provider key is required. The gate checks frozen data/configuration/fixture identity, complete coverage, hard failures and measured quality against the approved reference. It blocks on mismatch rather than hiding drift with a wider tolerance.
 
-| Hosted run | Job conclusions |
-| --- | --- |
-| 37131091615 | integration: success, evaluation: success, checks: success |
-| 37130712841 | evaluation: success, checks: success, integration: success |
-| 37121894077 | checks: success, evaluation: failure, integration: failure |
-| 37121892287 | evaluation: failure, checks: failure, integration: success |
+| Hosted run | Run type | Job conclusions |
+| --- | --- | --- |
+| 37131091615 | Reference | integration: success, evaluation: success, checks: success |
+| 37130712841 | Reference | evaluation: success, checks: success, integration: success |
+| 37121894077 | Deliberate proof | checks: success, evaluation: failure, integration: failure |
+| 37121892287 | Deliberate proof | evaluation: failure, checks: failure, integration: success |
 
 Source: `docs/audit/verification-evidence.json` at `e33d580`. Full hashes: docs/audit/evidence-manifest.json.
 
@@ -383,6 +383,8 @@ Monitoring suggestions for a later service: separately track gate refusal, model
 <div class="page-break"></div>
 
 # 11. Limits and independence
+
+Cumulative retained estimate: USD 1.7899175; final phase: USD 0.1883100. Source: `live.retained_estimate` and `live.phase_spend.final` in `datasets/evaluation/baselines/live-v2.json` at `cfd53ff1cf8028dba24e44008f1c910f31de8132`. These are operator estimates, not billing.
 
 This is a builder's self-assessment of synthetic examples, not an independent audit. AI coding assistants were used under the author's direction; two early commit messages name one of them. **No label has been reviewed by anyone other than the author (65 labels).** Owner review does not make the project or its audit independent.
 

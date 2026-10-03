@@ -58,6 +58,53 @@ def test_audit_counts_match_raw_rows():
     )
 
 
+def test_category_table_separates_answers_refusals_and_injection_outcomes():
+    table = audit_evidence.collect()["tables"]["categories"]
+    baseline = json.loads(
+        (ROOT / "datasets/evaluation/baselines/live-v2.json").read_text()
+    )
+    assert "Before answered correctly" in table
+    assert "After correct refusals" in table
+    for line in table.splitlines()[2:14]:
+        split, category, before, after, refusals, allowed = [
+            cell.strip() for cell in line.strip("|").split("|")
+        ]
+        groups = [
+            baseline["metrics"]["groups"][f"{split}/{category}/{style}"]
+            for style in ("keyword", "natural")
+        ]
+        total = sum(group["requests"] for group in groups)
+        correct = sum(group["correct_answer"]["hits"] for group in groups)
+        abstained = sum(group["correct_abstention"]["hits"] for group in groups)
+        assert after == f"{correct}/{total}"
+        assert refusals == f"{abstained}/{total}"
+        if category == "injection":
+            assert allowed == f"{correct + abstained}/{total}"
+        else:
+            assert allowed == "—"
+    assert "| dev | unanswerable | 0/14 | 0/14 | 14/14 |" in table
+    assert "| test | unauthorised | 0/8 | 0/8 | 8/8 |" in table
+
+
+def test_hosted_runs_have_explicit_types_independent_of_result():
+    table = audit_evidence.collect()["tables"]["runs"]
+    assert "| Hosted run | Run type | Job conclusions |" in table
+    for identifier in (37131091615, 37130712841):
+        assert f"| {identifier} | Reference |" in table
+    for identifier in (37121894077, 37121892287):
+        assert f"| {identifier} | Deliberate proof |" in table
+    entry = {"jobs": [{"head_sha": audit_evidence.BASE, "conclusion": "failure"}]}
+    assert audit_evidence.run_type(entry) == "Reference"
+
+
+@pytest.mark.parametrize(
+    "revisions", [[], ["unknown"], [audit_evidence.BASE, "unknown"]]
+)
+def test_unclassified_hosted_runs_fail_closed(revisions):
+    with pytest.raises(ValueError, match="audit_run_type"):
+        audit_evidence.run_type({"jobs": [{"head_sha": value} for value in revisions]})
+
+
 def test_audit_source_tamper_fails(audit_copy):
     path = audit_copy / "datasets/evaluation/baselines/live-v2.json"
     path.write_text(path.read_text() + "\n")

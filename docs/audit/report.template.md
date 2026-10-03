@@ -84,7 +84,9 @@ Eligibility excluded off-domain and unauthorised false answers and required comp
 
 {{categories}}
 
-Correct includes code-produced rule answers. Multi-fact coverage remains poor. Both case-058 test phrasings regress: output text differs from its quote, so unchanged verification rejects it. This is retained, not repaired or resampled. Per-style detail and intervals remain in the canonical baseline group metrics and `docs/evaluation-results.md`.
+For unanswerable, unauthorised and ordinary-injection cases, refusal is the right outcome, shown separately from correct answers; injection allowed outcomes include correct answers or permitted refusals without hard failures. Counts cover all phrasings in each category; “After” is the final reference, not extra trials.
+
+Answers include code-produced rules. Multi-fact coverage remains poor. Both case-058 test phrasings regress because output differs from its quote; unchanged verification rejects it. Failures remain in `docs/evaluation-results.md`.
 
 {{outcomes}}
 
@@ -93,8 +95,6 @@ False evidence means material was selected for a negative case; a subsequent ref
 ## Cost and latency
 
 {{costs}}
-
-Cumulative retained estimate: USD {{retained_estimate}}; final phase: USD {{final_spend}}. Source: `live.retained_estimate` and `live.phase_spend.final` in the final baseline cited above.
 
 Costs use operator prices, not invoices. Logical calls are not billable dispatch counts. Final dev latency mostly measures cache reuse, not a network speedup. Percentiles describe these runs only. No new model call was made for this report.
 
@@ -158,6 +158,8 @@ Monitoring suggestions for a later service: separately track gate refusal, model
 <div class="page-break"></div>
 
 # 11. Limits and independence
+
+Cumulative retained estimate: USD {{retained_estimate}}; final phase: USD {{final_spend}}. Source: `live.retained_estimate` and `live.phase_spend.final` in `datasets/evaluation/baselines/live-v2.json` at `{{commit}}`. These are operator estimates, not billing.
 
 This is a builder's self-assessment of synthetic examples, not an independent audit. AI coding assistants were used under the author's direction; two early commit messages name one of them. **{{review}}** Owner review does not make the project or its audit independent.
 
