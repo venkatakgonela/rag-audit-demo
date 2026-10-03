@@ -1,12 +1,21 @@
 {
   "version": 1,
-  "state": "candidate-awaiting-acceptance",
-  "reason": "Candidate revision 2: review requested free-text hidden traps, near-miss absence and ordinary injection cases; corpus unchanged, acceptance pending.",
-  "digests": {
+  "revision": 3,
+  "state": "accepted",
+  "reason": "Revision 2 accepted by merge; revision 3 adds five drafted cases and three unique factual sentences to attack-bearing sections before test evaluation. Existing facts, attack strings and structured values unchanged. Corpus, profile chunks and affected forbidden IDs regenerated; labels split into dev/test files. Human review remains pending.",
+  "previous_digests": {
     "corpus": "31d10e220da6b0733c65f681a4693857cb4ba0b5836bfdc50f5ce4b158079649",
     "access": "102828a42cb98b2f940e4cb3ec9e725bf4caa3e1efa4dfad836b2745670497be",
     "chunks": "f33939e05e4dfab88d56126213b9ee34509950806479e0691aa6660ad09ee72f",
     "cases": "f2caf81dec87282ece88068f4613402a7a505dc3ce0b45872057beb46c385b3c",
     "test": "f8b181c19c8c67c4eea577f133c8b02ab3bf5992d074a71ab61d74a3d91a65db"
+  },
+  "digests": {
+    "corpus": "de66a8a0a07871e2ea29ad1c3a38b4969415b327e91cc4793595598a709aaca7",
+    "access": "102828a42cb98b2f940e4cb3ec9e725bf4caa3e1efa4dfad836b2745670497be",
+    "chunks": "1c5eeb8b3485001e19156d748c1ff365c4f40f2f7d8e3c378863de29400b3ce1",
+    "cases": "cd5bae872bbef4c94f9a38360c8c171dbb6c635ec3d558c38015c32cf85edf7c",
+    "dev": "773cd08b7cf56b162297f72992cac4473612edeaa504d7d6c93f9d0b47a9091f",
+    "test": "4a33e31994874166547903ef30b1a0de6bd29774ead8ec109c132092bf30f732"
   }
 }

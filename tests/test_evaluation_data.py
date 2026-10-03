@@ -10,6 +10,7 @@ from rag_audit.evaluation_data import (
     Case,
     check_dataset,
     check_response_constraints,
+    read_cases,
     read_json,
 )
 from rag_audit.rules import calculate
@@ -20,8 +21,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_dataset_integrity():
     result = check_dataset(ROOT)
     assert result["documents"] == 72
-    assert result["cases"] == 60
-    assert result["phrasings"] == 120
+    assert result["cases"] == 65
+    assert result["phrasings"] == 130
     assert sorted(result["hidden_documents"].values()) == [0, 12, 12, 20, 20, 28, 28]
 
 
@@ -57,7 +58,7 @@ def test_independent_rule_oracles():
     manifest = read_json(SOURCE / "manifest.json")
     claims = {record["id"]: record for record in manifest["claims"]}
     policies = {record["id"]: record for record in manifest["policies"]}
-    for case in read_json(ROOT / "datasets/evaluation/golden.json")["cases"]:
+    for case in read_cases(ROOT / "datasets/evaluation")["cases"]:
         if case["category"] != "rules":
             continue
         label = case["expected_rule"]
@@ -85,7 +86,7 @@ def test_independent_rule_oracles():
 def test_bad_dataset_is_detected(tmp_path, change):
     shutil.copytree(ROOT / "datasets", tmp_path / "datasets")
     directory = tmp_path / "datasets/evaluation"
-    name = "golden.json"
+    name = "dev.json"
     data = read_json(directory / name)
     if change == "fact":
         data["cases"][0]["support"][0]["key_facts"] = ["not a recorded fact"]
@@ -134,7 +135,7 @@ def test_source_bindings_cannot_mask_amount_drift():
 
 
 def test_response_label_constraints_are_enforced():
-    cases = read_json(ROOT / "datasets/evaluation/golden.json")["cases"]
+    cases = read_cases(ROOT / "datasets/evaluation")["cases"]
     case = Case.model_validate(
         next(item for item in cases if item["challenge_kind"] == "ordinary")
     )

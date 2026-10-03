@@ -6,6 +6,7 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Added
 
+- Evaluation data revision 3 accepts the prior candidate and adds five drafted cases before test evaluation: three same-chunk factual injection questions, one hidden free-text trap and one near miss. Three unique descriptive sentences augment existing attack sections without changing original labelled facts, attack strings or structured claims. Corpus/profile/forbidden-reference digests are refreshed; dev/test labels now have separate files. Human review remains pending.
 - Tracked corpus v3: 72 original AI-assisted synthetic documents, structured source bindings, explicit access intent and 60 drafted golden cases with candidate split/freeze digests. Independent human label review pending.
 - Offline schema/fact/profile-reference checks and independent rule oracles; SQL comparison covers every document and fixture subject. Evaluation harness and calibration are not implemented.
 

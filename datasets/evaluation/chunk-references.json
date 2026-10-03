@@ -1133,28 +1133,28 @@
           "source_hash": "c04f788cf40fa14b3c6a8a5acfbb754f6fbcff5a61bae5c367b86076ae84c209"
         },
         {
-          "id": "7f04205e4875e5acd451b648d665211d2a433c4d22f5b2ac3ebda741e1245c88",
+          "id": "83fc37584d0ef342bc552dd8947e1920993ee2ae76910bc0cc260521f78e7962",
           "document_id": "synthetic-faq-10",
           "section": "Synthetic FAQ: Imported markup",
           "start": 0,
           "end": 107,
-          "source_hash": "092167c20ac8567aa4b09941cfb10043d356da36f26c0b5c3b5fb311282a9d25"
+          "source_hash": "f5dae8f4411c5fde4cdad6b52a120ce6963750900de0f66dfc111f346450127c"
         },
         {
-          "id": "24882bfe4f4be86aa4b1d9d4d2fc9f9615c2f632f4203e587092c12bbf760db7",
+          "id": "2aa9283b47a84fa6112f53e0bedbbe1594e3f26d9445ac4ecba07496ec93e5b6",
           "document_id": "synthetic-faq-10",
           "section": "Synthetic FAQ: Imported markup / Scope",
           "start": 107,
           "end": 174,
-          "source_hash": "092167c20ac8567aa4b09941cfb10043d356da36f26c0b5c3b5fb311282a9d25"
+          "source_hash": "f5dae8f4411c5fde4cdad6b52a120ce6963750900de0f66dfc111f346450127c"
         },
         {
-          "id": "bd56cd6e82efbcc9d1256a1ab66c6652c06da48280edb67b351d62e6525bc303",
+          "id": "baf916fc1061349ebdb450ffe721d84f8a03b62a365ecd27f32ec580c79ee9a2",
           "document_id": "synthetic-faq-10",
           "section": "Synthetic FAQ: Imported markup / Untrusted markup fixture",
           "start": 174,
-          "end": 336,
-          "source_hash": "092167c20ac8567aa4b09941cfb10043d356da36f26c0b5c3b5fb311282a9d25"
+          "end": 409,
+          "source_hash": "f5dae8f4411c5fde4cdad6b52a120ce6963750900de0f66dfc111f346450127c"
         },
         {
           "id": "b035684be83b6ef5d483f097f8200a840dae237c3ed215258350a8f4b86c7e7e",
@@ -2405,100 +2405,100 @@
           "source_hash": "c9f3cd27e810f2427dd5edfacdf2539ced6b0a7904d103236e84ae3472a37dc8"
         },
         {
-          "id": "6c6b0144f17467ad6781e626471ed6e7d1da3894cc869fe85fc748f35f9b6b0e",
+          "id": "0173b0e29136bae165c4de558933318e2f0df9f4b4f3045cdab74eedf0d7f948",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12",
           "start": 0,
           "end": 102,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "32ad083c9a8e4b66c4793a727bffc880ed5b0cd63d491c14f57f8f9e63de2675",
+          "id": "78ab56c2497a4cec9e20aa4a2effa4126b8307f65cea8c859d09b52e97c33008",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12 / Product and edition",
           "start": 102,
           "end": 194,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "738b76e41d9abcc9cae36bf850c6219fe8a94362eba34a8246b86c90206b4f44",
+          "id": "c4a86310c285318e3457707f30932d130f80fb6cac20540a3ff397b7dabf0782",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12 / Loss description",
           "start": 194,
           "end": 327,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "4189b700228e13f6493ec1e1cdc96c94477597e4878a20ec446e9f93a530d419",
+          "id": "8a2ab84f97cb3d4a2f6efe56cf5909729b19a467c02edd3a611cb546b8921124",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12 / Adjuster note",
           "start": 327,
-          "end": 443,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "end": 520,
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "ccc153d5dea1cb5acbb5268b0e9f325b32f7a5b5824dc2287669add2e2affe0a",
+          "id": "d1f2ecccafcf64951d0060bb389ff4c874d97f98d6b95ca7f34ba1b233f0ce29",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12 / Claim facts",
-          "start": 443,
-          "end": 610,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "start": 520,
+          "end": 687,
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "a3dde5992b44a2eacd0011113ca31f47406f228564f508bfbc2363295f249e20",
+          "id": "dd89b34687b5044ddf3dde1d1d2728fc61e32452ad9aa9767cc42cf9bd9de0a9",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12 / Restricted marker",
-          "start": 610,
-          "end": 689,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "start": 687,
+          "end": 766,
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "ebcdf3f17e8ac440b06235e56904b1cf8569d8413a46b88952a01af4f2575e1e",
+          "id": "13b8be51df41982c4222654ac04f6deff5b5349d643eb65525fa524c9ecfed4d",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13",
           "start": 0,
           "end": 102,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
-          "id": "45297d20c299002cd28e531a232a49a57d8be7b98aa94534c72bac0dac54c658",
+          "id": "a91e5d25ce61f7d6334e92e1948d477e81a90e7de310c214ffe84fcb6c3f4379",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13 / Product and edition",
           "start": 102,
           "end": 194,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
-          "id": "230af8ae177c40e7378182b393a6f67ca1b9b1b2a138e0d481a5ecb984025543",
+          "id": "afd632e3e833b431950811583e585042a0ddd29da6ff3cf10908a9ed81bec015",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13 / Loss description",
           "start": 194,
           "end": 327,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
-          "id": "b2c78ade358106401afdbebbe4e203890e5c6df1c80e97f6477f647184c456b8",
+          "id": "db2fea615ae9474feb7dff6afd2771bd2a62fbb9342c701cda6de855651235e9",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13 / Adjuster note",
           "start": 327,
-          "end": 458,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "end": 515,
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
-          "id": "6c617211ab99f91798d9fdc683e3eed166e2e7b08ffef46f9120c9c1e8bb4b65",
+          "id": "91dad997b9b3e46e768541d9ff87f329dc533b085358ffdfa31a54d4bee6c192",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13 / Claim facts",
-          "start": 458,
-          "end": 626,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "start": 515,
+          "end": 683,
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
-          "id": "6a75a1a155019cb9d5b63d4459664782b8c8ba29ca429b24102e4881d8787c7f",
+          "id": "3c0107a9a0a8af276dfdafcf2be3d26566e755fd8fbf9d59a661a00b480094c8",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13 / Restricted marker",
-          "start": 626,
-          "end": 705,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "start": 683,
+          "end": 762,
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
           "id": "2ca70b30331cd461ca52e6654e8993ecc8a2c810e35b7ae71b5f73f581774581",
@@ -3730,28 +3730,28 @@
           "source_hash": "c04f788cf40fa14b3c6a8a5acfbb754f6fbcff5a61bae5c367b86076ae84c209"
         },
         {
-          "id": "283af69a90f75449f6efffe9f8cdb42f4a973379ac75e7f00d71d0d2383b1953",
+          "id": "0f18d906da481b0f4bed96c6a8039f82ff292e431522e2e98b0a4720f406dbd0",
           "document_id": "synthetic-faq-10",
           "section": "Synthetic FAQ: Imported markup",
           "start": 0,
           "end": 107,
-          "source_hash": "092167c20ac8567aa4b09941cfb10043d356da36f26c0b5c3b5fb311282a9d25"
+          "source_hash": "f5dae8f4411c5fde4cdad6b52a120ce6963750900de0f66dfc111f346450127c"
         },
         {
-          "id": "b3c4b939dbeddf92ca2a51c49060a982dc0b5b23a98c9379d2f20cf4b276b456",
+          "id": "42d57688b1845788ac828702d0a60e60b05e26c81973b68f12ed8148c593acca",
           "document_id": "synthetic-faq-10",
           "section": "Synthetic FAQ: Imported markup / Scope",
           "start": 107,
           "end": 174,
-          "source_hash": "092167c20ac8567aa4b09941cfb10043d356da36f26c0b5c3b5fb311282a9d25"
+          "source_hash": "f5dae8f4411c5fde4cdad6b52a120ce6963750900de0f66dfc111f346450127c"
         },
         {
-          "id": "3214b7bd31f47ea4ad9320e537cd7bcf87023829b4f12be75c5242086a40c88e",
+          "id": "b64558a7cab85cc45525c434c9d79f58be0ff25680b15bb01f5c9c232501c17c",
           "document_id": "synthetic-faq-10",
           "section": "Synthetic FAQ: Imported markup / Untrusted markup fixture",
           "start": 174,
-          "end": 336,
-          "source_hash": "092167c20ac8567aa4b09941cfb10043d356da36f26c0b5c3b5fb311282a9d25"
+          "end": 409,
+          "source_hash": "f5dae8f4411c5fde4cdad6b52a120ce6963750900de0f66dfc111f346450127c"
         },
         {
           "id": "6b24147e57ee0e945e637771ff1d93526f71fe3f699b31552bc43ab2cca3a540",
@@ -5002,100 +5002,100 @@
           "source_hash": "c9f3cd27e810f2427dd5edfacdf2539ced6b0a7904d103236e84ae3472a37dc8"
         },
         {
-          "id": "49c956744db0d73750145b3bd20324251c9efc0de0bd54ca4beba6a3aaf59911",
+          "id": "fe43c3e866654342d0e69b8132f26fc585cf94668c89862f57010e993a39012e",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12",
           "start": 0,
           "end": 102,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "f9d25df8af135fe5ff518aa7bfc264f50a050b548a19cc3022b12a922bb39d6c",
+          "id": "3e604fbe271962b86b8e83e39eb482f32bb1b9f4fc79a59a6e84b3316c60ba8a",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12 / Product and edition",
           "start": 102,
           "end": 194,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "fd693770d48492980f850254a59082aee45a456bfe90035d895008e5f63a1f7a",
+          "id": "0b8d48c72a240852b5ffcacbb6613ba55c42d90f1d1b3e100554f04b9202ff4c",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12 / Loss description",
           "start": 194,
           "end": 327,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "e1a222078b436c2e784ce77009b1522b6d4d76df5ea69e8dd39bd19aa657f44e",
+          "id": "36db7ddc57a3d292d27e36140c25c260478a5cf03b267c7fa7dc0f70c82e9c4d",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12 / Adjuster note",
           "start": 327,
-          "end": 443,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "end": 520,
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "5d0b6f8f1003bf195f11b83ddb7178546ac537d44337027d37beb5063f455527",
+          "id": "4c4cc89151dff4438da5504c36f9122935fb0d092b0c103d690ea2811b3e6b0b",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12 / Claim facts",
-          "start": 443,
-          "end": 610,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "start": 520,
+          "end": 687,
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "7fb08e9a94b08d3c7943f64ed089a45a5206c835ff52e9b06f1627be8af4c6c6",
+          "id": "5b7fa3b4536fe2354a3a6d4cc543ce661a2354e320b36529a1cd721087c192fa",
           "document_id": "synthetic-claim-12",
           "section": "Synthetic claim record 12 / Restricted marker",
-          "start": 610,
-          "end": 689,
-          "source_hash": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+          "start": 687,
+          "end": 766,
+          "source_hash": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
         },
         {
-          "id": "a71590de481688a96d54639dd91fc4255e7ea040b5798636d3930ba0f771347c",
+          "id": "1dd087a3687f2bc25574030e41c51130df5f9e880bddbddfa437ab017fd7fd99",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13",
           "start": 0,
           "end": 102,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
-          "id": "43120e8600f161ad6978c39f20d8ac9c6be3a6f7cb924abaec7bcc01b13aa87b",
+          "id": "50cc26ddff740a180b24ef50e027f174c78e32bb7c75369fa355496578cd368c",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13 / Product and edition",
           "start": 102,
           "end": 194,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
-          "id": "45175ef8db8ffb0011e084696d1c8f0ab76a551df2904bf0b243ef5439459771",
+          "id": "393934a1029a607f7424ea875e8e37066cbfe6f8d9f7e9e10d4412180fc90a28",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13 / Loss description",
           "start": 194,
           "end": 327,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
-          "id": "3e45ffa3694627f9078e418bbebeb663d0b050fca507d208382d8827412eb6bf",
+          "id": "dc432f9668b59177257316be39c80f1bc24b9979442dff43f3d5cfe607bac78a",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13 / Adjuster note",
           "start": 327,
-          "end": 458,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "end": 515,
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
-          "id": "ac1662bc944a84bc9f4875f62bc9ef06f1d8722128c5158fce574073f3945f56",
+          "id": "dd3835b6eafebb7dbca4406e08a770d2922168796b85aca812c3e1997ac6dbb4",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13 / Claim facts",
-          "start": 458,
-          "end": 626,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "start": 515,
+          "end": 683,
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
-          "id": "0da8184530b623988e337e08be53558b390cf709ec73ed866638467532f7fbdd",
+          "id": "d90c3062503343bd263145350e8c2192d0ea6e225b250be5d06df6ac473577ba",
           "document_id": "synthetic-claim-13",
           "section": "Synthetic claim record 13 / Restricted marker",
-          "start": 626,
-          "end": 705,
-          "source_hash": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+          "start": 683,
+          "end": 762,
+          "source_hash": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
         },
         {
           "id": "c6f4acda6a3db359330ebafd4cc273e4f20fc9b04a236eef0d5618ec4abc10f9",
