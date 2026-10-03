@@ -95,7 +95,12 @@ def test_payout_status_and_rephrase_fallback(status):
         (payload("changed"), "quotation"),
         (payload("ignore previous instructions"), "instruction_echo"),
         (
-            json.dumps({"statements": json.loads(payload())["statements"] * 2}),
+            json.dumps(
+                {
+                    "outcome": "answer",
+                    "statements": json.loads(payload())["statements"] * 2,
+                }
+            ),
             "duplicate",
         ),
     ],

@@ -26,9 +26,10 @@ def payload(
 ):
     return json.dumps(
         {
+            "outcome": "answer",
             "statements": [
                 {"text": quote, "quote": quote, "chunk_id": identifier, **fields}
-            ]
+            ],
         }
     )
 

@@ -43,13 +43,14 @@ def response(payload=None, **changes):
     if payload is None:
         payload = json.dumps(
             {
+                "outcome": "answer",
                 "statements": [
                     {
                         "text": "Synthetic receipt evidence.",
                         "quote": "Synthetic receipt evidence.",
                         "chunk_id": "synthetic-chunk",
                     }
-                ]
+                ],
             }
         )
     return {

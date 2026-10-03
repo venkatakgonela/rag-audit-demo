@@ -27,8 +27,10 @@ def schema(rule: bool) -> dict:
         properties = {"text": text}
     else:
         properties = {
+            "outcome": {"type": "string", "enum": ["answer", "insufficient_evidence"]},
             "statements": {
                 "type": "array",
+                "minItems": 0,
                 "maxItems": 5,
                 "items": {
                     "type": "object",
@@ -40,7 +42,7 @@ def schema(rule: bool) -> dict:
                     "required": ["text", "quote", "chunk_id"],
                     "additionalProperties": False,
                 },
-            }
+            },
         }
     return {
         "type": "object",

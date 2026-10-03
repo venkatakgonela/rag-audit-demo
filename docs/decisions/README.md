@@ -37,6 +37,8 @@ Record significant product choices here. Preserve accepted decision text; dated 
 
 ## Pending decisions
 
+Explicit model abstention is under a predeclared dev trial; see [0029](0029-explicit-model-abstention.md). No adoption or new hosted result is implied by its implementation.
+
 All entries are **Planned**, not accepted choices. Milestones describe product work, not implementation commitments.
 
 | Question | Options to weigh and constraints | Decision milestone |

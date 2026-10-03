@@ -8,6 +8,32 @@ from rag_audit.evaluation.metrics import aggregate, percentile, rate
 
 def summarize_rows(rows: list[dict]) -> dict:
     result = aggregate(rows)
+    for name, reason in (
+        ("model_abstention", "model_abstained"),
+        ("verification_rejection", "verification_failed"),
+    ):
+        result[name] = rate(
+            sum(row["trace"]["reason"] == reason for row in rows), len(rows)
+        )
+    result["gate_abstention"] = rate(
+        sum(
+            row["response"]["decision"] == "no_answer"
+            and not row["trace"]["sent_ids"]
+            and row["category"] != "rules"
+            for row in rows
+        ),
+        len(rows),
+    )
+    result["answers"] = rate(
+        sum(row["response"]["decision"] == "answered" for row in rows), len(rows)
+    )
+    result["correct_abstention"] = rate(
+        sum(
+            row["response"]["decision"] == "no_answer" and row["assessment"]["allowed"]
+            for row in rows
+        ),
+        len(rows),
+    )
     retrieval = [
         row
         for row in rows

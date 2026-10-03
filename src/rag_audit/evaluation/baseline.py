@@ -35,7 +35,13 @@ class BaselineGenerator(FakeGenerator):
                 statements = [
                     {"text": quote, "quote": quote, "chunk_id": evidence.chunk_id}
                 ]
-        payload = json.dumps({"statements": statements}, ensure_ascii=False)
+        payload = json.dumps(
+            {
+                "outcome": "answer" if statements else "insufficient_evidence",
+                "statements": statements,
+            },
+            ensure_ascii=False,
+        )
         return GenerationResult(
             payload,
             Usage(
