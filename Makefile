@@ -1,4 +1,12 @@
 .DEFAULT_GOAL := help
+.PHONY: audit-report audit-check
+audit-report:
+	UV_OFFLINE=1 uv run --frozen python -m scripts.audit_pdf
+
+audit-check:
+	UV_OFFLINE=1 uv run --frozen python -m scripts.audit_evidence --check
+	UV_OFFLINE=1 uv run --frozen python -m scripts.audit_notices --check
+
 .PHONY: eval
 eval:
 	uv run --frozen python -m rag_audit.evaluation $(ARGS)

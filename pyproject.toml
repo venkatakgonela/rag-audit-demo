@@ -7,6 +7,7 @@ name = "rag-audit"
 version = "0.1.0"
 description = "Synthetic-data RAG audit demonstration foundation"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "fastapi>=0.115,<1",
@@ -33,6 +34,7 @@ dev = [
 packages = ["src/rag_audit"]
 
 [tool.pytest.ini_options]
+pythonpath = ["."]
 testpaths = ["tests"]
 addopts = "--strict-markers"
 markers = ["integration: requires a configured PostgreSQL database with vector enabled", "model: explicit local real-model smoke", "live: opt-in real provider; requires environment key"]

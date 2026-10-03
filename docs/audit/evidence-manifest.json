@@ -1,0 +1,22 @@
+{
+  "audited_commit": "cfd53ff1cf8028dba24e44008f1c910f31de8132",
+  "sources": {
+    "datasets/evaluation/baselines/fake-v1.json": "cc4e5142162e4de56d249e36ceb4f9bb59c1869e85b9f9814af49e6ffc70a0bb",
+    "datasets/evaluation/baselines/real-v1.json": "32bfe25b66d605b709e03e5eb6ed1d4ba59cd681c9b5028c47840daa48c60948",
+    "datasets/evaluation/baselines/live-v1.json": "12ad636f28ed10d6d3204f778b16868b236fc8f3fe18266a17099b13ce3b367d",
+    "datasets/evaluation/baselines/live-v2.json": "fe287ec8b23aba9cb40eb3c8b336349f67f487d96cb3b729ff6c197c4ce2d422",
+    "datasets/evaluation/baselines/ci-v1.json": "b6b829299bf467e0bae588cdc7a18d505078be8f7bfb2e6cc069a8b25de05049",
+    "datasets/evaluation/freeze.json": "9e08a0f00f05dfad6493b144d5aa9aaa5a1a43ddcefaaef088fd5135f6f82404",
+    "datasets/evaluation/run-log.jsonl": "b9f36613bcfa28d92d76cb1b8da69e351fa50f79004bf387142288a143dcbb21",
+    "datasets/evaluation/gate-baseline-log.jsonl": "74b8f62d571902c0be1bb155f10c0ee8686a42efdb0c11b6a437637aee3d677f",
+    "datasets/evaluation/model-manifest.json": "ae1d61584037af32bc41d54492a81dd3a457302bf107de45975a835a29bc2480",
+    "datasets/evaluation/replay/manifest.json": "04ffcdb8e348da33a514c48f0af8b70dfd06dbe898743afb1a708a424bd40d09",
+    "datasets/evaluation/replay/responses.json": "e8664e24e25c9e67fe8b1f367cde14283b853cd7a044ec0c4b85fb143ebdf948",
+    "docs/calibration-dev.md": "fe6333d483d366233f556a52230891c1044b0749c5f27cc7b6efb2216908f3f3",
+    "docs/reranker-dev.md": "de6335581b51ada041f56b4de4ed60bcb415a6e67116a7a50fbd5ddf07b2b7f8",
+    "docs/decisions/0030-abstention-recalibration.md": "cd8bba7d66c70e5be867aea0de172ffa86796c06fb3b3c35bc23446629f86aa8",
+    "docs/audit/verification-evidence.json": "c8c24f3a76f0ecd16422cc1827e26ade91da05adf2a6ac7377313c541395b4c7",
+    "docs/audit/findings.json": "05396319393cce90d63b24a7e5b0adac268aaf51fc7788a409a4d9f03cc83dde"
+  },
+  "label_policy": "Label semantic digests and source integrity are verified by check_dataset; label_status is deliberately excluded from frozen semantics so review counts can rebuild."
+}

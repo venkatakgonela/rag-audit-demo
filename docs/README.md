@@ -8,6 +8,8 @@ All domain data is synthetic. **Implemented** means present in the repository; *
 4. [Threat model](threat-model.md) — reviewers: trust boundaries, tested protections, known gaps, and planned mitigations.
 5. [Glossary](glossary.md) — readers new to the terminology.
 6. [Evaluation method](evaluation.md) and [canonical results](evaluation-results.md) — definitions, limitations, counts/intervals and the one-pass held-out record.
+7. [Sample audit](audit/README.md) — client-facing report, reproducible tables, findings and limitations.
+8. [Developer reference](development.md), [third-party notices](third-party-notices.md), [publication checklist](PUBLISHING.md) and [prepared release](release-notes.md).
 
 Use the [project README](../README.md) for runnable commands, the [changelog](../CHANGELOG.md) for changes, and the [backlog](BACKLOG.md) for deferred work.
 

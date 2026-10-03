@@ -1,0 +1,191 @@
+[
+  {
+    "id": "F-01",
+    "title": "Team grants are broader than tier grants",
+    "severity": "Medium",
+    "status": "open",
+    "confidence": "high",
+    "description": "Access deliberately combines tier, team, ownership and broker grants with OR semantics. A staff team can access documents beyond its normal tier. Tests establish the implemented rule, not whether a future policy owner intended it. This is a design-policy question, not a demonstrated authorisation bypass.",
+    "evidence": [
+      "src/rag_audit/access.py",
+      "tests/integration/test_evaluation_visibility.py"
+    ],
+    "recommendation": "Obtain explicit policy-owner approval of team ownership before real deployment.",
+    "effort": "S"
+  },
+  {
+    "id": "F-02",
+    "title": "Coverage improved, but remains modest",
+    "severity": "Medium",
+    "status": "mitigated",
+    "confidence": "high",
+    "description": "The former strict gate and mandatory statements suppressed natural questions. Explicit refusal and the dev-selected threshold improved the recorded answerable results. This mitigation is measured on reused dev samples and one later test draw; it does not establish broad reliability.",
+    "evidence": [
+      "docs/decisions/0030-abstention-recalibration.md",
+      "datasets/evaluation/baselines/live-v2.json"
+    ],
+    "recommendation": "Keep the structural checks; validate coverage on new independently reviewed data.",
+    "effort": "M"
+  },
+  {
+    "id": "F-03",
+    "title": "Related evidence can pass without answering",
+    "severity": "Medium",
+    "status": "open",
+    "confidence": "high",
+    "description": "Near misses overlap answerable questions in retrieval scores. Lower candidates improved coverage but falsely answered hidden-intent free text and were disqualified. The adopted gate still selects more irrelevant evidence than before, even when the model declines. Refusal does not erase false evidence.",
+    "evidence": [
+      "docs/calibration-dev.md",
+      "docs/decisions/0030-abstention-recalibration.md"
+    ],
+    "recommendation": "Expand reviewed related-but-unanswerable cases; freeze criteria before any new experiment.",
+    "effort": "M"
+  },
+  {
+    "id": "F-04",
+    "title": "Literal verification sacrifices some relevant answers",
+    "severity": "Medium",
+    "status": "accepted",
+    "confidence": "high",
+    "description": "Exact text-to-quote verification is a deliberate trade-off. Both case-058 test phrasings lost prior successes when generated text differed from the quote; rejection was correct under the contract. A benign echo false-positive unit example exists; the frequency in realistic prose is unquantified.",
+    "evidence": [
+      "src/rag_audit/policy.py",
+      "tests/test_answer_policy.py",
+      "docs/evaluation-results.md"
+    ],
+    "recommendation": "Retain exact checks; separately evaluate any alternative contract and false-positive burden.",
+    "effort": "M"
+  },
+  {
+    "id": "F-05",
+    "title": "Evaluation assurance is limited",
+    "severity": "Medium",
+    "status": "open",
+    "confidence": "high",
+    "description": "The builder selected the architecture, wrote the labels and performed this self-assessment. Small samples, reused examples and repeated test exposure limit inference. Owner label review, if recorded, is useful but not independent validation. Counts are generated from current label status.",
+    "evidence": [
+      "datasets/evaluation/dev.json",
+      "datasets/evaluation/test.json",
+      "datasets/evaluation/run-log.jsonl"
+    ],
+    "recommendation": "Commission independent label review and a new held-out evaluation before broader claims.",
+    "effort": "L"
+  },
+  {
+    "id": "F-06",
+    "title": "Replay cannot detect new model behaviour",
+    "severity": "Medium",
+    "status": "accepted",
+    "confidence": "high",
+    "description": "Recorded HTTP replay exercises the real adapter and pipeline deterministically against prior model outputs. It detects pipeline regressions, not changes in future responses, model weights or upstream serving behaviour. This is an intentional offline CI boundary.",
+    "evidence": [
+      "src/rag_audit/evaluation/replay.py",
+      "tests/integration/test_gate_selftest.py"
+    ],
+    "recommendation": "Add a separately authorised, versioned live-monitoring study for any real service.",
+    "effort": "M"
+  },
+  {
+    "id": "F-07",
+    "title": "Local identity and limits are not a production perimeter",
+    "severity": "Medium",
+    "status": "open",
+    "confidence": "medium",
+    "description": "The signed identity is a synthetic subject stub. There is no demonstrated production token lifecycle or per-user rate limiter. Cooperative timeouts and local caps do not establish process isolation against hostile workloads. Real public exposure would materially increase impact.",
+    "evidence": [
+      "src/rag_audit/api/main.py",
+      "src/rag_audit/settings.py",
+      "tests/test_answer_http.py"
+    ],
+    "recommendation": "Design authentication, quotas, expiry and workload isolation before public service deployment.",
+    "effort": "L"
+  },
+  {
+    "id": "F-08",
+    "title": "Traces retain questions",
+    "severity": "Low",
+    "status": "open",
+    "confidence": "high",
+    "description": "Durable traces retain question text and decision evidence. This is useful for synthetic auditability, but a real-data deployment would need retention, access, deletion and redaction decisions. No real customer records are claimed here.",
+    "evidence": [
+      "src/rag_audit/store.py",
+      "tests/integration/test_answer_database.py"
+    ],
+    "recommendation": "Define a retention and redaction policy before handling real questions.",
+    "effort": "M"
+  },
+  {
+    "id": "F-09",
+    "title": "Supply-chain references remain mutable",
+    "severity": "Low",
+    "status": "open",
+    "confidence": "high",
+    "description": "The workflow uses major action tags and container tags rather than immutable references. Locking Python dependencies and verifying model bytes does not cover every supply-chain layer. Update automation and broader pinning remain backlog work.",
+    "evidence": [
+      ".github/workflows/ci.yml",
+      "uv.lock",
+      "docs/BACKLOG.md"
+    ],
+    "recommendation": "Pin actions and images, and introduce reviewed dependency-update automation.",
+    "effort": "M"
+  },
+  {
+    "id": "F-10",
+    "title": "Costs and token bounds are qualified estimates",
+    "severity": "Low",
+    "status": "accepted",
+    "confidence": "high",
+    "description": "The byte-based token bound is conservative under stated assumptions, not a verified tokenizer proof. Operator list prices and recorded usage are not invoices. Unknown reservations must stay visible instead of being silently treated as free requests.",
+    "evidence": [
+      "src/rag_audit/accounting.py",
+      "tests/test_responses.py",
+      "datasets/evaluation/baselines/live-v2.json"
+    ],
+    "recommendation": "Reconcile usage with actual billing and validate bounds for a production provider.",
+    "effort": "M"
+  },
+  {
+    "id": "F-11",
+    "title": "Scaling and timing channels are not established",
+    "severity": "Low",
+    "status": "open",
+    "confidence": "medium",
+    "description": "Exact search grows with the eligible corpus. Tests show inaccessible-row noninterference for selected examples, not constant-time behaviour, capacity or resistance to statistical timing analysis. No production load benchmark was performed.",
+    "evidence": [
+      "src/rag_audit/retrieval.py",
+      "tests/integration/test_retrieval.py"
+    ],
+    "recommendation": "Benchmark realistic authorised-set sizes and define an explicit timing threat model.",
+    "effort": "M"
+  },
+  {
+    "id": "F-12",
+    "title": "Native exit crash reported on macOS",
+    "severity": "Low",
+    "status": "open",
+    "confidence": "low",
+    "description": "A reviewer reported an intermittent native process-exit crash during repeated local self-tests. The attestation records the observation and passing reruns. This is not reproducible from committed evidence and its root cause is unknown; selected hosted Linux checks passed.",
+    "evidence": [
+      "docs/audit/verification-evidence.json"
+    ],
+    "recommendation": "Capture a native crash trace and isolate the runtime separately; do not hide nonzero exits.",
+    "effort": "M"
+  },
+  {
+    "id": "F-13",
+    "title": "Injection evidence is narrow, not a general defence claim",
+    "severity": "Medium",
+    "status": "open",
+    "confidence": "low",
+    "description": "Resistance relies on authorised evidence, constrained extractive output, no tool execution and a configured phrase heuristic. The small injection fixture set and recorded echoes do not measure general real-model obedience. Novel attacks and contextual over-blocking remain possible.",
+    "evidence": [
+      "docs/decisions/0018-extractive-answer-policy.md",
+      "docs/threat-model.md",
+      "tests/test_answer_policy.py",
+      "datasets/evaluation/dev.json",
+      "datasets/evaluation/test.json"
+    ],
+    "recommendation": "Build a larger adversarial set; measure obedience separately from echo while retaining structural controls.",
+    "effort": "L"
+  }
+]

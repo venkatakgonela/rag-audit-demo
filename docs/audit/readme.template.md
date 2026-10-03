@@ -2,7 +2,7 @@
 
 A synthetic demonstration of how to **test and audit a retrieval-augmented answering system**, including the results that did not improve. It is a builder self-assessment, not an independent audit or production service. Built with AI coding assistants under Venkata K Gonela's direction.
 
-**[Read the sample audit report](docs/audit/report.pdf)** · [Markdown report](docs/audit/report.md) · [Evaluation method](docs/evaluation.md)
+**[Read the sample audit report](../../docs/audit/report.pdf)** · [Markdown report](../../docs/audit/report.md) · [Evaluation method](../../docs/evaluation.md)
 
 ## Three tested promises
 
@@ -12,16 +12,9 @@ A synthetic demonstration of how to **test and audit a retrieval-augmented answe
 
 ## Results at a glance
 
-| Split | Style | Before correct; Wilson 95% | After correct; Wilson 95% |
-| --- | --- | --- | --- |
-| dev | keyword | 5/18 (12.5-50.9%) | 9/18 (29.0-71.0%) |
-| dev | natural | 5/18 (12.5-50.9%) | 9/18 (29.0-71.0%) |
-| test | keyword | 3/10 (10.8-60.3%) | 5/10 (23.7-76.3%) |
-| test | natural | 2/10 (5.7-51.0%) | 5/10 (23.7-76.3%) |
+{{comparison}}
 
-Source: `datasets/evaluation/baselines/live-v1.json` at `cfd53ff`, `datasets/evaluation/baselines/live-v2.json` at `cfd53ff`. Full hashes: docs/audit/evidence-manifest.json.
-
-These are correct answerable single/multi phrasings, not system-wide accuracy. Explicit refusal plus dev-selected calibration improved this single recorded comparison; two other test phrasings regressed. Small authored samples, repeated test exposure and cached dev responses limit inference. **No label has been reviewed by anyone other than the author (65 labels).** An AI reviewer checked all 65 labels against their sources and found no factual, outcome or visibility disagreement and three wording notes ([record](docs/audit/label-review.md)); that is not human review and not independent of the AI-assisted build, and every label remains `drafted`.
+These are correct answerable single/multi phrasings, not system-wide accuracy. Explicit refusal plus dev-selected calibration improved this single recorded comparison; two other test phrasings regressed. Small authored samples, repeated test exposure and cached dev responses limit inference. **{{review}}** An AI reviewer checked all 65 labels against their sources and found no factual, outcome or visibility disagreement and three wording notes ([record](../../docs/audit/label-review.md)); that is not human review and not independent of the AI-assisted build, and every label remains `drafted`.
 
 ## Try it locally
 
@@ -47,21 +40,21 @@ The first returns “I cannot answer from the available evidence.” The second 
 “Payout in GBP: 400.00 (calculation only; claim status: pending).” These are synthetic
 demonstration outputs, not insurance advice or an eligibility decision.
 
-The default database binds to loopback. `make down` stops it without deleting its volume. For checks without Docker: `make lint typecheck test`. See [developer setup and configuration](docs/development.md) for explicit ports, isolated databases and commands.
+The default database binds to loopback. `make down` stops it without deleting its volume. For checks without Docker: `make lint typecheck test`. See [developer setup and configuration](../../docs/development.md) for explicit ports, isolated databases and commands.
 
 Optional real embeddings: provision the documented pinned model once with `make eval-model ARGS="--provision"` after `make eval-runtime`. For already cached weights, `make eval-model` verifies them, then `make eval-gate` and `make eval-selftest` use the real adapter with recorded responses and no provider key. Model downloads are explicit; real generation is separately opt-in and is not needed for this demo.
 
 ## Architecture
 
-![Implemented retrieval, rules, verification and trace components](docs/audit/figures/components.png)
+![Implemented retrieval, rules, verification and trace components](../../docs/audit/figures/components.png)
 
-Access-scoped retrieval selects evidence, deterministic code computes rules, and the model proposes quotes or abstains. The service verifies the complete answer and stores its trace before release. [Architecture and trust boundaries](docs/ARCHITECTURE.md).
+Access-scoped retrieval selects evidence, deterministic code computes rules, and the model proposes quotes or abstains. The service verifies the complete answer and stores its trace before release. [Architecture and trust boundaries](../../docs/ARCHITECTURE.md).
 
 ## Evaluation and CI
 
 The frozen synthetic corpus, labels and versioned baselines preserve failed and successful outcomes. Development data selects thresholds; test results do not. Current release checks replay recorded HTTP responses through the actual adapter, enforce hard constraints and compare quality without tolerances. They test **recorded behaviour**, not future model behaviour.
 
-The hosted reference and red proof runs are documented in the [report](docs/audit/report.md) with run provenance. Rebaselining is an explicit, logged local operation, never a shortcut to make failures green. See the [protocol](docs/evaluation.md#failure-and-re-baseline-protocol) and [publication checklist](docs/PUBLISHING.md).
+The hosted reference and red proof runs are documented in the [report](../../docs/audit/report.md) with run provenance. Rebaselining is an explicit, logged local operation, never a shortcut to make failures green. See the [protocol](../../docs/evaluation.md#failure-and-re-baseline-protocol) and [publication checklist](../../docs/PUBLISHING.md).
 
 ## Limits
 
@@ -78,4 +71,4 @@ All insurance-like data and identities are fabricated. Exact quotation is not se
 
 ## Licence and author
 
-MIT © 2026 Venkata K Gonela. See [LICENSE](LICENSE), [third-party notices](docs/third-party-notices.md) and [security policy](SECURITY.md). Dependencies retain their own licences; model weights are not redistributed. A prepared release is not an announcement of production readiness.
+MIT © 2026 Venkata K Gonela. See [LICENSE](../../LICENSE), [third-party notices](../../docs/third-party-notices.md) and [security policy](../../SECURITY.md). Dependencies retain their own licences; model weights are not redistributed. A prepared release is not an announcement of production readiness.
