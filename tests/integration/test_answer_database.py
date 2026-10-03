@@ -261,7 +261,9 @@ def test_v2_reingest_preserves_committed_trace_and_rejects_outer_transaction(dat
     response = answer(connection, "synthetic-customer-a", "payout synthetic-claim-0")
     before = connection.execute("SELECT payload FROM demo_traces").fetchall()
     assert response["decision"] == "answered"
-    generate(directory, seed=99)
+    from corpus_helpers import revised_corpus
+
+    revised_corpus(directory, "replacement")
     ingest(connection, directory, FakeEmbedder())
     assert connection.execute("SELECT payload FROM demo_traces").fetchall() == before
     with connection.transaction():
@@ -310,7 +312,9 @@ def test_snapshot_lock_released_before_generation_and_provenance_retained(databa
         with psycopg.connect(url, autocommit=True) as writer:
             writer.execute("SET search_path TO answering_test,public")
             writer.execute("SET lock_timeout='2s'")
-            generate(directory, seed=73)
+            from corpus_helpers import revised_corpus
+
+            revised_corpus(directory, "during-generation")
             ingest(writer, directory, FakeEmbedder())
 
     class ReplacingProvider(FakeGenerator):

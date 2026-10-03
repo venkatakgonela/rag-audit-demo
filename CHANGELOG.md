@@ -6,6 +6,19 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Added
 
+- Tracked corpus v3: 72 original AI-assisted synthetic documents, structured source bindings, explicit access intent and 60 drafted golden cases with candidate split/freeze digests. Independent human label review pending.
+- Offline schema/fact/profile-reference checks and independent rule oracles; SQL comparison covers every document and fixture subject. Evaluation harness and calibration are not implemented.
+
+### Changed
+
+- Candidate labels revised before acceptance to add six free-text hidden-answer traps, six in-domain near misses and four ordinary injection questions; still 60 cases, 40 dev/20 test, with unchanged corpus and subject allocation. Candidate semantic digests regenerated for the new coverage and explicit acceptable-decision/forbidden-fact labels; all labels remain drafted.
+- Extractive verification traces now include a bounded `verification_reason` (`schema`, `citation`, `quotation`, `instruction_echo`, `duplicate`); this field never enters the public response and does not change verification criteria.
+- Extractive verification rejection returns the standard HTTP 200 no-answer, with a distinct trace reason; infrastructure errors and deterministic rule rephrase fallback retain their prior handling.
+- Payout rule v2 includes claim status and a calculation-only qualification without changing the amount or adding an eligibility decision.
+- Static corpus export replaces seeded generation; v2 corpus ingestion is no longer supported. Initial v3 candidate labels have not been accepted or human-reviewed.
+
+### Previously added
+
 - Opt-in local OpenAI-compatible Responses adapter with strict schemas, environment-only key, exact model mapping, bounded async HTTP and no retries; real service is never exercised by CI.
 - Real-token pricing with disjoint cache-read/write subsets, output reasoning accounting, qualified pre-dispatch byte bound and explicit unknown-price/input-tier rejection. Costs remain operator-supplied list estimates, not verified billing.
 - Offline mocked transport/network-trap checks and an explicitly gated, no-spend live-configuration check. Access, rule, citation and abstention policies are unchanged.

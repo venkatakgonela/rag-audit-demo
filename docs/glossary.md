@@ -1,5 +1,11 @@
 # Glossary
 
+- **Golden case:** a drafted information need with expected source facts and two question phrasings; not a measured model success.
+- **Candidate freeze:** explicit semantic digests pending acceptance; tests verify rather than refresh them.
+- **Independent access intent:** authored allowed-subject lists compared with the SQL policy, not generated from that policy.
+- **Profile-qualified chunk:** a source chunk ID tied to its tokenizer identity; fake and real IDs differ.
+- **Verification abstention:** standard no-answer presentation with a distinct verification-failure trace reason. The trace-only `verification_reason` classifies extractive failures as schema, citation, quotation, instruction_echo or duplicate; other paths retain null.
+
 - **Eligible set:** rows authorised inside SQL before either ranking branch.
 - **RRF:** reciprocal rank fusion; sums `1/(60+rank)` across available lists here.
 - **Source offsets:** zero-based half-open Unicode positions reproducing chunk text.

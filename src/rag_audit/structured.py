@@ -9,7 +9,7 @@ from rag_audit.rules import PERILS, STATUSES, money
 
 def validate_records(manifest: dict) -> None:
     if manifest.get("format") != 2:
-        raise ValueError("Regenerate corpus v2")
+        raise ValueError("Unsupported corpus manifest format")
     documents = {document["id"]: document for document in manifest["documents"]}
     policies = {record["id"]: record for record in manifest["policies"]}
     claims = {record["id"]: record for record in manifest["claims"]}

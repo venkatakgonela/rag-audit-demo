@@ -12,6 +12,7 @@ from rag_audit.policy import (
     CONFIGURATION_VERSION,
     ECHO_VERSION,
     PROFILES,
+    VerificationError,
     envelope,
     select_evidence,
     strict_json,
@@ -31,6 +32,7 @@ def new_trace() -> dict:
         "question": None,
         "decision": "error",
         "reason": "request_invalid",
+        "verification_reason": None,
         "rule": None,
         "retrieved_ids": [],
         "sent_ids": [],
@@ -269,11 +271,16 @@ async def ask(
                     )
                     trace["cited_ids"] = [item["chunk_id"] for item in statements]
                     trace["reason"] = "citations_verified"
+            except VerificationError as error:
+                trace["verification_reason"] = error.reason.value
+                raise
             finally:
                 trace["durations"]["verify"] = clock() - started
     except Exception:
         if trace["rule"] is not None:
             trace["reason"] = "rule_template_fallback"
+        elif trace["reason"] == "verification_failed":
+            response = envelope()
         else:
             response = envelope("error")
     return finalize(store, request_id, trace, response)

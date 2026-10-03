@@ -1,0 +1,1899 @@
+{
+  "version": "synthetic-v3-2026-10-03",
+  "format": 2,
+  "policies": [
+    {
+      "id": "synthetic-policy-0",
+      "document_id": "synthetic-policy-0",
+      "currency": "GBP",
+      "excess": "100.00",
+      "limit": "2000.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 14
+    },
+    {
+      "id": "synthetic-policy-1",
+      "document_id": "synthetic-policy-1",
+      "currency": "GBP",
+      "excess": "125.00",
+      "limit": "2500.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 15
+    },
+    {
+      "id": "synthetic-policy-2",
+      "document_id": "synthetic-policy-2",
+      "currency": "GBP",
+      "excess": "150.00",
+      "limit": "3000.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 16
+    },
+    {
+      "id": "synthetic-policy-3",
+      "document_id": "synthetic-policy-3",
+      "currency": "GBP",
+      "excess": "175.00",
+      "limit": "3500.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 17
+    },
+    {
+      "id": "synthetic-policy-4",
+      "document_id": "synthetic-policy-4",
+      "currency": "GBP",
+      "excess": "200.00",
+      "limit": "4000.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 18
+    },
+    {
+      "id": "synthetic-policy-5",
+      "document_id": "synthetic-policy-5",
+      "currency": "GBP",
+      "excess": "225.00",
+      "limit": "4500.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 19
+    },
+    {
+      "id": "synthetic-policy-6",
+      "document_id": "synthetic-policy-6",
+      "currency": "GBP",
+      "excess": "250.00",
+      "limit": "5000.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 20
+    },
+    {
+      "id": "synthetic-policy-7",
+      "document_id": "synthetic-policy-7",
+      "currency": "GBP",
+      "excess": "275.00",
+      "limit": "5500.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 21
+    },
+    {
+      "id": "synthetic-policy-8",
+      "document_id": "synthetic-policy-8",
+      "currency": "GBP",
+      "excess": "300.00",
+      "limit": "6000.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 22
+    },
+    {
+      "id": "synthetic-policy-9",
+      "document_id": "synthetic-policy-9",
+      "currency": "GBP",
+      "excess": "325.00",
+      "limit": "6500.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 23
+    },
+    {
+      "id": "synthetic-policy-10",
+      "document_id": "synthetic-policy-10",
+      "currency": "GBP",
+      "excess": "350.00",
+      "limit": "7000.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 24
+    },
+    {
+      "id": "synthetic-policy-11",
+      "document_id": "synthetic-policy-11",
+      "currency": "GBP",
+      "excess": "375.00",
+      "limit": "7500.00",
+      "covered": [
+        "water",
+        "fire"
+      ],
+      "window": 25
+    }
+  ],
+  "claims": [
+    {
+      "id": "synthetic-claim-0",
+      "document_id": "synthetic-claim-0",
+      "policy_id": "synthetic-policy-0",
+      "owner": "synthetic-customer-a",
+      "status": "pending",
+      "loss": "500.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-10"
+    },
+    {
+      "id": "synthetic-claim-1",
+      "document_id": "synthetic-claim-1",
+      "policy_id": "synthetic-policy-1",
+      "owner": "synthetic-customer-b",
+      "status": "approved",
+      "loss": "800.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-11"
+    },
+    {
+      "id": "synthetic-claim-2",
+      "document_id": "synthetic-claim-2",
+      "policy_id": "synthetic-policy-2",
+      "owner": "synthetic-customer-a",
+      "status": "declined",
+      "loss": "1100.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-12"
+    },
+    {
+      "id": "synthetic-claim-3",
+      "document_id": "synthetic-claim-3",
+      "policy_id": "synthetic-policy-3",
+      "owner": "synthetic-customer-b",
+      "status": "paid",
+      "loss": "1400.00",
+      "peril": "fire",
+      "incident": "2026-01-01",
+      "notified": "2026-01-13"
+    },
+    {
+      "id": "synthetic-claim-4",
+      "document_id": "synthetic-claim-4",
+      "policy_id": "synthetic-policy-4",
+      "owner": "synthetic-customer-a",
+      "status": "pending",
+      "loss": "1700.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-14"
+    },
+    {
+      "id": "synthetic-claim-5",
+      "document_id": "synthetic-claim-5",
+      "policy_id": "synthetic-policy-5",
+      "owner": "synthetic-customer-b",
+      "status": "approved",
+      "loss": "2000.00",
+      "peril": "fire",
+      "incident": "2026-01-01",
+      "notified": "2026-01-15"
+    },
+    {
+      "id": "synthetic-claim-6",
+      "document_id": "synthetic-claim-6",
+      "policy_id": "synthetic-policy-6",
+      "owner": "synthetic-customer-a",
+      "status": "declined",
+      "loss": "2300.00",
+      "peril": "theft",
+      "incident": "2026-01-01",
+      "notified": "2026-01-16"
+    },
+    {
+      "id": "synthetic-claim-7",
+      "document_id": "synthetic-claim-7",
+      "policy_id": "synthetic-policy-7",
+      "owner": "synthetic-customer-b",
+      "status": "paid",
+      "loss": "2600.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-17"
+    },
+    {
+      "id": "synthetic-claim-8",
+      "document_id": "synthetic-claim-8",
+      "policy_id": "synthetic-policy-8",
+      "owner": "synthetic-customer-a",
+      "status": "pending",
+      "loss": "2900.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-18"
+    },
+    {
+      "id": "synthetic-claim-9",
+      "document_id": "synthetic-claim-9",
+      "policy_id": "synthetic-policy-9",
+      "owner": "synthetic-customer-b",
+      "status": "approved",
+      "loss": "3200.00",
+      "peril": "fire",
+      "incident": "2026-01-01",
+      "notified": "2026-01-19"
+    },
+    {
+      "id": "synthetic-claim-10",
+      "document_id": "synthetic-claim-10",
+      "policy_id": "synthetic-policy-10",
+      "owner": "synthetic-customer-a",
+      "status": "declined",
+      "loss": "3500.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-20"
+    },
+    {
+      "id": "synthetic-claim-11",
+      "document_id": "synthetic-claim-11",
+      "policy_id": "synthetic-policy-11",
+      "owner": "synthetic-customer-b",
+      "status": "paid",
+      "loss": "3800.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-21"
+    },
+    {
+      "id": "synthetic-claim-12",
+      "document_id": "synthetic-claim-12",
+      "policy_id": "synthetic-policy-0",
+      "owner": "synthetic-customer-a",
+      "status": "pending",
+      "loss": "4100.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-22"
+    },
+    {
+      "id": "synthetic-claim-13",
+      "document_id": "synthetic-claim-13",
+      "policy_id": "synthetic-policy-1",
+      "owner": "synthetic-customer-b",
+      "status": "approved",
+      "loss": "4400.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-23"
+    },
+    {
+      "id": "synthetic-claim-14",
+      "document_id": "synthetic-claim-14",
+      "policy_id": "synthetic-policy-2",
+      "owner": "synthetic-customer-a",
+      "status": "declined",
+      "loss": "4700.00",
+      "peril": "water",
+      "incident": "2026-01-01",
+      "notified": "2026-01-24"
+    },
+    {
+      "id": "synthetic-claim-15",
+      "document_id": "synthetic-claim-15",
+      "policy_id": "synthetic-policy-3",
+      "owner": "synthetic-customer-b",
+      "status": "paid",
+      "loss": "5000.00",
+      "peril": "fire",
+      "incident": "2026-01-01",
+      "notified": "2026-01-25"
+    }
+  ],
+  "teams": [
+    "claims-a",
+    "claims-b"
+  ],
+  "users": [
+    {
+      "subject": "synthetic-customer-a",
+      "role": "customer",
+      "teams": []
+    },
+    {
+      "subject": "synthetic-customer-b",
+      "role": "customer",
+      "teams": []
+    },
+    {
+      "subject": "synthetic-broker-a",
+      "role": "broker",
+      "teams": []
+    },
+    {
+      "subject": "synthetic-broker-b",
+      "role": "broker",
+      "teams": []
+    },
+    {
+      "subject": "synthetic-underwriter-a",
+      "role": "underwriter",
+      "teams": [
+        "claims-a"
+      ]
+    },
+    {
+      "subject": "synthetic-underwriter-b",
+      "role": "underwriter",
+      "teams": [
+        "claims-b"
+      ]
+    },
+    {
+      "subject": "synthetic-admin",
+      "role": "admin",
+      "teams": []
+    }
+  ],
+  "brokers": [
+    [
+      "synthetic-broker-a",
+      "synthetic-customer-a"
+    ],
+    [
+      "synthetic-broker-b",
+      "synthetic-customer-b"
+    ]
+  ],
+  "documents": [
+    {
+      "id": "synthetic-policy-0",
+      "path": "documents/synthetic-policy-0.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "a3af4935b6485bccb5ac15533167915ae16356e67a8e6a41cbb2bcd04d2bb690"
+    },
+    {
+      "id": "synthetic-policy-1",
+      "path": "documents/synthetic-policy-1.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "13c7a75170a42be7f178650769c65ee831215db7098f0abd1d028d227aac618d"
+    },
+    {
+      "id": "synthetic-policy-2",
+      "path": "documents/synthetic-policy-2.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "919a474bea205fd665313fc84dfe783c722e4a8565f8684a7a4e872d2fa5abe1"
+    },
+    {
+      "id": "synthetic-policy-3",
+      "path": "documents/synthetic-policy-3.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "89c855f24dfa83c014d4175db0bd0e428ef9647ade756b77a22fb4bb3818f8c5"
+    },
+    {
+      "id": "synthetic-policy-4",
+      "path": "documents/synthetic-policy-4.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "c7fe4e9d518168366d4bf59bc19580f328a09b1a6da6037d0d47a4f981d0e58d"
+    },
+    {
+      "id": "synthetic-policy-5",
+      "path": "documents/synthetic-policy-5.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "e3e1e48c945c72aa65824990c22ddad693fb83b8e82d4475633723fa5a06d103"
+    },
+    {
+      "id": "synthetic-policy-6",
+      "path": "documents/synthetic-policy-6.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "05afda7ab3f9ffef770f71176e0eaf1e28b858d025f143cba4ed32a7be9f0906"
+    },
+    {
+      "id": "synthetic-policy-7",
+      "path": "documents/synthetic-policy-7.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "ab25f0c216c687fb06197a54e93def20233dd8949ee9be957df16c19cdfb77db"
+    },
+    {
+      "id": "synthetic-policy-8",
+      "path": "documents/synthetic-policy-8.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "927f7f0afc8efd5231ae217bef841c3551c6b8002c082611bd47c971a658d8ef"
+    },
+    {
+      "id": "synthetic-policy-9",
+      "path": "documents/synthetic-policy-9.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "d3a9d2a7233c9ad6298107e99ce9fe76435ddc45fc3e43ddd25532265155500d"
+    },
+    {
+      "id": "synthetic-policy-10",
+      "path": "documents/synthetic-policy-10.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "3609b56fbae3341445629d13e1f5a7d3f1730737c27eedf3d14fde121e9ed926"
+    },
+    {
+      "id": "synthetic-policy-11",
+      "path": "documents/synthetic-policy-11.md",
+      "kind": "policy",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "f5266992999c96b2e152566e1d591ca681b4669f988acd1fe89067463010b9fb"
+    },
+    {
+      "id": "synthetic-handling-0",
+      "path": "documents/synthetic-handling-0.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "19b5f833d0aee99ba06cd570d43058768f7e86c6f3d9ea889c49d7d9927010f2"
+    },
+    {
+      "id": "synthetic-handling-1",
+      "path": "documents/synthetic-handling-1.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "18c4a69213c43911c28512e7b6084e088061954397577f6b1fbb7f010ed16c1a"
+    },
+    {
+      "id": "synthetic-handling-2",
+      "path": "documents/synthetic-handling-2.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "d618d38396d1c7d0da98473fc620ec7edc159127b23499370ce854092c0dec5b"
+    },
+    {
+      "id": "synthetic-handling-3",
+      "path": "documents/synthetic-handling-3.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "96dc60e28c1db3d428bcebdc1ba5f4262b0564fec6675227d815c6c83c7d9514"
+    },
+    {
+      "id": "synthetic-handling-4",
+      "path": "documents/synthetic-handling-4.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "07488d8ed48259427ab75a437ba399a16abcb267ab3b822693a6f201de5065b3"
+    },
+    {
+      "id": "synthetic-handling-5",
+      "path": "documents/synthetic-handling-5.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "9e3e44cb2f408d8edbcab85a17721caac62e7550f6346f212a3a200dcf5aff1c"
+    },
+    {
+      "id": "synthetic-handling-6",
+      "path": "documents/synthetic-handling-6.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "cd70a175faf926eeb9f8606f841881d03c3c72fc6540a7214f945678142dcd50"
+    },
+    {
+      "id": "synthetic-handling-7",
+      "path": "documents/synthetic-handling-7.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "aa3b734d7928bc36cce7188058359afccafc65ce986dcd5857eac6b14013993e"
+    },
+    {
+      "id": "synthetic-handling-8",
+      "path": "documents/synthetic-handling-8.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "543b97d549e905bbb8f4ab09bf9a3982df38e44eb86a031cf46201e53dc7d08a"
+    },
+    {
+      "id": "synthetic-handling-9",
+      "path": "documents/synthetic-handling-9.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "3d96849a21ad04040b6a3463999d94d31a6fd19a83be796d92feeee13c69c142"
+    },
+    {
+      "id": "synthetic-handling-10",
+      "path": "documents/synthetic-handling-10.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "724b32b7178dece097689a90d2b36620448887d565852885575dba8b96e8c6e6"
+    },
+    {
+      "id": "synthetic-handling-11",
+      "path": "documents/synthetic-handling-11.md",
+      "kind": "handling",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "63f47763cb11515c9e2f48f61cc2ca510f417e2fbb70c718f7c1e8591a173f69"
+    },
+    {
+      "id": "synthetic-faq-0",
+      "path": "documents/synthetic-faq-0.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "304df49bc5acbebaf941d5173db232544ca2addf86b6ae9d93c9173d92cc5bf4"
+    },
+    {
+      "id": "synthetic-faq-1",
+      "path": "documents/synthetic-faq-1.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "ff3b80ae2e8363252f0daab3767a69b9f042bcb7d091fc9e9def5bcaeb0cea11"
+    },
+    {
+      "id": "synthetic-faq-2",
+      "path": "documents/synthetic-faq-2.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "3ef3cc2a9da5e39678f453ce41216714b7346f395e68f86e9a49a8665d00b6ef"
+    },
+    {
+      "id": "synthetic-faq-3",
+      "path": "documents/synthetic-faq-3.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "406649316aa0a89c851760da08486077c12a67cde00b24afce1e4c7e1c235059"
+    },
+    {
+      "id": "synthetic-faq-4",
+      "path": "documents/synthetic-faq-4.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "18825fa40e12ba1a8038d8d4c894b31d66cb76fb0251034b0a2c9063c92003c3"
+    },
+    {
+      "id": "synthetic-faq-5",
+      "path": "documents/synthetic-faq-5.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "875d68be580bad53cee2d32d739c3aebc19b45009589819e67d8d73c93771f1e"
+    },
+    {
+      "id": "synthetic-faq-6",
+      "path": "documents/synthetic-faq-6.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "adbc3befddb1ddde6f72fb11d8fb21c34bbbd0c215588b730ba0bb6b9413af0f"
+    },
+    {
+      "id": "synthetic-faq-7",
+      "path": "documents/synthetic-faq-7.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "455d4c54d4ae9041f4939af0ab773bdf37d06ee8b71f8d9b95835a208d8bbcec"
+    },
+    {
+      "id": "synthetic-faq-8",
+      "path": "documents/synthetic-faq-8.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "db057b6941af6d1279db2f5afd9413ff39a1a75f2f56fb23888774c45c927ef2"
+    },
+    {
+      "id": "synthetic-faq-9",
+      "path": "documents/synthetic-faq-9.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "c04f788cf40fa14b3c6a8a5acfbb754f6fbcff5a61bae5c367b86076ae84c209"
+    },
+    {
+      "id": "synthetic-faq-10",
+      "path": "documents/synthetic-faq-10.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "092167c20ac8567aa4b09941cfb10043d356da36f26c0b5c3b5fb311282a9d25"
+    },
+    {
+      "id": "synthetic-faq-11",
+      "path": "documents/synthetic-faq-11.md",
+      "kind": "faq",
+      "tier": "public",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "f7e1b76d43add9fd62241979b4860637e48ceffb1f1159706d2cefbd806a99fc"
+    },
+    {
+      "id": "synthetic-underwriting-0",
+      "path": "documents/synthetic-underwriting-0.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "1694270e60a7b8d0fe209dfa9286768e8a9594a3922ab771d7449075aa41a4b2"
+    },
+    {
+      "id": "synthetic-underwriting-1",
+      "path": "documents/synthetic-underwriting-1.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "c2aab7000365fa1c1a2445878d8a452bd42d3ce71129669f676fc809c3b695e5"
+    },
+    {
+      "id": "synthetic-underwriting-2",
+      "path": "documents/synthetic-underwriting-2.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "6547c27c620893254da586dc538fae720e94067be1ce4d2e344f04a33624772e"
+    },
+    {
+      "id": "synthetic-underwriting-3",
+      "path": "documents/synthetic-underwriting-3.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "36b3d4ccee0c59a15aaeea8f70e0113ec168e64137e9fc756cd32f5304fdc5a0"
+    },
+    {
+      "id": "synthetic-underwriting-4",
+      "path": "documents/synthetic-underwriting-4.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "2b86a8926bfa0efbcebb8d598e4f72724e1c9b5943ad2d3eaf32e7397be68ac0"
+    },
+    {
+      "id": "synthetic-underwriting-5",
+      "path": "documents/synthetic-underwriting-5.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "b2a6053d2146613bab21ee34249d5e81f4506304c1f2dc2c56375282b62b2df1"
+    },
+    {
+      "id": "synthetic-underwriting-6",
+      "path": "documents/synthetic-underwriting-6.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "5b40ac3dbdbb5091866a49d79ed72404945b0f3bd8e24c0bfaa5fe2e694c5e3c"
+    },
+    {
+      "id": "synthetic-underwriting-7",
+      "path": "documents/synthetic-underwriting-7.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "58c98f4f9a5b016887f028916f54561b270e18aabcc604ff88ef9caec3b25068"
+    },
+    {
+      "id": "synthetic-underwriting-8",
+      "path": "documents/synthetic-underwriting-8.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "ecf76cc5a5e55a65602718bfee3d02fef75d7cf3e369c86cfc5246f885337954"
+    },
+    {
+      "id": "synthetic-underwriting-9",
+      "path": "documents/synthetic-underwriting-9.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "cc738e10b0a6f60351d1fefa91a17b9ad3552893bac9f8dec040f565e738124f"
+    },
+    {
+      "id": "synthetic-underwriting-10",
+      "path": "documents/synthetic-underwriting-10.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "de81cce8bb5f80fadca4398b4668717ad79f5ca858bce4672ed542f757319e7c"
+    },
+    {
+      "id": "synthetic-underwriting-11",
+      "path": "documents/synthetic-underwriting-11.md",
+      "kind": "underwriting",
+      "tier": "internal",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "a34bfe462e09bd3ba11aef0ed5567053f6b990c01d065b249a3540d95f442261"
+    },
+    {
+      "id": "synthetic-guide-0",
+      "path": "documents/synthetic-guide-0.md",
+      "kind": "guide",
+      "tier": "broker",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "c7e5ba3834dff403385bcc3cb0d91d82d6261caff236ab2dfb40cb50f6852311"
+    },
+    {
+      "id": "synthetic-guide-1",
+      "path": "documents/synthetic-guide-1.md",
+      "kind": "guide",
+      "tier": "broker",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "cfd26bc6c359490fe0439c968e8200ea0c121281736b39533ba0b2641d52db14"
+    },
+    {
+      "id": "synthetic-guide-2",
+      "path": "documents/synthetic-guide-2.md",
+      "kind": "guide",
+      "tier": "broker",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "5e9f9fb049956043ec9d314fc176b8016e0c955bf0dd905de71f9268d32fb11c"
+    },
+    {
+      "id": "synthetic-guide-3",
+      "path": "documents/synthetic-guide-3.md",
+      "kind": "guide",
+      "tier": "broker",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "81aaa320cfec5ac164594a82956140a47a52d825bb7dbae562055f378f9b62aa"
+    },
+    {
+      "id": "synthetic-guide-4",
+      "path": "documents/synthetic-guide-4.md",
+      "kind": "guide",
+      "tier": "broker",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "3459dfc105c551c9a801f9cac4f7ce8b67c2a96ec2d392d8388bb548be306f3e"
+    },
+    {
+      "id": "synthetic-guide-5",
+      "path": "documents/synthetic-guide-5.md",
+      "kind": "guide",
+      "tier": "broker",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "88a5d70d9a34bae4f334672de9453070d3a9ec9283afa921905721f5d9cd13e2"
+    },
+    {
+      "id": "synthetic-guide-6",
+      "path": "documents/synthetic-guide-6.md",
+      "kind": "guide",
+      "tier": "broker",
+      "team": "claims-a",
+      "owner": null,
+      "sha256": "b7dcac2c1a875fbb615873fd2781f959fa923e82413fefb410953a697ab4efa5"
+    },
+    {
+      "id": "synthetic-guide-7",
+      "path": "documents/synthetic-guide-7.md",
+      "kind": "guide",
+      "tier": "broker",
+      "team": "claims-b",
+      "owner": null,
+      "sha256": "341bca2b7fd3b7fe6b00e16c48fc283f76100557d4250d6fb6d0e76f0df620cd"
+    },
+    {
+      "id": "synthetic-claim-0",
+      "path": "documents/synthetic-claim-0.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-a",
+      "owner": "synthetic-customer-a",
+      "sha256": "85a1ec2f0df38893b4fc61280d1d0d60a4b915b5624b9309fcb0d6ff4b998eb6"
+    },
+    {
+      "id": "synthetic-claim-1",
+      "path": "documents/synthetic-claim-1.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-b",
+      "owner": "synthetic-customer-b",
+      "sha256": "af9409538ea7086f14a547cd96f0883c58e9d913acd8cfe2a03dc219fca291b2"
+    },
+    {
+      "id": "synthetic-claim-2",
+      "path": "documents/synthetic-claim-2.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-a",
+      "owner": "synthetic-customer-a",
+      "sha256": "a98b83c8330777341ada0925fa29fb176c247f18a0278a10ced71865ab24d1fe"
+    },
+    {
+      "id": "synthetic-claim-3",
+      "path": "documents/synthetic-claim-3.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-b",
+      "owner": "synthetic-customer-b",
+      "sha256": "918cf9bffd9a1edfc9c58cf6d15a1e885eae70a440fce32565787036db61d86a"
+    },
+    {
+      "id": "synthetic-claim-4",
+      "path": "documents/synthetic-claim-4.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-a",
+      "owner": "synthetic-customer-a",
+      "sha256": "95a0a6a69e3b73ca3199ab35e7e62157d13b5fdc3faf7742d29f0c2fd43440e9"
+    },
+    {
+      "id": "synthetic-claim-5",
+      "path": "documents/synthetic-claim-5.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-b",
+      "owner": "synthetic-customer-b",
+      "sha256": "05f9d623c0207093280cbcda2556172feeac7056241ae8638711413e237fc36c"
+    },
+    {
+      "id": "synthetic-claim-6",
+      "path": "documents/synthetic-claim-6.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-a",
+      "owner": "synthetic-customer-a",
+      "sha256": "9deb08077fa999b176809a7ee1cf73e5a8b40267ede6d7cb9fb7e4c05c29924b"
+    },
+    {
+      "id": "synthetic-claim-7",
+      "path": "documents/synthetic-claim-7.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-b",
+      "owner": "synthetic-customer-b",
+      "sha256": "6e2114561074394ad4e751c8c7035299bf93ceda9eddec4abaee5fa6feabca8f"
+    },
+    {
+      "id": "synthetic-claim-8",
+      "path": "documents/synthetic-claim-8.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-a",
+      "owner": "synthetic-customer-a",
+      "sha256": "adcadc9c76030645644b1f914ee568308a707d51fab3cde044ac6f159e55bb51"
+    },
+    {
+      "id": "synthetic-claim-9",
+      "path": "documents/synthetic-claim-9.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-b",
+      "owner": "synthetic-customer-b",
+      "sha256": "9ce5ce81b28e348b4df7db0fe17eae3ebf3b484e19329d730ffa550a2a84397a"
+    },
+    {
+      "id": "synthetic-claim-10",
+      "path": "documents/synthetic-claim-10.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-a",
+      "owner": "synthetic-customer-a",
+      "sha256": "6f430549cd8a5c65c245379d6ed38829a3570e80e4fe875f51d71e7196a6bc46"
+    },
+    {
+      "id": "synthetic-claim-11",
+      "path": "documents/synthetic-claim-11.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-b",
+      "owner": "synthetic-customer-b",
+      "sha256": "c9f3cd27e810f2427dd5edfacdf2539ced6b0a7904d103236e84ae3472a37dc8"
+    },
+    {
+      "id": "synthetic-claim-12",
+      "path": "documents/synthetic-claim-12.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-a",
+      "owner": "synthetic-customer-a",
+      "sha256": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+    },
+    {
+      "id": "synthetic-claim-13",
+      "path": "documents/synthetic-claim-13.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-b",
+      "owner": "synthetic-customer-b",
+      "sha256": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+    },
+    {
+      "id": "synthetic-claim-14",
+      "path": "documents/synthetic-claim-14.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-a",
+      "owner": "synthetic-customer-a",
+      "sha256": "d35bd308c14d882d9a711e7e2c8a871c61715d3a414ae8ef348080344168d7f1"
+    },
+    {
+      "id": "synthetic-claim-15",
+      "path": "documents/synthetic-claim-15.md",
+      "kind": "claim",
+      "tier": "restricted",
+      "team": "claims-b",
+      "owner": "synthetic-customer-b",
+      "sha256": "4146862e0d3f8f2042e15d6db1f77f08a951ca6b0644cbe67c9d328db29b62cd"
+    }
+  ],
+  "bindings": [
+    {
+      "record": "synthetic-policy-0",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-0",
+      "field": "excess",
+      "quote": "Excess: GBP 100.00."
+    },
+    {
+      "record": "synthetic-policy-0",
+      "field": "limit",
+      "quote": "Limit: GBP 2000.00."
+    },
+    {
+      "record": "synthetic-policy-0",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-0",
+      "field": "window",
+      "quote": "Notification window: 14 days."
+    },
+    {
+      "record": "synthetic-policy-1",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-1",
+      "field": "excess",
+      "quote": "Excess: GBP 125.00."
+    },
+    {
+      "record": "synthetic-policy-1",
+      "field": "limit",
+      "quote": "Limit: GBP 2500.00."
+    },
+    {
+      "record": "synthetic-policy-1",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-1",
+      "field": "window",
+      "quote": "Notification window: 15 days."
+    },
+    {
+      "record": "synthetic-policy-2",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-2",
+      "field": "excess",
+      "quote": "Excess: GBP 150.00."
+    },
+    {
+      "record": "synthetic-policy-2",
+      "field": "limit",
+      "quote": "Limit: GBP 3000.00."
+    },
+    {
+      "record": "synthetic-policy-2",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-2",
+      "field": "window",
+      "quote": "Notification window: 16 days."
+    },
+    {
+      "record": "synthetic-policy-3",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-3",
+      "field": "excess",
+      "quote": "Excess: GBP 175.00."
+    },
+    {
+      "record": "synthetic-policy-3",
+      "field": "limit",
+      "quote": "Limit: GBP 3500.00."
+    },
+    {
+      "record": "synthetic-policy-3",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-3",
+      "field": "window",
+      "quote": "Notification window: 17 days."
+    },
+    {
+      "record": "synthetic-policy-4",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-4",
+      "field": "excess",
+      "quote": "Excess: GBP 200.00."
+    },
+    {
+      "record": "synthetic-policy-4",
+      "field": "limit",
+      "quote": "Limit: GBP 4000.00."
+    },
+    {
+      "record": "synthetic-policy-4",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-4",
+      "field": "window",
+      "quote": "Notification window: 18 days."
+    },
+    {
+      "record": "synthetic-policy-5",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-5",
+      "field": "excess",
+      "quote": "Excess: GBP 225.00."
+    },
+    {
+      "record": "synthetic-policy-5",
+      "field": "limit",
+      "quote": "Limit: GBP 4500.00."
+    },
+    {
+      "record": "synthetic-policy-5",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-5",
+      "field": "window",
+      "quote": "Notification window: 19 days."
+    },
+    {
+      "record": "synthetic-policy-6",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-6",
+      "field": "excess",
+      "quote": "Excess: GBP 250.00."
+    },
+    {
+      "record": "synthetic-policy-6",
+      "field": "limit",
+      "quote": "Limit: GBP 5000.00."
+    },
+    {
+      "record": "synthetic-policy-6",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-6",
+      "field": "window",
+      "quote": "Notification window: 20 days."
+    },
+    {
+      "record": "synthetic-policy-7",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-7",
+      "field": "excess",
+      "quote": "Excess: GBP 275.00."
+    },
+    {
+      "record": "synthetic-policy-7",
+      "field": "limit",
+      "quote": "Limit: GBP 5500.00."
+    },
+    {
+      "record": "synthetic-policy-7",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-7",
+      "field": "window",
+      "quote": "Notification window: 21 days."
+    },
+    {
+      "record": "synthetic-policy-8",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-8",
+      "field": "excess",
+      "quote": "Excess: GBP 300.00."
+    },
+    {
+      "record": "synthetic-policy-8",
+      "field": "limit",
+      "quote": "Limit: GBP 6000.00."
+    },
+    {
+      "record": "synthetic-policy-8",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-8",
+      "field": "window",
+      "quote": "Notification window: 22 days."
+    },
+    {
+      "record": "synthetic-policy-9",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-9",
+      "field": "excess",
+      "quote": "Excess: GBP 325.00."
+    },
+    {
+      "record": "synthetic-policy-9",
+      "field": "limit",
+      "quote": "Limit: GBP 6500.00."
+    },
+    {
+      "record": "synthetic-policy-9",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-9",
+      "field": "window",
+      "quote": "Notification window: 23 days."
+    },
+    {
+      "record": "synthetic-policy-10",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-10",
+      "field": "excess",
+      "quote": "Excess: GBP 350.00."
+    },
+    {
+      "record": "synthetic-policy-10",
+      "field": "limit",
+      "quote": "Limit: GBP 7000.00."
+    },
+    {
+      "record": "synthetic-policy-10",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-10",
+      "field": "window",
+      "quote": "Notification window: 24 days."
+    },
+    {
+      "record": "synthetic-policy-11",
+      "field": "currency",
+      "quote": "Currency: GBP."
+    },
+    {
+      "record": "synthetic-policy-11",
+      "field": "excess",
+      "quote": "Excess: GBP 375.00."
+    },
+    {
+      "record": "synthetic-policy-11",
+      "field": "limit",
+      "quote": "Limit: GBP 7500.00."
+    },
+    {
+      "record": "synthetic-policy-11",
+      "field": "covered",
+      "quote": "Covered perils: water, fire."
+    },
+    {
+      "record": "synthetic-policy-11",
+      "field": "window",
+      "quote": "Notification window: 25 days."
+    },
+    {
+      "record": "synthetic-claim-0",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-a."
+    },
+    {
+      "record": "synthetic-claim-0",
+      "field": "status",
+      "quote": "Status: pending."
+    },
+    {
+      "record": "synthetic-claim-0",
+      "field": "loss",
+      "quote": "Loss: 500.00."
+    },
+    {
+      "record": "synthetic-claim-0",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-0",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-0",
+      "field": "notified",
+      "quote": "Notified: 2026-01-10."
+    },
+    {
+      "record": "synthetic-claim-0",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-0."
+    },
+    {
+      "record": "synthetic-claim-1",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-b."
+    },
+    {
+      "record": "synthetic-claim-1",
+      "field": "status",
+      "quote": "Status: approved."
+    },
+    {
+      "record": "synthetic-claim-1",
+      "field": "loss",
+      "quote": "Loss: 800.00."
+    },
+    {
+      "record": "synthetic-claim-1",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-1",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-1",
+      "field": "notified",
+      "quote": "Notified: 2026-01-11."
+    },
+    {
+      "record": "synthetic-claim-1",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-1."
+    },
+    {
+      "record": "synthetic-claim-2",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-a."
+    },
+    {
+      "record": "synthetic-claim-2",
+      "field": "status",
+      "quote": "Status: declined."
+    },
+    {
+      "record": "synthetic-claim-2",
+      "field": "loss",
+      "quote": "Loss: 1100.00."
+    },
+    {
+      "record": "synthetic-claim-2",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-2",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-2",
+      "field": "notified",
+      "quote": "Notified: 2026-01-12."
+    },
+    {
+      "record": "synthetic-claim-2",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-2."
+    },
+    {
+      "record": "synthetic-claim-3",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-b."
+    },
+    {
+      "record": "synthetic-claim-3",
+      "field": "status",
+      "quote": "Status: paid."
+    },
+    {
+      "record": "synthetic-claim-3",
+      "field": "loss",
+      "quote": "Loss: 1400.00."
+    },
+    {
+      "record": "synthetic-claim-3",
+      "field": "peril",
+      "quote": "Peril: fire."
+    },
+    {
+      "record": "synthetic-claim-3",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-3",
+      "field": "notified",
+      "quote": "Notified: 2026-01-13."
+    },
+    {
+      "record": "synthetic-claim-3",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-3."
+    },
+    {
+      "record": "synthetic-claim-4",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-a."
+    },
+    {
+      "record": "synthetic-claim-4",
+      "field": "status",
+      "quote": "Status: pending."
+    },
+    {
+      "record": "synthetic-claim-4",
+      "field": "loss",
+      "quote": "Loss: 1700.00."
+    },
+    {
+      "record": "synthetic-claim-4",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-4",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-4",
+      "field": "notified",
+      "quote": "Notified: 2026-01-14."
+    },
+    {
+      "record": "synthetic-claim-4",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-4."
+    },
+    {
+      "record": "synthetic-claim-5",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-b."
+    },
+    {
+      "record": "synthetic-claim-5",
+      "field": "status",
+      "quote": "Status: approved."
+    },
+    {
+      "record": "synthetic-claim-5",
+      "field": "loss",
+      "quote": "Loss: 2000.00."
+    },
+    {
+      "record": "synthetic-claim-5",
+      "field": "peril",
+      "quote": "Peril: fire."
+    },
+    {
+      "record": "synthetic-claim-5",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-5",
+      "field": "notified",
+      "quote": "Notified: 2026-01-15."
+    },
+    {
+      "record": "synthetic-claim-5",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-5."
+    },
+    {
+      "record": "synthetic-claim-6",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-a."
+    },
+    {
+      "record": "synthetic-claim-6",
+      "field": "status",
+      "quote": "Status: declined."
+    },
+    {
+      "record": "synthetic-claim-6",
+      "field": "loss",
+      "quote": "Loss: 2300.00."
+    },
+    {
+      "record": "synthetic-claim-6",
+      "field": "peril",
+      "quote": "Peril: theft."
+    },
+    {
+      "record": "synthetic-claim-6",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-6",
+      "field": "notified",
+      "quote": "Notified: 2026-01-16."
+    },
+    {
+      "record": "synthetic-claim-6",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-6."
+    },
+    {
+      "record": "synthetic-claim-7",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-b."
+    },
+    {
+      "record": "synthetic-claim-7",
+      "field": "status",
+      "quote": "Status: paid."
+    },
+    {
+      "record": "synthetic-claim-7",
+      "field": "loss",
+      "quote": "Loss: 2600.00."
+    },
+    {
+      "record": "synthetic-claim-7",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-7",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-7",
+      "field": "notified",
+      "quote": "Notified: 2026-01-17."
+    },
+    {
+      "record": "synthetic-claim-7",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-7."
+    },
+    {
+      "record": "synthetic-claim-8",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-a."
+    },
+    {
+      "record": "synthetic-claim-8",
+      "field": "status",
+      "quote": "Status: pending."
+    },
+    {
+      "record": "synthetic-claim-8",
+      "field": "loss",
+      "quote": "Loss: 2900.00."
+    },
+    {
+      "record": "synthetic-claim-8",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-8",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-8",
+      "field": "notified",
+      "quote": "Notified: 2026-01-18."
+    },
+    {
+      "record": "synthetic-claim-8",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-8."
+    },
+    {
+      "record": "synthetic-claim-9",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-b."
+    },
+    {
+      "record": "synthetic-claim-9",
+      "field": "status",
+      "quote": "Status: approved."
+    },
+    {
+      "record": "synthetic-claim-9",
+      "field": "loss",
+      "quote": "Loss: 3200.00."
+    },
+    {
+      "record": "synthetic-claim-9",
+      "field": "peril",
+      "quote": "Peril: fire."
+    },
+    {
+      "record": "synthetic-claim-9",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-9",
+      "field": "notified",
+      "quote": "Notified: 2026-01-19."
+    },
+    {
+      "record": "synthetic-claim-9",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-9."
+    },
+    {
+      "record": "synthetic-claim-10",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-a."
+    },
+    {
+      "record": "synthetic-claim-10",
+      "field": "status",
+      "quote": "Status: declined."
+    },
+    {
+      "record": "synthetic-claim-10",
+      "field": "loss",
+      "quote": "Loss: 3500.00."
+    },
+    {
+      "record": "synthetic-claim-10",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-10",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-10",
+      "field": "notified",
+      "quote": "Notified: 2026-01-20."
+    },
+    {
+      "record": "synthetic-claim-10",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-10."
+    },
+    {
+      "record": "synthetic-claim-11",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-b."
+    },
+    {
+      "record": "synthetic-claim-11",
+      "field": "status",
+      "quote": "Status: paid."
+    },
+    {
+      "record": "synthetic-claim-11",
+      "field": "loss",
+      "quote": "Loss: 3800.00."
+    },
+    {
+      "record": "synthetic-claim-11",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-11",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-11",
+      "field": "notified",
+      "quote": "Notified: 2026-01-21."
+    },
+    {
+      "record": "synthetic-claim-11",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-11."
+    },
+    {
+      "record": "synthetic-claim-12",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-a."
+    },
+    {
+      "record": "synthetic-claim-12",
+      "field": "status",
+      "quote": "Status: pending."
+    },
+    {
+      "record": "synthetic-claim-12",
+      "field": "loss",
+      "quote": "Loss: 4100.00."
+    },
+    {
+      "record": "synthetic-claim-12",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-12",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-12",
+      "field": "notified",
+      "quote": "Notified: 2026-01-22."
+    },
+    {
+      "record": "synthetic-claim-12",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-0."
+    },
+    {
+      "record": "synthetic-claim-13",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-b."
+    },
+    {
+      "record": "synthetic-claim-13",
+      "field": "status",
+      "quote": "Status: approved."
+    },
+    {
+      "record": "synthetic-claim-13",
+      "field": "loss",
+      "quote": "Loss: 4400.00."
+    },
+    {
+      "record": "synthetic-claim-13",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-13",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-13",
+      "field": "notified",
+      "quote": "Notified: 2026-01-23."
+    },
+    {
+      "record": "synthetic-claim-13",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-1."
+    },
+    {
+      "record": "synthetic-claim-14",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-a."
+    },
+    {
+      "record": "synthetic-claim-14",
+      "field": "status",
+      "quote": "Status: declined."
+    },
+    {
+      "record": "synthetic-claim-14",
+      "field": "loss",
+      "quote": "Loss: 4700.00."
+    },
+    {
+      "record": "synthetic-claim-14",
+      "field": "peril",
+      "quote": "Peril: water."
+    },
+    {
+      "record": "synthetic-claim-14",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-14",
+      "field": "notified",
+      "quote": "Notified: 2026-01-24."
+    },
+    {
+      "record": "synthetic-claim-14",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-2."
+    },
+    {
+      "record": "synthetic-claim-15",
+      "field": "owner",
+      "quote": "Owner: synthetic-customer-b."
+    },
+    {
+      "record": "synthetic-claim-15",
+      "field": "status",
+      "quote": "Status: paid."
+    },
+    {
+      "record": "synthetic-claim-15",
+      "field": "loss",
+      "quote": "Loss: 5000.00."
+    },
+    {
+      "record": "synthetic-claim-15",
+      "field": "peril",
+      "quote": "Peril: fire."
+    },
+    {
+      "record": "synthetic-claim-15",
+      "field": "incident",
+      "quote": "Incident: 2026-01-01."
+    },
+    {
+      "record": "synthetic-claim-15",
+      "field": "notified",
+      "quote": "Notified: 2026-01-25."
+    },
+    {
+      "record": "synthetic-claim-15",
+      "field": "policy_id",
+      "quote": "Policy_Id: synthetic-policy-3."
+    }
+  ],
+  "provenance": {
+    "authoring": "AI-drafted, edited and mechanically checked; independent human review pending",
+    "insurer": "Synthetic Lanternfold Mutual"
+  }
+}

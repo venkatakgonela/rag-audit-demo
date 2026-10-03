@@ -1,6 +1,8 @@
 # Architecture: synthetic RAG audit demonstration
 
-Implemented: health, corpus v2, transactional ingestion, scoped retrieval/rules, extractive answering, signed fixture identity and durable tracing. Generation defaults to fake; a Responses adapter is implemented for opt-in local use only, never exercised by CI. Calibrated evaluation and release gating remain Planned. All domain records are synthetic.
+Implemented: health, tracked corpus v3, transactional ingestion, scoped retrieval/rules, extractive answering, signed fixture identity and durable tracing. Drafted golden data and independent offline checks are implemented; the dataset is outside ingestion and generation boundaries. Generation defaults to fake; a Responses adapter is implemented for opt-in local use only, never exercised by CI. Calibrated evaluation and release gating remain Planned. All domain records are synthetic.
+
+Implemented data flow: `datasets/corpus-v3` → source/hash/structured-binding validation → unchanged chunker and ingestion. `datasets/evaluation` → offline label checks and independent SQL visibility comparison, never provider prompts. See [evaluation data](evaluation-data.md) and [ADR 0021](decisions/0021-versioned-evaluation-data.md). No database tables changed. Rule version v2 qualifies payout by status without changing arithmetic. Extractive verification rejection now presents as no-answer while its trace remains distinct; invalid rule rephrasing retains template fallback ([ADR 0022](decisions/0022-answer-outcome-presentation.md)).
 
 ## Key design ideas
 
@@ -46,7 +48,8 @@ Legend: all shown components and links are Implemented.
 
 ```mermaid
 flowchart LR
-    corpus["Seeded corpus generator"] --> files["Markdown and ACL manifest"]
+    corpus["Tracked corpus v3"] --> files["Validated Markdown and ACL manifest"]
+    labels["Drafted golden data and access intent"] --> checks["Offline facts and freeze checks"]
     files --> chunks["Section-aware exact source slices"]
     chunks --> embedding["Section path plus text embedding"]
     embedding --> ingest["Atomic single-corpus replacement"]

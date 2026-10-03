@@ -26,6 +26,8 @@ Record significant product choices here. Preserve accepted decision text; dated 
 | [0018: Extractive answer policy](0018-extractive-answer-policy.md) | Accepted | October 2, 2026 |
 | [0019: Generation, tracing and accounting](0019-generation-tracing-accounting.md) | Accepted | October 2, 2026 |
 | [0020: Opt-in Responses integration](0020-opt-in-responses-provider.md) | Accepted | October 3, 2026 |
+| [0021: Versioned evaluation data](0021-versioned-evaluation-data.md) | Accepted; labels drafted | October 3, 2026 |
+| [0022: Answer outcome presentation](0022-answer-outcome-presentation.md) | Accepted | October 3, 2026 |
 
 ## Pending decisions
 
@@ -35,7 +37,7 @@ All entries are **Planned**, not accepted choices. Milestones describe product w
 | --- | --- | --- |
 | Reranker | None versus local cross-encoder; quality/latency trade-off | Retrieval evaluation |
 | Production provider deployment | Opt-in local Responses integration exists; deployment and production identity remain undecided | Production design |
-| Judge and calibration | Candidate judge models, rubric, human calibration and error reporting | Evaluation harness |
+| Extractive evaluation and calibration | Key-fact and citation checks, dev-only calibration; no LLM judge | Evaluation harness |
 | CI gate thresholds | Zero-leak/citation/rule safety constraints plus evidence-based quality tolerance | Regression gate |
 | Profile calibration | Per-embedder provisional constants exist; labelled precision/recall calibration remains planned | Retrieval evaluation |
 | Billing and tighter token bounds | Versioned estimates and qualified byte bound exist; invoice reconciliation and verified tokenizer counter remain planned | Production accounting |

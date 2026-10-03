@@ -39,26 +39,33 @@ def database(tmp_path):
 def expected_documents(subject):
     public = {
         f"synthetic-{kind}-{ordinal}"
-        for kind in ("policy", "faq")
-        for ordinal in range(10)
+        for kind in ("policy", "faq", "handling")
+        for ordinal in range(12)
     }
     if "admin" in subject:
         return {
             f"synthetic-{kind}-{ordinal}"
-            for kind in ("policy", "faq", "guide", "underwriting", "claim")
-            for ordinal in range(10)
+            for kind, count in (
+                ("policy", 12),
+                ("faq", 12),
+                ("handling", 12),
+                ("guide", 8),
+                ("underwriting", 12),
+                ("claim", 16),
+            )
+            for ordinal in range(count)
         }
     parity = 0 if subject.endswith("-a") else 1
-    claims = {f"synthetic-claim-{ordinal}" for ordinal in range(parity, 10, 2)}
+    claims = {f"synthetic-claim-{ordinal}" for ordinal in range(parity, 16, 2)}
     if "customer" in subject:
         return public | claims
     if "broker" in subject:
-        return public | claims | {f"synthetic-guide-{ordinal}" for ordinal in range(10)}
+        return public | claims | {f"synthetic-guide-{ordinal}" for ordinal in range(8)}
     return (
         public
         | claims
-        | {f"synthetic-underwriting-{ordinal}" for ordinal in range(10)}
-        | {f"synthetic-guide-{ordinal}" for ordinal in range(parity, 10, 2)}
+        | {f"synthetic-underwriting-{ordinal}" for ordinal in range(12)}
+        | {f"synthetic-guide-{ordinal}" for ordinal in range(parity, 8, 2)}
     )
 
 
@@ -170,6 +177,14 @@ def test_idempotence_offsets_atomic_failure_and_model_mismatch(database):
 
 def test_section_path_and_rrf_raw_signals(database):
     connection, _ = database
+    vector = FakeEmbedder().encode(["assessment"], query=True)[0]
+    vector_ids = {
+        row[0]
+        for row in connection.execute(
+            "SELECT id FROM demo_chunks ORDER BY embedding <=> %s::vector,id LIMIT 50",
+            (str(vector),),
+        ).fetchall()
+    }
     result = retrieve(
         connection, "synthetic-admin", "assessment", FakeEmbedder(), top_k=20
     )
@@ -177,14 +192,19 @@ def test_section_path_and_rrf_raw_signals(database):
     for row in result["chunks"]:
         assert row["score"] > 0
         if row["keyword_rank"] is not None:
-            assert row["score"] > 1 / (60 + row["keyword_rank"])
+            contribution = 1 / (60 + row["keyword_rank"])
+            if row["id"] in vector_ids:
+                assert row["score"] > contribution
+            else:
+                # Keyword-only candidates outside the vector top 50 contribute once.
+                assert row["score"] == pytest.approx(contribution)
 
 
 def test_section_only_term_is_indexed_and_affects_embedding(database):
     connection, directory = database
     manifest = json.loads((directory / "manifest.json").read_text())
-    document = manifest["documents"][0]
-    source = "# Synthetic zephyrunique\n\n" + "ordinary evidence " * 700
+    document = next(item for item in manifest["documents"] if item["kind"] == "faq")
+    source = "# SYNTHETIC zephyrunique\n\n" + "ordinary evidence " * 700
     (directory / document["path"]).write_text(source)
     document["sha256"] = hashlib.sha256(source.encode()).hexdigest()
     (directory / "manifest.json").write_text(json.dumps(manifest))
@@ -281,7 +301,9 @@ def test_errors_are_redacted(database):
 def test_concurrent_ingestion_and_acl_replacement(database):
     connection, directory = database
     second = directory / "second"
-    generate(second, seed=43)
+    from corpus_helpers import revised_corpus
+
+    revised_corpus(second, "replacement")
     settings = Settings()
     assert settings.database_url is not None
     address = settings.database_url.get_secret_value()

@@ -7,6 +7,7 @@ import psycopg
 
 from rag_audit.access import Identity, validate_document
 from rag_audit.chunking import chunk_document
+from rag_audit.corpus import validate_sources
 from rag_audit.embeddings import Embedder
 from rag_audit.structured import validate_records, write_records
 
@@ -27,6 +28,7 @@ def ingest(connection: psycopg.Connection, directory: Path, embedder: Embedder) 
     for document in manifest["documents"]:
         validate_document(document, users, teams)
     validate_records(manifest)
+    validate_sources(directory, manifest)
     records = []
     seen = set()
     for document in manifest["documents"]:
