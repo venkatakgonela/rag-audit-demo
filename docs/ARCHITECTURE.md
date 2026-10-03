@@ -1,5 +1,7 @@
 # Architecture: synthetic RAG audit demonstration
 
+October 3 completion update: the [evaluation harness](evaluation.md) and `local-calibrated-v1` default (V1 cosine >=0.75) are Implemented. Fake stays untuned. Reranker not adopted. Historical pending-profile wording below is superseded by [ADR 0025](decisions/0025-calibrated-local-gate.md). CI gates/replay remain Planned.
+
 October 3 evaluation update: dev-only calibration and an experimental pairwise CPU reranker are Implemented. The reranker sees only the existing top-20 authorised candidates before the gate; it does not expand retrieval or change rules/verification. The [completed trial](reranker-dev.md) did not meet the adoption threshold ([ADR 0023](decisions/0023-cpu-reranker-trial.md)); it is not the default profile. Canonical test baselines, default profile adoption and release gating remain Planned; references to planned evaluation below describe those unfinished stages.
 
 Implemented: health, tracked corpus v3, transactional ingestion, scoped retrieval/rules, extractive answering, signed fixture identity and durable tracing. Drafted golden data and independent offline checks are implemented; the dataset is outside ingestion and generation boundaries. Generation defaults to fake; a Responses adapter is implemented for opt-in local use only, never exercised by CI. Calibrated evaluation and release gating remain Planned. All domain records are synthetic.
@@ -61,7 +63,10 @@ flowchart LR
     eligible --> ranking["Exact cosine plus full-text ranks"]
     ranking --> result["RRF and eligible-only raw signals"]
     eligible --> rules["Authorised structured Decimal rules"]
-    result --> gate["Versioned gate and byte budgets"]
+    result --> gate["Calibrated real cosine 0.75; fake demo gate; byte budgets"]
+    labels --> evaluator["Isolated evaluator; dev calibration; logged test runs"]
+    evaluator --> subject
+    trace --> metrics["Independent facts, rules and counterfactual metrics"]
     gate --> fake["Offline fake evidence selector"]
     fake --> verify["Exact citation and echo verification"]
     gate --> real["Opt-in Responses: price and byte-bound preflight"]
@@ -76,7 +81,7 @@ The [chunker](../src/rag_audit/chunking.py) targets 384 tokens, ceiling 480, ove
 ## Implemented answering flow
 
 Caption: **Question-answering sequence** — offline answer decisions and durable traces.
-Legend: messages are Implemented; real provider is opt-in local only, evaluation remains Planned.
+Legend: messages are Implemented; real provider is opt-in local only; CI quality gates remain Planned.
 
 ```mermaid
 sequenceDiagram
@@ -103,7 +108,7 @@ sequenceDiagram
     Policy-->>Caller: Verified response or generic storage error
 ```
 
-Nearest neighbours can be irrelevant. Raw retrieval is unchanged; answering applies the provisional gate and extractive policy. Hidden/absent explicit entities return identical no-answer; arbitrary free text has inaccessible-row noninterference, not hidden-intent detection. Constant-time execution is not promised.
+Nearest neighbours can be irrelevant. Raw retrieval is unchanged; answering applies the calibrated real or untuned fake gate and extractive policy. Hidden/absent explicit entities return identical no-answer; arbitrary free text has inaccessible-row noninterference, not hidden-intent detection. Constant-time execution is not promised.
 
 ## Implemented data model
 

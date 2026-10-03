@@ -133,9 +133,29 @@ def test_profile_boundaries(model, profile):
     source["cosine_similarity"] = 1
     for keyword, rank in [(0, 1), (0.1, None), (float("nan"), 1)]:
         source.update(keyword_score=keyword, keyword_rank=rank)
-        assert not select_evidence([source], model, Settings())[0]
+        expected = profile.variant == "V1" and keyword == keyword
+        assert bool(select_evidence([source], model, Settings())[0]) is expected
     with pytest.raises(ValueError):
         select_evidence([], "unknown", Settings())
+
+
+def test_calibrated_real_profile_and_untuned_fake_profile():
+    real = next(
+        profile
+        for identity, profile in PROFILES.items()
+        if identity != FakeEmbedder.identity
+    )
+    assert (real.version, real.variant, real.cosine_floor) == (
+        "local-calibrated-v1",
+        "V1",
+        0.75,
+    )
+    fake = PROFILES[FakeEmbedder.identity]
+    assert (fake.version, fake.variant, fake.cosine_floor) == (
+        "fake-demo-v1",
+        "V0",
+        0.15,
+    )
 
 
 def test_whole_chunk_skip_continue_utf8_and_count_budget():

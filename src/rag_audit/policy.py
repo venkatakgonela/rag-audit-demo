@@ -1,5 +1,4 @@
 import json
-import math
 from dataclasses import dataclass
 from enum import StrEnum
 
@@ -37,11 +36,12 @@ class VerificationError(ValueError):
 class Profile:
     version: str
     cosine_floor: float
+    variant: str = "V0"
 
 
 PROFILES = {
     FakeEmbedder.identity: Profile("fake-demo-v1", 0.15),
-    f"{MODEL}@{REVISION}:cls:l2:section-v1": Profile("local-provisional-v1", 0.55),
+    f"{MODEL}@{REVISION}:cls:l2:section-v1": Profile("local-calibrated-v1", 0.75, "V1"),
 }
 
 
@@ -85,18 +85,9 @@ def select_evidence(
     selected: list[dict] = []
     skips = []
     used = 0
+    effective_gate = gate or Gate(profile.variant, profile.cosine_floor)
     for chunk in chunks:
-        cosine, keyword = chunk["cosine_similarity"], chunk["keyword_score"]
-        if (gate is not None and not gate.accepts(chunk, question)) or (
-            gate is None
-            and (
-                not math.isfinite(cosine)
-                or not math.isfinite(keyword)
-                or cosine < profile.cosine_floor
-                or keyword <= 0
-                or chunk["keyword_rank"] is None
-            )
-        ):
+        if not effective_gate.accepts(chunk, question):
             skips.append("weak_signal")
             continue
         size = len(chunk["text"].encode())

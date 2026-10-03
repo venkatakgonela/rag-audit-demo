@@ -6,6 +6,7 @@ from test_evaluation_harness import ROOT
 from test_reranking import FixedReranker
 
 from rag_audit.embeddings import FakeEmbedder
+from rag_audit.evaluation import runner
 from rag_audit.evaluation.data import load_split
 from rag_audit.evaluation.metrics import assess
 from rag_audit.evaluation.oracle import rule_failures
@@ -14,6 +15,30 @@ from rag_audit.evaluation_data import read_json
 from rag_audit.gate import Gate
 
 pytestmark = pytest.mark.integration
+
+
+def test_counterfactual_detects_changed_bytes_and_global_signal(database, monkeypatch):
+    connection, _ = database
+    case = next(
+        case for case in load_split(ROOT, "dev") if case.challenge_kind == "free_text"
+    )
+    original = runner.run_phrasing
+    calls = 0
+
+    async def changed(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        row = await original(*args, **kwargs)
+        if calls % 2 == 0:
+            row["response_bytes"] += " "
+            row["chunks"][0]["synthetic_global_count"] = 1
+        return row
+
+    monkeypatch.setattr(runner, "run_phrasing", changed)
+    rows = run_cases(connection, FakeEmbedder(), [case], None)
+    for row in rows:
+        assert "counterfactual_bytes" in row["hard_failures"]
+        assert "counterfactual_signals" in row["hard_failures"]
 
 
 def test_reranker_hidden_removal_invariance(database):

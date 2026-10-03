@@ -1,5 +1,11 @@
 # Glossary
 
+- **Evidence sufficiency:** at least one selected chunk; not a correct answer guarantee.
+- **Anchored tie band:** configurations with minimum false evidence or one more, before quality tie breaks.
+- **Counterfactual probe:** repeat an unauthorised request with absent identity or hidden rows removed, without inflating primary denominators.
+- **Wilson interval:** descriptive uncertainty interval for a binomial proportion, not a significance or independence guarantee.
+- **Reservation ledger:** durable worst-case allocation before dispatch, settled against reported usage while unknown costs remain reserved.
+
 - **Golden case:** a drafted information need with expected source facts and two question phrasings; not a measured model success.
 - **Candidate freeze:** explicit semantic digests pending acceptance; tests verify rather than refresh them.
 - **Independent access intent:** authored allowed-subject lists compared with the SQL policy, not generated from that policy.

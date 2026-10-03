@@ -1,6 +1,6 @@
 # rag-audit-demo
 
-A synthetic answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Offline fake generation is the default; real Responses generation is opt-in local use only, never exercised in CI. Calibrated evaluation and regression gating remain planned.
+A synthetic answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Offline fake generation is the default; real Responses generation is opt-in local only, never exercised in CI. [Isolated evaluation and dev calibration](docs/evaluation.md) are implemented; the real profile is `local-calibrated-v1`, cosine >=0.75. Regression gating/replay remain planned.
 
 > **All data is synthetic.** The generated corpus models a fictional insurer. Nothing here is real customer, policy or claims data. Database credentials and identifiers are synthetic, disposable and local-only.
 

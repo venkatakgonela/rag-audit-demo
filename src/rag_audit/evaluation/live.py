@@ -1,7 +1,7 @@
 import base64
 import hashlib
 import json
-from dataclasses import asdict, replace
+from dataclasses import replace
 from decimal import Decimal
 from pathlib import Path
 from urllib.parse import quote
@@ -104,9 +104,10 @@ class RecordingTransport(httpx.AsyncBaseTransport):
             len(body) + INPUT_MARGIN, data["max_output_tokens"], request_hash
         )
         self.calls += 1
-        transport = self.transport_factory()
+        transport = None
         actual = None
         try:
+            transport = self.transport_factory()
             response = await transport.handle_async_request(request)
             content = b""
             async for part in response.aiter_bytes():
@@ -124,29 +125,41 @@ class RecordingTransport(httpx.AsyncBaseTransport):
                     payload=decoded.get("output"),
                     usage=decoded.get("usage"),
                     status=decoded.get("status"),
+                    reported_model=decoded.get("model"),
+                    http_status=response.status_code,
                 ),
             )
             usage = parse_usage(decoded["usage"])
             actual = estimate(usage, self.prices.get(decoded.get("model")))
-            append_event(
-                self.output,
-                dict(
-                    request_hash=request_hash,
-                    usage=asdict(usage),
-                    payload=decoded.get("output"),
-                    status=decoded.get("status"),
-                ),
-            )
+            if (
+                usage.input is None
+                or usage.output is None
+                or usage.input > len(body) + INPUT_MARGIN
+                or usage.output > data["max_output_tokens"]
+            ):
+                self.ledger.stopped = True
+                append_event(
+                    self.ledger.path,
+                    dict(event="usage_bound_exceeded", request_hash=request_hash),
+                )
             return httpx.Response(response.status_code, content=content)
         finally:
             self.ledger.settle(reserved, actual, request_hash)
-            await transport.aclose()
+            if transport is not None:
+                await transport.aclose()
 
     async def aclose(self):
         pass
 
 
 def live_provider(settings, ledger: Ledger, raw_output: Path):
+    if (
+        settings.generation_input_price,
+        settings.generation_cached_price,
+        settings.generation_write_price,
+        settings.generation_output_price,
+    ) != (Decimal("10"), Decimal("1"), Decimal("12.5"), Decimal("50")):
+        raise ValueError("Evaluation requires declared operator reservation prices")
     provider, prices = configured_provider(settings)
     if not isinstance(provider, ResponsesProvider):
         raise ValueError("Live mode requires explicitly configured provider")

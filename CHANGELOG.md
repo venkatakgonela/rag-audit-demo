@@ -13,6 +13,7 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Changed
 
+- Adopted `local-calibrated-v1`: pinned real embeddings use cosine >=0.75 without the lexical conjunction; fake profile, retrieval ACLs, rules and verification remain unchanged. Added isolated held-out exposure logging, explicit partial coverage, forecast matching and private live recording safeguards. CPU reranker remains not adopted.
 - Candidate labels revised before acceptance to add six free-text hidden-answer traps, six in-domain near misses and four ordinary injection questions; still 60 cases, 40 dev/20 test, with unchanged corpus and subject allocation. Candidate semantic digests regenerated for the new coverage and explicit acceptable-decision/forbidden-fact labels; all labels remain drafted.
 - Extractive verification traces now include a bounded `verification_reason` (`schema`, `citation`, `quotation`, `instruction_echo`, `duplicate`); this field never enters the public response and does not change verification criteria.
 - Extractive verification rejection returns the standard HTTP 200 no-answer, with a distinct trace reason; infrastructure errors and deterministic rule rephrase fallback retain their prior handling.

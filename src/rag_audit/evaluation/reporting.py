@@ -71,12 +71,22 @@ def summarize_rows(rows: list[dict]) -> dict:
         stages = sorted({key for row in selected for key in row["trace"]["durations"]})
         result["latency"][str(invoked)] = {
             stage: dict(
-                n=len(selected),
+                n=sum(stage in row["trace"]["durations"] for row in selected),
                 p50=percentile(
-                    [row["trace"]["durations"][stage] for row in selected], 0.5
+                    [
+                        row["trace"]["durations"][stage]
+                        for row in selected
+                        if stage in row["trace"]["durations"]
+                    ],
+                    0.5,
                 ),
                 p95=percentile(
-                    [row["trace"]["durations"][stage] for row in selected], 0.95
+                    [
+                        row["trace"]["durations"][stage]
+                        for row in selected
+                        if stage in row["trace"]["durations"]
+                    ],
+                    0.95,
                 ),
             )
             for stage in stages
@@ -96,6 +106,10 @@ def summarize_rows(rows: list[dict]) -> dict:
     result["unknown_usage"] = sum(
         row["assessment"]["calls"] > 0 and row["trace"]["usage"] is None for row in rows
     )
+    result["unknown_cost"] = sum(
+        row["assessment"]["calls"] > 0 and row["trace"]["cost_usd"] is None
+        for row in rows
+    )
     costs = [
         row["trace"]["cost_usd"] for row in rows if row["trace"]["cost_usd"] is not None
     ]
@@ -113,6 +127,10 @@ def report(rows: list[dict]) -> dict:
                 [row for row in rows if row[field] == value]
             )
     for split in sorted({row["split"] for row in rows}):
+        for style in ("keyword", "natural"):
+            groups[f"{split}/{style}"] = summarize_rows(
+                [row for row in rows if row["split"] == split and row["style"] == style]
+            )
         for category in sorted({row["category"] for row in rows}):
             for style in ("keyword", "natural"):
                 groups[f"{split}/{category}/{style}"] = summarize_rows(
@@ -161,6 +179,8 @@ def write_report(output: Path, payload: dict) -> None:
         "# Evaluation results",
         "",
         "Synthetic, drafted labels; descriptive counts, not significance evidence.",
+        f"Run status: {payload.get('status', 'unspecified')}; "
+        f"coverage: {payload.get('coverage', {})}.",
         "",
         "| Group | n | Correct answer | False evidence | Hard failures |",
         "| --- | ---: | --- | --- | ---: |",
