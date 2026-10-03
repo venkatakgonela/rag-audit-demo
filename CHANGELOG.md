@@ -6,6 +6,10 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Added
 
+- Read-only real-embedding HTTP replay regression checks, fault-injection self-tests, trusted model verification and explicitly guarded local recording/rebaseline commands. All CI jobs pin Ubuntu 24.04; hosted validation remains pending.
+
+- `ci-baseline-v1`: initial replay regression baseline from frozen recorded behaviour, with zero measured-drift tolerances provisional until the first hosted CPU run. Historical baseline exposures are unchanged.
+- `ci-config-settings-v1`: gate configuration now fingerprints all non-secret behavioural settings; initial development baseline regenerated with an explicit log reason, without changing historical evaluation exposures.
 - Three versioned canonical evaluation summaries and a durable test-dispatch log: fake, cached-real deterministic and informational live, each held-out configuration evaluated once. Live completed within the USD 3 estimate cap. Results retain low coverage and wrong/false answers; zero hard failures is not a quality guarantee.
 - Dev-only evaluation and fixed calibration now exercise the actual pipeline. An opt-in, hash-checked CPU cross-encoder trial compares 44 replacement-gate configurations without changing the runtime default, reading test labels or calling a paid provider.
 - Evaluation data revision 3 accepts the prior candidate and adds five drafted cases before test evaluation: three same-chunk factual injection questions, one hidden free-text trap and one near miss. Three unique descriptive sentences augment existing attack sections without changing original labelled facts, attack strings or structured claims. Corpus/profile/forbidden-reference digests are refreshed; dev/test labels now have separate files. Human review remains pending.

@@ -1,5 +1,12 @@
 # Glossary
 
+- **HTTP replay:** returning recorded response bytes through the real provider adapter without live generation.
+- **Fixture staleness:** current requests no longer match the recorded request set exactly.
+- **Regression observation:** repeatable read-only comparison, not a calibration or baseline-producing exposure.
+- **Gate baseline:** logged reference metrics/configuration for regression; separate from historical evaluation baselines.
+- **Trusted model manifest:** committed publisher-derived file identities, independently checked against cache bytes.
+- **Provisional tolerance:** measured local allowance awaiting confirmation on the actual hosted CPU.
+
 - **Evidence sufficiency:** at least one selected chunk; not a correct answer guarantee.
 - **Anchored tie band:** configurations with minimum false evidence or one more, before quality tie breaks.
 - **Counterfactual probe:** repeat an unauthorised request with absent identity or hidden rows removed, without inflating primary denominators.

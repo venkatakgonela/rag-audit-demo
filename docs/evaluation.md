@@ -1,6 +1,35 @@
 # Synthetic extractive evaluation
 
-Implemented: isolated CLI, dev calibration, independent hard checks and the calibrated local gate. CI quality gates, replay, regressive PRs and release audit remain Planned. All 65 labels are drafted, zero human-reviewed: 42 dev/23 test, each keyword/natural. The test set is visible to implementers, not a blind benchmark.
+Implemented: isolated CLI, dev calibration, hard checks, calibrated local gate and recorded-HTTP regression configuration. Hosted execution, regressive PRs and release audit remain unverified/planned. All 65 labels are drafted, zero human-reviewed: 42 dev/23 test, each keyword/natural. The test set is visible to implementers, not a blind benchmark.
+
+## CI regression gate
+
+After `make setup`, run `make eval-runtime`, then `make eval-model ARGS="--provision"` for first-time trusted model provisioning. Subsequent `make eval-model` verifies bytes, including cache hits; existing corrupt/incomplete directories fail without automatic repair. With isolated `DATABASE_URL`, run `make db-init`, `make eval-gate` and `make eval-selftest`. No provider key is needed. Bootstrap may download dependencies/model; replay traps Python networking except the database connection opened beforehand. Default unit/lint/type checks need neither model nor Docker. Integration skips expensive self-tests unless `SYNTHETIC_MODEL_DIRECTORY` is explicit; `eval-selftest` supplies it.
+
+All 35 neutral responses pass through the real Responses adapter across 130 primary phrasings and 22 probes. Replay matches `live-v1.json` metrics except latency on both measured platforms. This checks **recorded model behaviour**, not new model behaviour. Cost uses recorded usage/operator prices (not billing); replay spends nothing. Request hashes cover prompt/schema/settings/evidence and must match exactly once. Unknown, duplicate and unused requests are staleness, never tolerance issues.
+
+| Check family | Rule |
+| --- | --- |
+| Forbidden content, citation/quote, rule, counterfactual, injection echo | Zero failures |
+| Freeze/model/fixture/config/baseline integrity, completeness, errors, replay | Exact; no allowance |
+| Sufficiency and correct answered per split/style | No count decrease |
+| Document recall@5 hits and MRR sum | No decrease; denominators exact |
+| False evidence by off-domain/ID/free-text/near-miss | No increase |
+| Verification sub-reasons; Decimal cost/call; unknown cost | No increase |
+| Latency | Informational |
+
+Allowances are zero, **provisional until hosted validation**. [ADR 0026](decisions/0026-regression-ci-gate.md) records measurements/limits. These are absolute regression guards, not significance tests. Output is check/baseline/current/pass-fail and verdict, without test row details. `--output` optionally saves aggregate JSON (temporary directory by default). Detailed diagnostics are separate: `python -m rag_audit.evaluation.regression --output /tmp/new-diagnostic.json`; never publish its test rows in CI logs.
+
+### Failure and re-baseline protocol
+
+1. Preserve output. Resolve config/hash/cache errors before interpreting quality. Restore known pinned bytes, never edit trusted hashes to match corruption.
+2. Profile changes may fail configuration before numeric checks. Diagnose changed retrieval/selection separately without relaxing the production gate.
+3. CI observations are not baseline exposures: historical fake/real/live baselines and `run-log.jsonl` are never written. Do not tune against repeated test outcomes.
+4. Intentional reviewed changes require evidence, reason and a unique CHANGELOG marker first. Run locally: `make eval-rebaseline ARGS="--reason 'Meaningful reviewed change with measured evidence' --marker unique-change-marker"`. It refuses CI and safety/incomplete/replay failures. Commit baseline, policy/config changes, chained baseline log and changelog together. New calibration/live exposures follow the existing separate logging rules.
+5. Changed requests require investigation, explicit recording approval, forecast and exposure reason. Use `make eval-record ARGS="--allow-live-recording --reason 'Approved recording with frozen policy evidence' --forecast-baseline /private/frozen-real/results.json --output /private/new-recording"`. Key stays in its configured environment variable. Real/all/live mode is fixed; the existing USD 3 reservation ledger/cap applies. Output contains private `candidate-replay`, never automatic public replacements. Review every response and scan identities/secrets before promotion, replay equality and logged rebaseline. Never clean rejected/injection text to pass.
+6. First hosted CPU run: retain gate table, selection/request differences, metric deltas and cold/warm times. A measured one-phrasing numerical allowance may be proposed via the logged protocol, not silently edited. Greater drift, safety/integrity changes or fixture staleness requires a separate decision. Emulated AMD64 is not hosted numerical evidence.
+
+Coordinated edits to checks/manifests/baseline/log can bypass in-repository integrity; trusted review remains necessary. Passing regressions does not cure low coverage or zero human-reviewed labels.
 
 ## Running
 

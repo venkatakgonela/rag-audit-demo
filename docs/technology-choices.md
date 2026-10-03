@@ -1,5 +1,7 @@
 # Technology choices
 
+CI increment: [actions/cache v4](https://github.com/actions/cache/blob/v4/README.md) avoids repeated public weight transfers, with revision/manifest keys and unconditional independent verification. All jobs use Ubuntu 24.04 OS labels (not immutable images). Alternatives, maintenance costs and revisit triggers: [ADR 0028](decisions/0028-runner-and-model-cache.md). HTTP replay uses existing httpx; manifest/digest/network guards use Python standard library. No runtime dependencies or versions changed.
+
 **Implemented** unless marked otherwise. This catalogue covers direct runtime/dev/build requirements and project tools; [pyproject.toml](../pyproject.toml) and [uv.lock](../uv.lock) are version evidence and the complete transitive inventory. The assessments are project-specific, not benchmarks. Source links were consulted October 2, 2026. Each row's revisit condition states when to reconsider, not a promised change.
 
 ## Runtime dependencies

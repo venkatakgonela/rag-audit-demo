@@ -1,6 +1,20 @@
 # Threat model
 
-Implemented evaluation controls: [freeze/duplicate-log/leak/citation/rule/cap tests](../tests/test_evaluation_safety.py), [forecast matching and partial coverage](../tests/test_evaluation_completion.py), [runtime isolation](../tests/test_evaluation_harness.py), and [counterfactual byte/global-signal tests](../tests/integration/test_evaluation_runner.py). The [profile boundary tests](../tests/test_answer_policy.py) enforce real cosine-only 0.75 and unchanged fake conjunction. Test exposure is logged, not blinded; drafted labels remain a limitation. No CI quality gate or replay is implemented.
+Implemented evaluation controls: [freeze/duplicate-log/leak/citation/rule/cap tests](../tests/test_evaluation_safety.py), [forecast matching and partial coverage](../tests/test_evaluation_completion.py), [runtime isolation](../tests/test_evaluation_harness.py), and [counterfactual byte/global-signal tests](../tests/integration/test_evaluation_runner.py). The [profile boundary tests](../tests/test_answer_policy.py) enforce real cosine-only 0.75 and unchanged fake conjunction. Test exposure is logged, not blinded; drafted labels remain a limitation.
+
+## Regression trust boundaries (Implemented)
+
+| Threat | Control and enforcing test |
+| --- | --- |
+| Model/cache poisoning, including changed cache-local hashes (supply chain) | Publisher-derived committed hashes checked on every run; [tamper test](../tests/test_replay.py) |
+| Replay tampering or stale request identities | Whole-file/entry digests; exact request consumption; [replay tests](../tests/test_replay.py), [current-pipeline staleness](../tests/integration/test_gate_selftest.py) |
+| Accidental external dispatch, credentials/spend in CI | Socket/HTTP trap; explicit record/key/reason guards and CI prohibition; [tests](../tests/test_record.py), [network trap](../tests/test_replay.py) |
+| Gate always passing or ignoring regressions | Passing controls plus actual ACL/fake-embedder swaps, lowered threshold and hard/soft faulty variants; [self-tests](../tests/integration/test_gate_selftest.py) |
+| Baseline/config edits without audit trail | Config/baseline digests, chained log and CHANGELOG marker; [integrity self-test](../tests/integration/test_gate_selftest.py) |
+| Incomplete run mistaken for success | Exact phrasing/probe coverage and operational-error checks; [self-tests](../tests/integration/test_gate_selftest.py) |
+| Fork workflow privilege or poisoned cache | Read-only permissions, no persisted credentials/secrets, unconditional verification; [workflow tests](../tests/test_ci_gate_configuration.py) |
+
+Trust repository review and publisher provenance; coordinated changes to manifests, checks and logs can bypass these controls. Python traps are not isolation against malicious native code; PostgreSQL is intentionally allowed. Public fixtures contain synthetic rejected attack text by design, never credentials. Hosted CPU execution remains unverified; zero tolerances are provisional.
 
 Implemented experimental reranker controls: scoring receives only already-authorised top-20 candidates, never hidden/global statistics. [Counterfactual tests](../tests/integration/test_evaluation_runner.py) compare relevance scores and response bytes after hidden-document removal. [Adapter tests](../tests/test_reranking.py) reject malformed/nonfinite scores, enforce the 512-token limit without truncation and preserve candidates/tie order. The optional cache is hash-checked before model loading; the reranker neither downloads files nor executes publisher Python code. These controls do not establish answer correctness or justify adopting the model.
 

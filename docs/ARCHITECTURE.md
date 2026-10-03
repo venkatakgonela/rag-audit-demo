@@ -196,6 +196,10 @@ flowchart TB
     subgraph CI
         unit["Default checks without model"] --> checks["Lint, types, unit/docs tests"]
         integration["Fake-vector integration tests"] --> service[("Own pgvector service")]
+        evaluation["Ubuntu 24.04 evaluation"] --> integrity["Verify model and replay manifests"]
+        integrity --> replay["Real embeddings and HTTP replay"]
+        replay --> evaldb[("Own evaluation pgvector service")]
+        replay --> gate["Read-only gate and faulty-variant self-tests"]
     end
 ```
 
@@ -203,8 +207,8 @@ flowchart TB
 
 - [Unit tests](../tests/test_retrieval_core.py) check deterministic generation/chunks, metadata restrictions and source offsets.
 - [Integration tests](../tests/integration/test_retrieval.py) check role sets, forbidden-content noninterference, raw signals, idempotence and ANN underfill versus exact search.
-- [Explicit real-model smoke](../tests/test_embedding_adapter.py) checks shape, normalisation, query instruction and Unicode offsets. Default CI does not execute it; a cache-backed real-model evaluation remains required.
-- Exact search is linear in eligible rows; candidate bounds limit ranking output, not database work. No production identity provider, constant-time defence, calibrated abstention or quality gate exists.
+- [Explicit real-model smoke](../tests/test_embedding_adapter.py) checks shape, normalisation, query instruction and Unicode offsets. The separate evaluation job exercises real embeddings and [replay self-tests](../tests/integration/test_gate_selftest.py); hosted verification is pending.
+- Exact search is linear in eligible rows; candidate bounds limit ranking output, not database work. No production identity provider or constant-time defence exists. Calibrated local and provisional CI gates do not establish production utility.
 - [Answering tests](../tests/test_answering.py) and [database tests](../tests/integration/test_answer_database.py) cover trace failure, rules, role differentiation, absence equality and snapshot provenance. Table locks end before generation; trace commit is independent and requires an idle connection. Traces survive ingestion and contain no rejected provider payloads.
-- Operator/database access is trusted. Corpus and model cache are ignored local state; initial model download trusts HTTPS/publisher, and local hash metadata is not signed.
+- Operator/database access is trusted. Corpus/model cache are ignored local state; CI checks model bytes against a publisher-derived committed manifest. HTTPS/publisher and repository review remain trust roots; metadata is not signed.
 - Keep [technology choices](technology-choices.md), [patterns](patterns.md), [threat model](threat-model.md), [decisions](decisions/README.md) and [backlog](BACKLOG.md) aligned with actual evidence.

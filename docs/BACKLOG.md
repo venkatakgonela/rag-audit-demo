@@ -1,9 +1,9 @@
-- Add real-model retrieval evaluation in CI with a pinned-artifact cache strategy; default CI uses fake embeddings only.
+- Confirm cache-backed replay on the first hosted CPU run; measure cold/warm timing and provisional zero tolerances.
 - Evaluate sentence-aware long-section boundaries and native Linux performance with a labelled retrieval set.
-- Harden workflow supply chain: SHA pins and Dependabot.
+- Harden workflow supply chain: action SHA pins, dependency update automation and container image digests.
 - Replace the deprecated httpx-based Starlette TestClient dependency (Starlette suggests httpx2) when it is safe.
 - Tighten the CI-shape test: reject chained or piped commands (`&&`, `;`, `|`, backticks, `$(`, newlines).
 - Guard against `network_mode: host` (and other mechanisms that bypass port publishing) in the Compose invariant test.
-- Decide whether to pin the runner image (ubuntu-24.04) or accept ubuntu-latest, and record it in an ADR when CI is hardened.
+- Runner decision resolved by ADR 0028: all jobs pin ubuntu-24.04; periodic runtime numerical checks remain needed.
 - The verified foundation CI run warned that `ubuntu-latest` migrates to Ubuntu 26 from 19 October 2026; assess compatibility before that change. This records the observed warning, not an independently verified rollout schedule.
 - Investigate the harmless cache-reservation warning observed when both jobs use the setup-uv cache; both foundation jobs passed despite it.
