@@ -6,6 +6,7 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Added
 
+- Three versioned canonical evaluation summaries and a durable test-dispatch log: fake, cached-real deterministic and informational live, each held-out configuration evaluated once. Live completed within the USD 3 estimate cap. Results retain low coverage and wrong/false answers; zero hard failures is not a quality guarantee.
 - Dev-only evaluation and fixed calibration now exercise the actual pipeline. An opt-in, hash-checked CPU cross-encoder trial compares 44 replacement-gate configurations without changing the runtime default, reading test labels or calling a paid provider.
 - Evaluation data revision 3 accepts the prior candidate and adds five drafted cases before test evaluation: three same-chunk factual injection questions, one hidden free-text trap and one near miss. Three unique descriptive sentences augment existing attack sections without changing original labelled facts, attack strings or structured claims. Corpus/profile/forbidden-reference digests are refreshed; dev/test labels now have separate files. Human review remains pending.
 - Tracked corpus v3: 72 original AI-assisted synthetic documents, structured source bindings, explicit access intent and 60 drafted golden cases with candidate split/freeze digests. Independent human label review pending.

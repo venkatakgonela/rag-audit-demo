@@ -28,7 +28,9 @@ The [114-row dev table](calibration-dev.md) follows the minimum-to-minimum+1 fal
 
 ## Canonical results
 
-Pending pre-run code/config freeze. Versioned summaries will separate dev/test for fake+baseline, cached-real+baseline and informational live. This placeholder implies no results. Raw live records stay private; public provider identities use neutral names/digests.
+All three canonical baselines completed at frozen source `532ddea`, each with exactly one logged held-out pass: 130 primary phrasings, zero hard failures. [Results and intervals](evaluation-results.md) show every baseline separately. Correct answered on test: fake 7/46, real deterministic 10/46, informational live 12/46; these denominators include all primary controls, not just answerable questions. Live dispatched 35 requests and settled an operator estimate of USD 0.28712, below the USD 3 cap; zero unknown usage/cost. The conservative pre-run reservation forecast was USD 4.614675, but actual settlements released headroom. No paid retry or warmup. Raw live records stay private; public provider identity is neutral with a digest.
+
+No test false evidence or hard failures occurred, but real test evidence sufficiency is only 6/20, and the live run still missed 14 answerable/rule phrasings on test. Correct safety controls do not imply useful answer coverage. The deterministic baseline answered some abstention-only dev injection challenges incorrectly without echoing attack text; live had one dev false answer. Exact verification rejected live outputs for quotation/schema/echo reasons. These are reported failures of utility/decision quality, not hidden by the zero-hard-failure result.
 
 ## Candidate audit findings
 

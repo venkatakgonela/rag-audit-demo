@@ -1,10 +1,10 @@
 # Architecture: synthetic RAG audit demonstration
 
-October 3 completion update: the [evaluation harness](evaluation.md) and `local-calibrated-v1` default (V1 cosine >=0.75) are Implemented. Fake stays untuned. Reranker not adopted. Historical pending-profile wording below is superseded by [ADR 0025](decisions/0025-calibrated-local-gate.md). CI gates/replay remain Planned.
+The [evaluation harness](evaluation.md), three [canonical baselines](evaluation-results.md) and `local-calibrated-v1` default (V1 cosine >=0.75) are Implemented. Fake stays untuned. Reranker not adopted. [ADR 0025](decisions/0025-calibrated-local-gate.md) records the profile adoption. CI gates/replay remain Planned.
 
-October 3 evaluation update: dev-only calibration and an experimental pairwise CPU reranker are Implemented. The reranker sees only the existing top-20 authorised candidates before the gate; it does not expand retrieval or change rules/verification. The [completed trial](reranker-dev.md) did not meet the adoption threshold ([ADR 0023](decisions/0023-cpu-reranker-trial.md)); it is not the default profile. Canonical test baselines, default profile adoption and release gating remain Planned; references to planned evaluation below describe those unfinished stages.
+Dev calibration and an experimental pairwise CPU reranker are Implemented. The reranker sees only the existing top-20 authorised candidates; it does not expand retrieval or change rules/verification. The [trial](reranker-dev.md) did not meet adoption criteria ([ADR 0023](decisions/0023-cpu-reranker-trial.md)); it is not deployed by default.
 
-Implemented: health, tracked corpus v3, transactional ingestion, scoped retrieval/rules, extractive answering, signed fixture identity and durable tracing. Drafted golden data and independent offline checks are implemented; the dataset is outside ingestion and generation boundaries. Generation defaults to fake; a Responses adapter is implemented for opt-in local use only, never exercised by CI. Calibrated evaluation and release gating remain Planned. All domain records are synthetic.
+Implemented: health, corpus v3, transactional ingestion, scoped retrieval/rules, extractive answering, signed fixture identity, durable tracing and calibrated evaluation. Labels remain outside ingestion/generation boundaries. Generation defaults to fake; Responses is opt-in local only, never exercised by CI. Release gating remains Planned. All domain records are synthetic.
 
 Implemented data flow: `datasets/corpus-v3` → source/hash/structured-binding validation → unchanged chunker and ingestion. `datasets/evaluation` → offline label checks and independent SQL visibility comparison, never provider prompts. See [evaluation data](evaluation-data.md) and [ADR 0021](decisions/0021-versioned-evaluation-data.md). No database tables changed. Rule version v2 qualifies payout by status without changing arithmetic. Extractive verification rejection now presents as no-answer while its trace remains distinct; invalid rule rephrasing retains template fallback ([ADR 0022](decisions/0022-answer-outcome-presentation.md)).
 
@@ -13,8 +13,8 @@ Implemented data flow: `datasets/corpus-v3` → source/hash/structured-binding v
 1. Implemented: materialise eligible rows in SQL before exact vector and keyword ranking, never retrieve globally then discard forbidden hits.
 2. Implemented: deterministic source slices with section paths and Unicode offsets; section paths enter embedding/full-text inputs without changing stored text.
 3. Implemented: explicit CPU-only optional runtime, immutable model revision and no paid API in tests.
-4. Implemented: deterministic rules with code-owned wording, authorised extractive citations and provisional evidence-sensitive abstention.
-5. Planned: real-model quality evaluation and a regression gate. Current local tests are security/mechanics checks, not broad retrieval-quality proof.
+4. Implemented: code-owned rules, authorised extractive citations and a dev-calibrated real evidence gate; fake remains untuned.
+5. Implemented: small synthetic real-model evaluation; regression gate Planned. Results are not broad retrieval-quality proof.
 
 ## System context
 
