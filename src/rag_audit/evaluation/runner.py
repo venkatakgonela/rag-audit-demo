@@ -20,7 +20,18 @@ class ObservedStore(PostgresStore):
         return self.observed
 
 
-async def run_phrasing(
+async def run_phrasing(*args, **kwargs):
+    live = kwargs.get("live")
+    pacing = getattr(live[2], "pacing", None) if live else None
+    while True:
+        if pacing:
+            await pacing.before()
+        row = await _run_phrasing(*args, **kwargs)
+        if not pacing or not pacing.retry():
+            return row
+
+
+async def _run_phrasing(
     connection,
     embedder,
     case: Case,
