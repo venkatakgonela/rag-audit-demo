@@ -147,9 +147,9 @@ def test_calibrated_real_profile_and_untuned_fake_profile():
         if identity != FakeEmbedder.identity
     )
     assert (real.version, real.variant, real.cosine_floor) == (
-        "local-calibrated-v1",
+        "local-calibrated-v2",
         "V1",
-        0.75,
+        0.70,
     )
     fake = PROFILES[FakeEmbedder.identity]
     assert (fake.version, fake.variant, fake.cosine_floor) == (

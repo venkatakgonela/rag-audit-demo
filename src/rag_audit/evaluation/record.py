@@ -85,8 +85,10 @@ def write_candidates(directory: Path, entries: list[dict], commit: str):
     directory.mkdir()
     content = json.dumps(entries, indent=2, ensure_ascii=False) + "\n"
     (directory / "responses.json").write_text(content)
-    manifest = dict(
-        version="neutral-http-v1",
+    manifest: dict = dict(
+        version="neutral-http-v2"
+        if entries and "consumers" in entries[0]
+        else "neutral-http-v1",
         source_commit=commit,
         recorded=str(date.today()),
         count=len(entries),
@@ -95,6 +97,10 @@ def write_candidates(directory: Path, entries: list[dict], commit: str):
         sanitisation="Neutral canonical request identity; allowlisted response fields. "
         "Candidate only: review every retained text and scan before promotion.",
     )
+    if manifest["version"] == "neutral-http-v2":
+        manifest["expected_consumptions"] = {
+            entry["request_hash"]: entry["expected_consumptions"] for entry in entries
+        }
     (directory / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     fixture_entries(directory)
 

@@ -26,6 +26,15 @@ from rag_audit.ingestion import ingest
 from rag_audit.settings import Settings
 
 
+def active_live_baseline(root: Path) -> dict:
+    directory = root / "datasets/evaluation"
+    manifest = read_json(directory / "replay/manifest.json")
+    version = manifest.get("live_baseline", "live-v1.json")
+    if version not in ("live-v1.json", "live-v2.json"):
+        raise ValueError("live_baseline: unsupported version")
+    return read_json(directory / "baselines" / version)
+
+
 def evaluate(root: Path, model_directory: Path) -> dict:
     started = time.monotonic()
     directory = root / "datasets/evaluation"
@@ -112,7 +121,7 @@ def main() -> int:
     result["source_commit"] = subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=args.root, text=True
     ).strip()
-    baseline = read_json(args.root / "datasets/evaluation/baselines/live-v1.json")
+    baseline = active_live_baseline(args.root)
     result["live_metrics_equal"] = deterministic_metrics(
         result["metrics"]
     ) == deterministic_metrics(baseline["metrics"])

@@ -41,7 +41,7 @@ class Profile:
 
 PROFILES = {
     FakeEmbedder.identity: Profile("fake-demo-v1", 0.15),
-    f"{MODEL}@{REVISION}:cls:l2:section-v1": Profile("local-calibrated-v1", 0.75, "V1"),
+    f"{MODEL}@{REVISION}:cls:l2:section-v1": Profile("local-calibrated-v2", 0.70, "V1"),
 }
 
 
