@@ -108,7 +108,10 @@ def build(root=ROOT):
         info = subprocess.run(
             ["pdfinfo", str(output)], check=True, capture_output=True, text=True
         ).stdout
-        pages = int(re.search(r"Pages:\s+(\d+)", info)[1])
+        page_match = re.search(r"Pages:\s+(\d+)", info)
+        if page_match is None:
+            raise ValueError("audit_pages: missing PDF page count")
+        pages = int(page_match[1])
         if not 9 <= pages <= 14:
             raise ValueError(f"audit_pages: {pages}; required 9-14")
         text = subprocess.run(

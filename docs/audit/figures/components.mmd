@@ -1,0 +1,11 @@
+%%{init: {"themeVariables": {"fontSize": "24px"}, "flowchart": {"rankSpacing": 15, "nodeSpacing": 20}}}%%
+flowchart TB
+    caller["Caller / signed synthetic subject"] --> policy["Answer policy / bounded question"]
+    corpus["Synthetic corpus / ACL manifest"] --> database[("PostgreSQL / exact vectors + text ranks")]
+    policy --> database
+    database --> evidence["Authorised evidence / calibrated gate"]
+    evidence --> model["Fake or opt-in model / extractive proposal"]
+    database --> rules["Authorised Decimal rules / fixed wording"]
+    model --> verification["Quote + citation + echo verification"]
+    verification --> trace["Commit trace before response"]
+    rules --> trace

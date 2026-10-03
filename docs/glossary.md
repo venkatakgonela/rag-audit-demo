@@ -1,5 +1,14 @@
 # Glossary
 
+- **Builder self-assessment:** an assessment performed by the system's author;
+  transparent evidence is useful but does not establish independence.
+- **Evidence manifest:** pinned source revision and file digests checked before
+  report generation; it is not a signature from an independent reviewer.
+- **Contextual severity:** impact and likelihood judged for the demonstrated
+  deployment, separate from confidence in the supporting evidence.
+- **Reported observation:** an attributed account, explicitly distinguished from
+  a result verified from a retained hosted log.
+
 - **HTTP replay:** returning recorded response bytes through the real provider adapter without live generation.
 - **Fixture staleness:** current requests no longer match the recorded request set exactly.
 - **Regression observation:** repeatable read-only comparison, not a calibration or baseline-producing exposure.

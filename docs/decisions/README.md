@@ -52,7 +52,7 @@ All entries are **Planned**, not accepted choices. Milestones describe product w
 | Recalibration | Local dev-calibrated profile adopted; reopen with new evidence only | Model/corpus change |
 | Billing and tighter token bounds | Versioned estimates and qualified byte bound exist; invoice reconciliation and verified tokenizer counter remain planned | Production accounting |
 | Workflow supply chain | Action SHA pins, update automation and image digests | CI hardening |
-| Repository licence | Candidate permissive terms versus retaining current restrictions pending an explicit choice | Publication policy |
+| Repository licence (resolved October 3, 2026) | MIT for original work; dependencies and fonts retain their own terms | [Licence](../../LICENSE), [notices](../third-party-notices.md) |
 
 ## Template
 

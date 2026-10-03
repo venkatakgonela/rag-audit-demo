@@ -1,5 +1,14 @@
 # Patterns and their evidence
 
+## Source-derived audit publication (implemented)
+
+Pinned source digests and read-only adapters generate tables and review wording;
+author-written templates retain the interpretive claims. This prevents stale
+manual counts without pretending conclusions are automated. Missing sources,
+changed digests, stale output, invalid evidence and incomplete package inventories
+fail [audit tests](../tests/test_audit.py). PDF rendering blocks remote page
+requests and embeds local assets; it does not run an evaluation or change labels.
+
 Implemented: independent evaluator/oracle, split-label isolation, pre-dispatch held-out log, private reservation ledger and explicit partial coverage. See [ADR 0024](decisions/0024-extractive-evaluation.md) and [completion tests](../tests/test_evaluation_completion.py). The [calibrated local profile](decisions/0025-calibrated-local-gate.md) is the real default; no reranker adoption.
 
 Implemented HTTP-boundary replay preserves adapter/verification behaviour while removing live dependency ([ADR 0027](decisions/0027-http-recorded-replay.md), [tests](../tests/test_replay.py)). Read-only regression versus explicit baseline production separates CI observation from exposures ([ADR 0026](decisions/0026-regression-ci-gate.md)). Paired passing controls and faulty variants prevent an always-red/always-green gate from masquerading as validation ([self-tests](../tests/integration/test_gate_selftest.py)). Independent artifact manifests prevent trusting cache-local metadata; review remains the trust root.

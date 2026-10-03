@@ -1,0 +1,19 @@
+%%{init: {"sequence": {"actorFontSize": 22, "messageFontSize": 22, "noteFontSize": 22, "messageMargin": 15}}}%%
+sequenceDiagram
+    participant Caller
+    participant Policy
+    participant Store
+    participant Model
+    Caller->>Policy: Signed subject + bounded question
+    Policy->>Store: Resolve subject and ACL pre-filter
+    Store-->>Policy: Authorised evidence or rule inputs
+    alt Evidence passes gate
+        Policy->>Model: Bounded untrusted evidence
+        Model-->>Policy: Extractive proposal or abstention
+        Policy->>Policy: Validate all output
+    else Rule or insufficient evidence
+        Policy->>Policy: Code-owned result or no-answer
+    end
+    Policy->>Store: Commit trace before release
+    Store-->>Policy: Success or failure
+    Policy-->>Caller: Verified result or generic failure

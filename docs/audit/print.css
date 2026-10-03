@@ -1,0 +1,32 @@
+@font-face { font-family: Audit; src: url("assets/fonts/NotoSans.ttf"); font-weight: 100 900; }
+@font-face { font-family: Audit; src: url("assets/fonts/NotoSans-Italic.ttf"); font-style: italic; font-weight: 100 900; }
+@page {
+  size: A4;
+  margin: 15mm 16mm 17mm;
+  @bottom-left { content: "SYNTHETIC · cfd53ff · 2026-10-03 · SELF-ASSESSMENT"; font: 7pt Audit; color: #526879; }
+  @bottom-right { content: counter(page); font: 8pt Audit; color: #526879; }
+}
+html { font-family: Audit, sans-serif; font-size: 9pt; color: #213447; line-height: 1.4; }
+body { margin: 0; }
+header#title-block-header { border-top: 5px solid #137f85; padding-top: 8px; margin-bottom: 14px; }
+header .title { font-size: 25pt; line-height: 1.1; }
+header .author, header .date { display: inline; margin-right: 15px; color: #526879; }
+h1 { font-size: 19pt; line-height: 1.2; color: #12394e; margin: 0 0 13px; }
+h2 { font-size: 12pt; margin: 13px 0 6px; }
+h3 { font-size: 10pt; color: #12656c; margin: 12px 0 4px; }
+p { margin: 5px 0 8px; }
+li { margin-bottom: 5px; }
+table { border-collapse: collapse; width: 100%; font-size: 8pt; margin: 9px 0; table-layout: auto; }
+th { background: #12394e; color: white; text-align: left; }
+th, td { padding: 5px 6px; border-bottom: 1px solid #d4dfe5; vertical-align: top; }
+tr:nth-child(even) td { background: #f0f5f7; }
+tr { break-inside: avoid; }
+thead { display: table-header-group; }
+code { font-family: Audit, sans-serif; font-size: 0.92em; overflow-wrap: anywhere; }
+a { color: #12656c; text-decoration: none; }
+figure { margin: 6px 0; text-align: center; }
+figure img { max-width: 100%; max-height: 88mm; object-fit: contain; }
+figcaption { font-size: 7.5pt; color: #526879; margin: 2px 0 8px; }
+.page-break { break-before: page; }
+h1, h2, h3 { break-after: avoid; }
+p { orphans: 2; widows: 2; }

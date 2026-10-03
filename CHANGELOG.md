@@ -4,6 +4,18 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-03
+
+Prepared release; owner tagging and publication are pending. Existing entries
+below describe the historical implementation, including their original limits.
+
+- Added a reproducible synthetic builder self-assessment, source-derived findings
+  and tables, client README, MIT licence, third-party inventory and security policy.
+- Added offline report checks and publication preparation; no product behaviour,
+  labels, corpus, fixtures, baselines or workflows changed for the report.
+- Existing remediation/main hosted runs passed; see the committed audit
+  attestation for exact revisions and run outcomes, not a claim about later code.
+
 ### Added
 
 - `ci-abstention-v2`: explicit model abstention with strict local outcome validation, unchanged no-answer bytes, separate reason metrics and context-bound replay. Rejected-only paced evaluation retries retain unknown holds; production requests do not retry.
