@@ -133,7 +133,11 @@ def test_adr_required_sections(path):
 
 
 def test_public_markdown_links_resolve():
-    paths = sorted(DOCS.rglob("*.md")) + sorted(ROOT.glob("*.md"))
+    paths = (
+        sorted(DOCS.rglob("*.md"))
+        + sorted(ROOT.glob("*.md"))
+        + sorted((ROOT / ".github").rglob("*.md"))
+    )
     for source in paths:
         prose, _ = markdown_parts(source.read_text())
         for target in link_targets(prose):

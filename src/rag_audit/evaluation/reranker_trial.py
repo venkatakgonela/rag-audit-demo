@@ -11,6 +11,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 import psycopg
+from psycopg import sql
 
 from rag_audit.embeddings import OnnxEmbedder
 from rag_audit.evaluation.calibration import choose, summarize
@@ -60,8 +61,10 @@ def main() -> int:
     with psycopg.connect(
         settings.database_url.get_secret_value(), autocommit=True
     ) as connection:
-        connection.execute(f"CREATE SCHEMA {schema}")
-        connection.execute(f"SET search_path TO {schema},public")
+        connection.execute(sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(schema)))
+        connection.execute(
+            sql.SQL("SET search_path TO {},public").format(sql.Identifier(schema))
+        )
         try:
             connection.execute(
                 (args.root / "docker/init/001-enable-vector.sql").read_text()
@@ -205,7 +208,9 @@ def main() -> int:
             return int(any(row["errors"] or row["hard_failures"] for row in table))
         finally:
             connection.execute("SET search_path TO public")
-            connection.execute(f"DROP SCHEMA {schema} CASCADE")
+            connection.execute(
+                sql.SQL("DROP SCHEMA {} CASCADE").format(sql.Identifier(schema))
+            )
 
 
 if __name__ == "__main__":

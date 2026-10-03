@@ -2,7 +2,7 @@
 - Independently review labels and repeat a preregistered abstention study on newly held-out data; do not tune on the twice-exposed historical test split.
 - Produce the release audit report and publication-focused README/licence review separately; dev-selected abstention is not a release certification.
 - Evaluate sentence-aware long-section boundaries and native Linux performance with a labelled retrieval set.
-- Harden workflow supply chain: action SHA pins, dependency update automation and container image digests.
+- Workflow supply chain: action SHA pins and weekly action/uv update automation implemented; container image digests remain open.
 - Replace the deprecated httpx-based Starlette TestClient dependency (Starlette suggests httpx2) when it is safe.
 - Tighten the CI-shape test: reject chained or piped commands (`&&`, `;`, `|`, backticks, `$(`, newlines).
 - Guard against `network_mode: host` (and other mechanisms that bypass port publishing) in the Compose invariant test.

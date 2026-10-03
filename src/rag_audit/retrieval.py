@@ -6,6 +6,7 @@ from psycopg.rows import dict_row
 from rag_audit.access import ACL_SQL, access_parameters, load_identity
 from rag_audit.embeddings import Embedder
 
+# Both query variants contain only module constants; request values stay bound.
 SQL = (
     """
 WITH eligible AS MATERIALIZED (
@@ -33,6 +34,10 @@ SELECT s.id,s.document_id,s.text,s.section,s.start_offset,s.end_offset,
  f.score,s.cosine_similarity,f.keyword_rank,s.keyword_score
 FROM fused f JOIN signals s ON s.id=f.id ORDER BY f.score DESC,f.id LIMIT %(top_k)s
 """
+)
+DOCUMENT_SQL = SQL.replace(
+    "WHERE c.model_identity=",
+    "WHERE d.id = ANY(%(documents)s) AND c.model_identity=",
 )
 
 
@@ -80,10 +85,7 @@ def retrieve(
             with connection.cursor(row_factory=dict_row) as cursor:
                 query_sql = SQL
                 if document_ids is not None:
-                    query_sql = SQL.replace(
-                        "WHERE c.model_identity=",
-                        "WHERE d.id = ANY(%(documents)s) AND c.model_identity=",
-                    )
+                    query_sql = DOCUMENT_SQL
                     parameters["documents"] = list(document_ids)
                 rows = cursor.execute(query_sql, parameters).fetchall()
             for result in rows:

@@ -9,7 +9,7 @@ All domain data is synthetic. **Implemented** means present in the repository; *
 5. [Glossary](glossary.md) — readers new to the terminology.
 6. [Evaluation method](evaluation.md) and [canonical results](evaluation-results.md) — definitions, limitations, counts/intervals and the one-pass held-out record.
 7. [Sample audit](audit/README.md) — client-facing report, reproducible tables, findings and limitations.
-8. [Developer reference](development.md), [third-party notices](third-party-notices.md), [publication checklist](PUBLISHING.md) and [prepared release](release-notes.md).
+8. [Developer reference](development.md), [contributing](../CONTRIBUTING.md), [third-party notices](third-party-notices.md), [publication provenance](PUBLISHING.md) and [prepared release](release-notes.md).
 
 Use the [project README](../README.md) for runnable commands, the [changelog](../CHANGELOG.md) for changes, and the [backlog](BACKLOG.md) for deferred work.
 
@@ -18,5 +18,8 @@ Use the [project README](../README.md) for runnable commands, the [changelog](..
 Repository links identify implemented code, configuration, and tests. External links identify official behaviour references consulted on October 2, 2026; project trade-offs are assessments, not comparative benchmarks. Foundation hosted CI was verified for commit `8e7a2a3` on October 2, 2026 in a private repository run: both jobs passed. That observation does not certify subsequent revisions. No private run URLs are published.
 
 ## Documentation checks
+
+Community issue and pull-request templates are included in the local Markdown
+link checks alongside the root and documentation files.
 
 The [documentation tests](../tests/test_docs.py) run in `make test` without Docker. They cover root/docs Markdown inline links and explicit/collapsed reference links, local heading fragments, ADR index/sections, Mermaid fences/captions, and direct runtime catalogue entries. Literal code examples and external URLs are not link-checked. This small checker is not a complete CommonMark/HTML parser: use the supported link forms, not raw HTML links, shortcut references, or nested-parenthesis destinations. Mermaid syntax/rendering and factual accuracy require separate review; no external network is used by the tests.
