@@ -1,6 +1,10 @@
 # Architecture: synthetic RAG audit demonstration
 
-Implemented: health, tracked corpus v3, transactional ingestion, scoped retrieval/rules, extractive answering, signed fixture identity and durable tracing. Drafted golden data and independent offline checks are implemented; the dataset is outside ingestion and generation boundaries. Generation defaults to fake; a Responses adapter is implemented for opt-in local use only, never exercised by CI. Calibrated evaluation and release gating remain Planned. All domain records are synthetic.
+The [evaluation harness](evaluation.md), three [canonical baselines](evaluation-results.md) and `local-calibrated-v1` default (V1 cosine >=0.75) are Implemented. Fake stays untuned. Reranker not adopted. [ADR 0025](decisions/0025-calibrated-local-gate.md) records the profile adoption. CI gates/replay remain Planned.
+
+Dev calibration and an experimental pairwise CPU reranker are Implemented. The reranker sees only the existing top-20 authorised candidates; it does not expand retrieval or change rules/verification. The [trial](reranker-dev.md) did not meet adoption criteria ([ADR 0023](decisions/0023-cpu-reranker-trial.md)); it is not deployed by default.
+
+Implemented: health, corpus v3, transactional ingestion, scoped retrieval/rules, extractive answering, signed fixture identity, durable tracing and calibrated evaluation. Labels remain outside ingestion/generation boundaries. Generation defaults to fake; Responses is opt-in local only, never exercised by CI. Release gating remains Planned. All domain records are synthetic.
 
 Implemented data flow: `datasets/corpus-v3` → source/hash/structured-binding validation → unchanged chunker and ingestion. `datasets/evaluation` → offline label checks and independent SQL visibility comparison, never provider prompts. See [evaluation data](evaluation-data.md) and [ADR 0021](decisions/0021-versioned-evaluation-data.md). No database tables changed. Rule version v2 qualifies payout by status without changing arithmetic. Extractive verification rejection now presents as no-answer while its trace remains distinct; invalid rule rephrasing retains template fallback ([ADR 0022](decisions/0022-answer-outcome-presentation.md)).
 
@@ -9,8 +13,8 @@ Implemented data flow: `datasets/corpus-v3` → source/hash/structured-binding v
 1. Implemented: materialise eligible rows in SQL before exact vector and keyword ranking, never retrieve globally then discard forbidden hits.
 2. Implemented: deterministic source slices with section paths and Unicode offsets; section paths enter embedding/full-text inputs without changing stored text.
 3. Implemented: explicit CPU-only optional runtime, immutable model revision and no paid API in tests.
-4. Implemented: deterministic rules with code-owned wording, authorised extractive citations and provisional evidence-sensitive abstention.
-5. Planned: real-model quality evaluation and a regression gate. Current local tests are security/mechanics checks, not broad retrieval-quality proof.
+4. Implemented: code-owned rules, authorised extractive citations and a dev-calibrated real evidence gate; fake remains untuned.
+5. Implemented: small synthetic real-model evaluation; regression gate Planned. Results are not broad retrieval-quality proof.
 
 ## System context
 
@@ -59,7 +63,10 @@ flowchart LR
     eligible --> ranking["Exact cosine plus full-text ranks"]
     ranking --> result["RRF and eligible-only raw signals"]
     eligible --> rules["Authorised structured Decimal rules"]
-    result --> gate["Versioned gate and byte budgets"]
+    result --> gate["Calibrated real cosine 0.75; fake demo gate; byte budgets"]
+    labels --> evaluator["Isolated evaluator; dev calibration; logged test runs"]
+    evaluator --> subject
+    trace --> metrics["Independent facts, rules and counterfactual metrics"]
     gate --> fake["Offline fake evidence selector"]
     fake --> verify["Exact citation and echo verification"]
     gate --> real["Opt-in Responses: price and byte-bound preflight"]
@@ -74,7 +81,7 @@ The [chunker](../src/rag_audit/chunking.py) targets 384 tokens, ceiling 480, ove
 ## Implemented answering flow
 
 Caption: **Question-answering sequence** — offline answer decisions and durable traces.
-Legend: messages are Implemented; real provider is opt-in local only, evaluation remains Planned.
+Legend: messages are Implemented; real provider is opt-in local only; CI quality gates remain Planned.
 
 ```mermaid
 sequenceDiagram
@@ -101,7 +108,7 @@ sequenceDiagram
     Policy-->>Caller: Verified response or generic storage error
 ```
 
-Nearest neighbours can be irrelevant. Raw retrieval is unchanged; answering applies the provisional gate and extractive policy. Hidden/absent explicit entities return identical no-answer; arbitrary free text has inaccessible-row noninterference, not hidden-intent detection. Constant-time execution is not promised.
+Nearest neighbours can be irrelevant. Raw retrieval is unchanged; answering applies the calibrated real or untuned fake gate and extractive policy. Hidden/absent explicit entities return identical no-answer; arbitrary free text has inaccessible-row noninterference, not hidden-intent detection. Constant-time execution is not promised.
 
 ## Implemented data model
 

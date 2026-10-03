@@ -1,5 +1,9 @@
 # Patterns and their evidence
 
+Implemented: independent evaluator/oracle, split-label isolation, pre-dispatch held-out log, private reservation ledger and explicit partial coverage. See [ADR 0024](decisions/0024-extractive-evaluation.md) and [completion tests](../tests/test_evaluation_completion.py). The [calibrated local profile](decisions/0025-calibrated-local-gate.md) is now the real runtime default; no reranker adoption or CI quality gate.
+
+Implemented experiment: pairwise reranking preserves the authorised candidate set and uses no corpus-wide statistic. Over-512-token pairs are unscorable, never silently truncated. [Adapter and gate tests](../tests/test_reranking.py) cover limits, ordering, nonfinite output and replacement semantics; [counterfactual tests](../tests/integration/test_evaluation_runner.py) compare scores after hidden-document removal. Dev-only calibration now exists separately from the data-validation layer described below; adoption remains pending.
+
 Implemented: [versioned evaluation data](decisions/0021-versioned-evaluation-data.md) separates expected source facts and authored visibility from the runtime decision path. Candidate freeze hashes detect silent label edits; independent integer-pence/date oracles avoid importing product rules. [Dataset tests](../tests/test_evaluation_data.py) and [SQL comparison](../tests/integration/test_evaluation_visibility.py) enforce the boundary. This is data validation, not an evaluation harness.
 
 Status labels describe this repository, not general pattern maturity. Source links and behaviour qualifications follow the [reading guide](README.md). Planned locations below are conceptual components, not existing files.

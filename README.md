@@ -1,6 +1,6 @@
 # rag-audit-demo
 
-A synthetic answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Offline fake generation is the default; real Responses generation is opt-in local use only, never exercised in CI. Calibrated evaluation and regression gating remain planned.
+A synthetic answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Offline fake generation is the default; real Responses generation is opt-in local only, never exercised in CI. [Isolated evaluation and dev calibration](docs/evaluation.md) are implemented; the real profile is `local-calibrated-v1`, cosine >=0.75. Regression gating/replay remain planned.
 
 > **All data is synthetic.** The generated corpus models a fictional insurer. Nothing here is real customer, policy or claims data. Database credentials and identifiers are synthetic, disposable and local-only.
 
@@ -125,7 +125,7 @@ The token contains only subject; roles/teams come from PostgreSQL. Extra body fi
 
 Answer settings (environment names): `ANSWER_MODE=extractive`, `QUESTION_CHARACTERS=4000`, `HTTP_BODY_BYTES=16384`, `EVIDENCE_BYTES=12288`, `PROMPT_BYTES=32768`, `CONTEXT_CHUNKS=5`, `OUTPUT_UNITS=512`, `OUTPUT_BYTES=16384`, `MAX_STATEMENTS=5`, `STATEMENT_CHARACTERS=2048`, `PROVIDER_SECONDS=10`, `COST_CEILING=0.01`, and `STUB_SIGNING_KEY` (required for HTTP, at least 32 UTF-8 bytes). Evidence uses whole UTF-8 chunks: oversize chunks are skipped and ranking continues, never truncated. Fake usage is **synthetic UTF-8 bytes**, not vendor tokens. Unknown fake price stays null; real calls require configured prices and use the separate real limits described above. There are no default real prices, per-user rate limits or verified billing guarantees.
 
-`instruction-echo-v1` blocks configured attack phrases/delimiters, including exact in-set quotations; benign discussions quoting these phrases can be overblocked. Delimiters alone are not security. An initial opt-in local real-service smoke is complete, not calibrated evaluation. General injection resistance is unproven. Drafted golden data is implemented; evaluation, calibration, reranker, CI quality gate and sample audit report remain **Planned**. No judge or abstractive answering is implemented.
+`instruction-echo-v1` blocks configured attack phrases/delimiters, including exact in-set quotations; benign discussions can be overblocked. Delimiters alone are not security. [Calibrated evaluation and three canonical baselines](docs/evaluation-results.md) are complete; the evaluated reranker is not adopted. General injection resistance remains unproven. CI quality gates/replay and the release audit remain **Planned**. No judge or abstractive answering is implemented.
 
 ### Synthetic retrieval quickstart
 
@@ -143,7 +143,7 @@ make test-embeddings
 
 These commands retrieve evidence, not generated answers. Model setup explicitly downloads the pinned publisher tokenizer/ONNX export; ordinary tests do not. Source documents and model cache live in ignored `data/`. Ingestion atomically replaces the managed synthetic corpus. Plain `make setup` may remove optional packages; use `uv run --frozen --extra embeddings python -m rag_audit.cli ingest` (or `query`) for real embeddings after setup. Fake `ingest`, `query` and `ask` never implicitly install embeddings.
 
-Customers/brokers cannot join staff teams, claims must be restricted, and broker/customer assignments are explicit. Raw retrieval is unchanged and can return irrelevant neighbours; `ask` applies the provisional gate and citation policy. This is not production authentication or constant-time execution. See the [access decision](docs/decisions/0014-query-access-control.md) and [measured runtime comparison](docs/decisions/0016-local-embedding-runtime.md).
+Customers/brokers cannot join staff teams, claims must be restricted, and broker/customer assignments are explicit. Raw retrieval can return irrelevant neighbours; `ask` applies the calibrated real or untuned fake gate and citation policy. This is not production authentication or constant-time execution. See the [access decision](docs/decisions/0014-query-access-control.md) and [measured runtime comparison](docs/decisions/0016-local-embedding-runtime.md).
 
 For mechanics-only testing, `uv run --frozen python -m rag_audit.cli ingest --fake` and the corresponding `query --fake` need no model runtime. Fake and real model identities cannot be mixed; re-ingest when switching.
 

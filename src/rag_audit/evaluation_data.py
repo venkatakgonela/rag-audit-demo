@@ -82,6 +82,14 @@ def read_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def read_cases(directory: Path) -> dict:
+    return {
+        "version": 1,
+        "cases": read_json(directory / "dev.json")["cases"]
+        + read_json(directory / "test.json")["cases"],
+    }
+
+
 def digest(value: object) -> str:
     return hashlib.sha256(
         json.dumps(
@@ -121,12 +129,13 @@ def check_response_constraints(case: Case, response: dict) -> None:
 
 def freeze_digests(root: Path) -> dict[str, str]:
     directory = root / "datasets/evaluation"
-    cases = semantic_cases(read_json(directory / "golden.json"))
+    cases = semantic_cases(read_cases(directory))
     return {
         "corpus": digest(read_json(root / "datasets/corpus-v3/manifest.json")),
         "access": digest(read_json(directory / "access-intent.json")),
         "chunks": digest(read_json(directory / "chunk-references.json")),
         "cases": digest(cases),
+        "dev": digest([case for case in cases if case["split"] == "dev"]),
         "test": digest([case for case in cases if case["split"] == "test"]),
     }
 
@@ -136,7 +145,7 @@ def check_dataset(root: Path, *, frozen: bool = True) -> dict:
     directory = root / "datasets/evaluation"
     manifest = read_json(corpus / "manifest.json")
     validate_sources(corpus, manifest)
-    golden = Golden.model_validate(read_json(directory / "golden.json"))
+    golden = Golden.model_validate(read_cases(directory))
     access = read_json(directory / "access-intent.json")
     index = read_json(directory / "chunk-references.json")
     documents = {document["id"]: document for document in manifest["documents"]}
@@ -196,32 +205,32 @@ def check_dataset(root: Path, *, frozen: bool = True) -> dict:
     assert Counter(case.category for case in golden.cases) == {
         "single": 20,
         "multi": 8,
-        "unanswerable": 10,
-        "unauthorised": 10,
+        "unanswerable": 11,
+        "unauthorised": 11,
         "rules": 6,
-        "injection": 6,
+        "injection": 9,
     }
     expected_test = {
         "single": 7,
         "multi": 3,
-        "unanswerable": 3,
-        "unauthorised": 3,
+        "unanswerable": 4,
+        "unauthorised": 4,
         "rules": 2,
-        "injection": 2,
+        "injection": 3,
     }
     assert (
         Counter(case.category for case in golden.cases if case.split == "test")
         == expected_test
     )
-    assert len({case.id for case in golden.cases}) == 60
+    assert len({case.id for case in golden.cases}) == 65
     assert Counter(case.challenge_kind for case in golden.cases) == {
         "standard": 34,
         "id_lookup": 4,
-        "free_text": 6,
+        "free_text": 7,
         "off_domain": 4,
-        "near_miss": 6,
+        "near_miss": 7,
         "repeat_instruction": 2,
-        "ordinary": 4,
+        "ordinary": 7,
     }
     assert all(
         {case.subject for case in golden.cases if case.split == split} == subjects

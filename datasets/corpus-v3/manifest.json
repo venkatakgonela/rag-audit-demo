@@ -694,7 +694,7 @@
       "tier": "public",
       "team": "claims-a",
       "owner": null,
-      "sha256": "092167c20ac8567aa4b09941cfb10043d356da36f26c0b5c3b5fb311282a9d25"
+      "sha256": "f5dae8f4411c5fde4cdad6b52a120ce6963750900de0f66dfc111f346450127c"
     },
     {
       "id": "synthetic-faq-11",
@@ -1000,7 +1000,7 @@
       "tier": "restricted",
       "team": "claims-a",
       "owner": "synthetic-customer-a",
-      "sha256": "56ad6d75e6746170df513000f7094a7769633b55e52ccb82b5d266eda688be62"
+      "sha256": "b89b0e06b907aa1a7b4fba4d2f7135a499a6bbd0be9eb57d2dd6453646b3a938"
     },
     {
       "id": "synthetic-claim-13",
@@ -1009,7 +1009,7 @@
       "tier": "restricted",
       "team": "claims-b",
       "owner": "synthetic-customer-b",
-      "sha256": "3e16602f9e7fce2e91737b50b59507104bb264591dff79df4ddc1f5db824fca5"
+      "sha256": "7e02b12562be601dacb1a5d8593f6542b4f57bdf2b0b58c9531e747f523e04a0"
     },
     {
       "id": "synthetic-claim-14",

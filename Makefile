@@ -1,8 +1,12 @@
 .DEFAULT_GOAL := help
+.PHONY: eval
+eval:
+	uv run --frozen python -m rag_audit.evaluation $(ARGS)
 ARGS ?=
 .PHONY: help setup up down lint format typecheck test test-integration db-init run clean
 
 help:
+	@printf '%s\n' 'eval              Isolated evaluation; ARGS="--split dev --embedder fake --output /tmp/eval"'
 	@printf '%s\n' \
 	  'setup             Install locked dependencies and create .env only if absent' \
 	  'up                Start the synthetic database and wait for readiness' \

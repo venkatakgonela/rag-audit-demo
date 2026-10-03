@@ -6,11 +6,15 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Added
 
+- Three versioned canonical evaluation summaries and a durable test-dispatch log: fake, cached-real deterministic and informational live, each held-out configuration evaluated once. Live completed within the USD 3 estimate cap. Results retain low coverage and wrong/false answers; zero hard failures is not a quality guarantee.
+- Dev-only evaluation and fixed calibration now exercise the actual pipeline. An opt-in, hash-checked CPU cross-encoder trial compares 44 replacement-gate configurations without changing the runtime default, reading test labels or calling a paid provider.
+- Evaluation data revision 3 accepts the prior candidate and adds five drafted cases before test evaluation: three same-chunk factual injection questions, one hidden free-text trap and one near miss. Three unique descriptive sentences augment existing attack sections without changing original labelled facts, attack strings or structured claims. Corpus/profile/forbidden-reference digests are refreshed; dev/test labels now have separate files. Human review remains pending.
 - Tracked corpus v3: 72 original AI-assisted synthetic documents, structured source bindings, explicit access intent and 60 drafted golden cases with candidate split/freeze digests. Independent human label review pending.
-- Offline schema/fact/profile-reference checks and independent rule oracles; SQL comparison covers every document and fixture subject. Evaluation harness and calibration are not implemented.
+- Offline schema/fact/profile-reference checks and independent rule oracles; SQL comparison covers every document and fixture subject. Canonical test baselines and release gating remain pending.
 
 ### Changed
 
+- Adopted `local-calibrated-v1`: pinned real embeddings use cosine >=0.75 without the lexical conjunction; fake profile, retrieval ACLs, rules and verification remain unchanged. Added isolated held-out exposure logging, explicit partial coverage, forecast matching and private live recording safeguards. CPU reranker remains not adopted.
 - Candidate labels revised before acceptance to add six free-text hidden-answer traps, six in-domain near misses and four ordinary injection questions; still 60 cases, 40 dev/20 test, with unchanged corpus and subject allocation. Candidate semantic digests regenerated for the new coverage and explicit acceptable-decision/forbidden-fact labels; all labels remain drafted.
 - Extractive verification traces now include a bounded `verification_reason` (`schema`, `citation`, `quotation`, `instruction_echo`, `duplicate`); this field never enters the public response and does not change verification criteria.
 - Extractive verification rejection returns the standard HTTP 200 no-answer, with a distinct trace reason; infrastructure errors and deterministic rule rephrase fallback retain their prior handling.

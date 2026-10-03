@@ -7,6 +7,7 @@ All domain data is synthetic. **Implemented** means present in the repository; *
 3. [Technology choices](technology-choices.md) and [patterns](patterns.md) — implementers and technical interviews: trade-offs, locations, and tests.
 4. [Threat model](threat-model.md) — reviewers: trust boundaries, tested protections, known gaps, and planned mitigations.
 5. [Glossary](glossary.md) — readers new to the terminology.
+6. [Evaluation method](evaluation.md) and [canonical results](evaluation-results.md) — definitions, limitations, counts/intervals and the one-pass held-out record.
 
 Use the [project README](../README.md) for runnable commands, the [changelog](../CHANGELOG.md) for changes, and the [backlog](BACKLOG.md) for deferred work.
 

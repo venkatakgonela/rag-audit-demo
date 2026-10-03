@@ -7,6 +7,7 @@ from datetime import UTC, datetime
 
 from rag_audit.accounting import Price, estimate, preflight, validate_usage
 from rag_audit.embeddings import Embedder
+from rag_audit.gate import Gate
 from rag_audit.generation import Evidence, FakeGenerator, GenerationRequest, Generator
 from rag_audit.policy import (
     CONFIGURATION_VERSION,
@@ -18,6 +19,7 @@ from rag_audit.policy import (
     strict_json,
     verify,
 )
+from rag_audit.reranking import Reranker, rerank
 from rag_audit.responses import BOUND_VERSION, MAX_INPUT_TOKENS, ResponsesProvider
 from rag_audit.routing import route
 from rag_audit.rules import templates
@@ -83,6 +85,8 @@ async def ask(
     clock: Callable[[], float] = time.monotonic,
     id_factory: Callable[[], str] = lambda: str(uuid.uuid4()),
     timestamp: Callable[[], str] = lambda: datetime.now(UTC).isoformat(),
+    gate: Gate | None = None,
+    reranker: Reranker | None = None,
 ) -> dict:
     trace = new_trace()
     request_id = id_factory()
@@ -131,11 +135,31 @@ async def ask(
             trace["reason"] = "rule_template"
             selected = []
         else:
+            candidates = snapshot.chunks
+            if gate is not None and gate.variant in ("V4a", "V4b"):
+                if reranker is None:
+                    raise ValueError("Reranker gate requires scoring model")
+                started = clock()
+                candidates = rerank(question, candidates, reranker)
+                trace["reranker_duration"] = clock() - started
+                trace["reranker_identity"] = reranker.identity
+                trace["reranker_scores"] = [
+                    {"id": chunk["id"], "score": chunk["reranker_score"]}
+                    for chunk in candidates
+                ]
+            gate_started = clock()
             selected, skips = select_evidence(
-                snapshot.chunks, embedder.identity, settings
+                candidates,
+                embedder.identity,
+                settings,
+                gate=gate,
+                question=question,
             )
             trace["skips"] = skips
+            trace["gate_duration"] = clock() - gate_started
             trace["profile_version"] = PROFILES[embedder.identity].version
+            if gate is not None:
+                trace["gate_configuration"] = asdict(gate)
         if selected or (choices and rephrase):
             real = isinstance(provider, ResponsesProvider)
             output_cap = (
