@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 from rag_audit.embeddings import MODEL, REVISION, FakeEmbedder
+from rag_audit.gate import Gate
 from rag_audit.settings import AnswerMode, Settings
 
 CONFIGURATION_VERSION = "extractive-policy-v1"
@@ -71,7 +72,12 @@ def serialize(response: dict) -> str:
 
 
 def select_evidence(
-    chunks: list[dict], model: str, settings: Settings
+    chunks: list[dict],
+    model: str,
+    settings: Settings,
+    *,
+    gate: Gate | None = None,
+    question: str = "",
 ) -> tuple[list[dict], list[str]]:
     profile = PROFILES.get(model)
     if profile is None:
@@ -81,12 +87,15 @@ def select_evidence(
     used = 0
     for chunk in chunks:
         cosine, keyword = chunk["cosine_similarity"], chunk["keyword_score"]
-        if (
-            not math.isfinite(cosine)
-            or not math.isfinite(keyword)
-            or cosine < profile.cosine_floor
-            or keyword <= 0
-            or chunk["keyword_rank"] is None
+        if (gate is not None and not gate.accepts(chunk, question)) or (
+            gate is None
+            and (
+                not math.isfinite(cosine)
+                or not math.isfinite(keyword)
+                or cosine < profile.cosine_floor
+                or keyword <= 0
+                or chunk["keyword_rank"] is None
+            )
         ):
             skips.append("weak_signal")
             continue

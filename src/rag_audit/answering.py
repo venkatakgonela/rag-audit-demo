@@ -7,6 +7,7 @@ from datetime import UTC, datetime
 
 from rag_audit.accounting import Price, estimate, preflight, validate_usage
 from rag_audit.embeddings import Embedder
+from rag_audit.gate import Gate
 from rag_audit.generation import Evidence, FakeGenerator, GenerationRequest, Generator
 from rag_audit.policy import (
     CONFIGURATION_VERSION,
@@ -83,6 +84,7 @@ async def ask(
     clock: Callable[[], float] = time.monotonic,
     id_factory: Callable[[], str] = lambda: str(uuid.uuid4()),
     timestamp: Callable[[], str] = lambda: datetime.now(UTC).isoformat(),
+    gate: Gate | None = None,
 ) -> dict:
     trace = new_trace()
     request_id = id_factory()
@@ -131,11 +133,19 @@ async def ask(
             trace["reason"] = "rule_template"
             selected = []
         else:
+            gate_started = clock()
             selected, skips = select_evidence(
-                snapshot.chunks, embedder.identity, settings
+                snapshot.chunks,
+                embedder.identity,
+                settings,
+                gate=gate,
+                question=question,
             )
             trace["skips"] = skips
+            trace["gate_duration"] = clock() - gate_started
             trace["profile_version"] = PROFILES[embedder.identity].version
+            if gate is not None:
+                trace["gate_configuration"] = asdict(gate)
         if selected or (choices and rephrase):
             real = isinstance(provider, ResponsesProvider)
             output_cap = (

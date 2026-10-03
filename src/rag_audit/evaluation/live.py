@@ -1,0 +1,113 @@
+import hashlib
+import json
+from dataclasses import asdict, replace
+from decimal import Decimal
+from pathlib import Path
+
+import httpx
+
+from rag_audit.accounting import estimate
+from rag_audit.evaluation.data import append_event
+from rag_audit.provider_config import configured_provider
+from rag_audit.responses import INPUT_MARGIN, ResponsesProvider, parse_usage
+
+
+class Ledger:
+    def __init__(self, path: Path, forecast: dict, cap: Decimal = Decimal("3.00")):
+        if path.exists():
+            raise ValueError("Live ledger already exists; no automatic second run")
+        self.path = path
+        self.cap = cap
+        self.total = Decimal(0)
+        self.stopped = False
+        append_event(path, dict(event="forecast", cap=str(cap), **forecast))
+
+    def reserve(self, bound: int, output: int, request_hash: str) -> Decimal:
+        amount = (Decimal(bound) * Decimal("12.5") + Decimal(output) * 50) / 1000000
+        if self.stopped or self.total + amount > self.cap:
+            self.stopped = True
+            append_event(
+                self.path,
+                dict(
+                    event="cap_stop",
+                    retained=str(self.total),
+                    next_reservation=str(amount),
+                ),
+            )
+            raise ValueError("Live spend cap prevents dispatch")
+        self.total += amount
+        append_event(
+            self.path,
+            dict(
+                event="reserved",
+                request_hash=request_hash,
+                amount=str(amount),
+                retained=str(self.total),
+            ),
+        )
+        return amount
+
+    def settle(self, reserved: Decimal, actual: Decimal | None, request_hash: str):
+        if actual is not None and actual <= reserved:
+            self.total += actual - reserved
+        elif actual is not None:
+            self.total += actual - reserved
+            self.stopped = True
+        append_event(
+            self.path,
+            dict(
+                event="settled",
+                request_hash=request_hash,
+                actual=str(actual) if actual is not None else None,
+                retained=str(self.total),
+            ),
+        )
+
+
+class RecordingTransport(httpx.AsyncBaseTransport):
+    def __init__(self, ledger: Ledger, prices: dict, output: Path):
+        self.ledger = ledger
+        self.prices = prices
+        self.output = output
+        self.calls = 0
+
+    async def handle_async_request(self, request: httpx.Request) -> httpx.Response:
+        body = await request.aread()
+        data = json.loads(body)
+        request_hash = hashlib.sha256(body).hexdigest()
+        reserved = self.ledger.reserve(
+            len(body) + INPUT_MARGIN, data["max_output_tokens"], request_hash
+        )
+        self.calls += 1
+        transport = httpx.AsyncHTTPTransport(retries=0)
+        actual = None
+        try:
+            response = await transport.handle_async_request(request)
+            content = await response.aread()
+            decoded = json.loads(content)
+            usage = parse_usage(decoded["usage"])
+            actual = estimate(usage, self.prices.get(decoded.get("model")))
+            append_event(
+                self.output,
+                dict(
+                    request_hash=request_hash,
+                    usage=asdict(usage),
+                    payload=decoded.get("output"),
+                    status=decoded.get("status"),
+                ),
+            )
+            return response
+        finally:
+            self.ledger.settle(reserved, actual, request_hash)
+            await transport.aclose()
+
+    async def aclose(self):
+        pass
+
+
+def live_provider(settings, ledger: Ledger, raw_output: Path):
+    provider, prices = configured_provider(settings)
+    if not isinstance(provider, ResponsesProvider):
+        raise ValueError("Live mode requires explicitly configured provider")
+    transport = RecordingTransport(ledger, prices, raw_output)
+    return replace(provider, transport=transport), prices, transport

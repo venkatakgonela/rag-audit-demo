@@ -1,4 +1,7 @@
 .DEFAULT_GOAL := help
+.PHONY: eval
+eval:
+	uv run --frozen python -m rag_audit.evaluation $(ARGS)
 ARGS ?=
 .PHONY: help setup up down lint format typecheck test test-integration db-init run clean
 
