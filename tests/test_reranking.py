@@ -1,10 +1,12 @@
 import math
+from types import SimpleNamespace
+from unittest.mock import MagicMock
 
 import pytest
 
 from rag_audit.evaluation.reranker_trial import grid
 from rag_audit.gate import Gate
-from rag_audit.reranking import probability, rerank
+from rag_audit.reranking import OnnxReranker, probability, rerank
 
 
 class FixedReranker:
@@ -52,3 +54,68 @@ def test_reranking_preserves_candidates_and_ties():
         rerank("query", chunks * 11, FixedReranker())
     with pytest.raises(ValueError):
         rerank("query", [dict(id="bad", synthetic_score=math.nan)], FixedReranker())
+
+
+@pytest.mark.parametrize("length", [512, 513])
+def test_onnx_pair_limit_never_truncates_or_batches(length):
+    model = object.__new__(OnnxReranker)
+    encoded = SimpleNamespace(
+        ids=list(range(length)), attention_mask=[1] * length, type_ids=[0] * length
+    )
+    model.tokenizer = MagicMock()
+    model.tokenizer.encode.return_value = encoded
+    model.np = MagicMock()
+    model.np.array.side_effect = lambda values, dtype: values
+    output = MagicMock()
+    output.shape = (1, 1)
+    output.__getitem__.return_value = 0.0
+    model.session = MagicMock()
+    model.session.run.return_value = [output]
+    score = model.score("question", dict(section="Synthetic", text="passage"))
+    model.tokenizer.encode.assert_called_once_with("question", "Synthetic\npassage")
+    if length == 513:
+        assert score is None
+        model.session.run.assert_not_called()
+        model.np.array.assert_not_called()
+    else:
+        assert score == 0.5
+        model.session.run.assert_called_once_with(
+            None,
+            dict(
+                input_ids=[encoded.ids],
+                attention_mask=[encoded.attention_mask],
+                token_type_ids=[encoded.type_ids],
+            ),
+        )
+        assert all(
+            call.kwargs == {"dtype": "int64"} for call in model.np.array.call_args_list
+        )
+
+
+@pytest.mark.parametrize("shape, value", [((1, 2), 0), ((1, 1), math.nan)])
+def test_onnx_bad_output_fails_closed(shape, value):
+    model = object.__new__(OnnxReranker)
+    model.tokenizer = MagicMock()
+    model.tokenizer.encode.return_value = SimpleNamespace(
+        ids=[1], attention_mask=[1], type_ids=[0]
+    )
+    model.np = MagicMock()
+    output = MagicMock()
+    output.shape = shape
+    output.__getitem__.return_value = value
+    model.session = MagicMock()
+    model.session.run.return_value = [output]
+    with pytest.raises(ValueError):
+        model.score("question", dict(section="Synthetic", text="passage"))
+
+
+def test_unscorable_candidates_sort_last_and_remain_ineligible():
+    chunks: list[dict] = [
+        dict(id="unscorable", synthetic_score=None),
+        dict(id="selected"),
+    ]
+    scored = rerank("question", chunks, FixedReranker())
+    assert [chunk["id"] for chunk in scored] == ["selected", "unscorable"]
+    assert not Gate("V4a", 0.1).accepts(
+        {**scored[-1], "cosine_similarity": 1.0, "keyword_score": 1.0}, "question"
+    )

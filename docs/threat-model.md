@@ -1,5 +1,7 @@
 # Threat model
 
+Implemented experimental reranker controls: scoring receives only already-authorised top-20 candidates, never hidden/global statistics. [Counterfactual tests](../tests/integration/test_evaluation_runner.py) compare relevance scores and response bytes after hidden-document removal. [Adapter tests](../tests/test_reranking.py) reject malformed/nonfinite scores, enforce the 512-token limit without truncation and preserve candidates/tie order. The optional cache is hash-checked before model loading; the reranker neither downloads files nor executes publisher Python code. These controls do not establish answer correctness or justify adopting the model.
+
 All domain data is synthetic. **Implemented** controls are scoped to current offline code and tests; **Planned** controls are not validated features. This is a design review aid, not certification. See [architecture](ARCHITECTURE.md) and [evidence convention](README.md#evidence-convention).
 
 ## Assets, actors and boundaries

@@ -28,6 +28,7 @@ Record significant product choices here. Preserve accepted decision text; dated 
 | [0020: Opt-in Responses integration](0020-opt-in-responses-provider.md) | Accepted | October 3, 2026 |
 | [0021: Versioned evaluation data](0021-versioned-evaluation-data.md) | Accepted; labels drafted | October 3, 2026 |
 | [0022: Answer outcome presentation](0022-answer-outcome-presentation.md) | Accepted | October 3, 2026 |
+| [0023: CPU reranker trial](0023-cpu-reranker-trial.md) | Accepted; not adopted | October 3, 2026 |
 
 ## Pending decisions
 
@@ -35,7 +36,7 @@ All entries are **Planned**, not accepted choices. Milestones describe product w
 
 | Question | Options to weigh and constraints | Decision milestone |
 | --- | --- | --- |
-| Reranker | None versus local cross-encoder; quality/latency trade-off | Retrieval evaluation |
+| Reranker reassessment | One local model evaluated but not adopted; require separately declared new evidence | Expanded human-reviewed evaluation |
 | Production provider deployment | Opt-in local Responses integration exists; deployment and production identity remain undecided | Production design |
 | Extractive evaluation and calibration | Key-fact and citation checks, dev-only calibration; no LLM judge | Evaluation harness |
 | CI gate thresholds | Zero-leak/citation/rule safety constraints plus evidence-based quality tolerance | Regression gate |
