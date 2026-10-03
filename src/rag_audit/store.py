@@ -56,9 +56,9 @@ class PostgresStore:
             if (
                 config is None
                 or config[1] != embedder.identity
-                or not config[0].startswith("synthetic-v2-")
+                or not config[0].startswith("synthetic-v3-")
             ):
-                raise ValueError("Ingest matching corpus v2 first")
+                raise ValueError("Ingest matching corpus v3 first")
             empty = Snapshot(identity, config[0], config[1], [])
             if not route.valid:
                 return empty

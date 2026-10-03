@@ -1,0 +1,830 @@
+{
+  "version": 1,
+  "subjects": [
+    "synthetic-customer-a",
+    "synthetic-customer-b",
+    "synthetic-broker-a",
+    "synthetic-broker-b",
+    "synthetic-underwriter-a",
+    "synthetic-underwriter-b",
+    "synthetic-admin"
+  ],
+  "documents": [
+    {
+      "document_id": "synthetic-policy-0",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-1",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-2",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-3",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-4",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-5",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-6",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-7",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-8",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-9",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-10",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-policy-11",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-0",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-1",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-2",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-3",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-4",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-5",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-6",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-7",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-8",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-9",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-10",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-handling-11",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-0",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-1",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-2",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-3",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-4",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-5",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-6",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-7",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-8",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-9",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-10",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-faq-11",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-customer-b",
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Public guidance: all fixture subjects."
+    },
+    {
+      "document_id": "synthetic-underwriting-0",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-1",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-2",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-3",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-4",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-5",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-6",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-7",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-8",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-9",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-10",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-underwriting-11",
+      "allowed_subjects": [
+        "synthetic-underwriter-a",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Internal tier: both underwriters and admin, regardless of team."
+    },
+    {
+      "document_id": "synthetic-guide-0",
+      "allowed_subjects": [
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Both brokers; owning-team underwriter by cross-tier team grant; admin."
+    },
+    {
+      "document_id": "synthetic-guide-1",
+      "allowed_subjects": [
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Both brokers; owning-team underwriter by cross-tier team grant; admin."
+    },
+    {
+      "document_id": "synthetic-guide-2",
+      "allowed_subjects": [
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Both brokers; owning-team underwriter by cross-tier team grant; admin."
+    },
+    {
+      "document_id": "synthetic-guide-3",
+      "allowed_subjects": [
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Both brokers; owning-team underwriter by cross-tier team grant; admin."
+    },
+    {
+      "document_id": "synthetic-guide-4",
+      "allowed_subjects": [
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Both brokers; owning-team underwriter by cross-tier team grant; admin."
+    },
+    {
+      "document_id": "synthetic-guide-5",
+      "allowed_subjects": [
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Both brokers; owning-team underwriter by cross-tier team grant; admin."
+    },
+    {
+      "document_id": "synthetic-guide-6",
+      "allowed_subjects": [
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Both brokers; owning-team underwriter by cross-tier team grant; admin."
+    },
+    {
+      "document_id": "synthetic-guide-7",
+      "allowed_subjects": [
+        "synthetic-broker-a",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Both brokers; owning-team underwriter by cross-tier team grant; admin."
+    },
+    {
+      "document_id": "synthetic-claim-0",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-broker-a",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-1",
+      "allowed_subjects": [
+        "synthetic-customer-b",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-2",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-broker-a",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-3",
+      "allowed_subjects": [
+        "synthetic-customer-b",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-4",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-broker-a",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-5",
+      "allowed_subjects": [
+        "synthetic-customer-b",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-6",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-broker-a",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-7",
+      "allowed_subjects": [
+        "synthetic-customer-b",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-8",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-broker-a",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-9",
+      "allowed_subjects": [
+        "synthetic-customer-b",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-10",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-broker-a",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-11",
+      "allowed_subjects": [
+        "synthetic-customer-b",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-12",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-broker-a",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-13",
+      "allowed_subjects": [
+        "synthetic-customer-b",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-14",
+      "allowed_subjects": [
+        "synthetic-customer-a",
+        "synthetic-broker-a",
+        "synthetic-underwriter-a",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    },
+    {
+      "document_id": "synthetic-claim-15",
+      "allowed_subjects": [
+        "synthetic-customer-b",
+        "synthetic-broker-b",
+        "synthetic-underwriter-b",
+        "synthetic-admin"
+      ],
+      "rationale": "Owner customer, assigned broker, owning-team underwriter and admin; not the other customer."
+    }
+  ]
+}

@@ -53,12 +53,15 @@ def test_negative_delay_rejected():
         eligibility("water", ["water"], date(2026, 1, 2), date(2026, 1, 1), 14)
 
 
-def test_structured_corpus_v2_and_all_rules(tmp_path):
+def test_structured_corpus_v3_and_all_rules(tmp_path):
     manifest = generate(tmp_path)
     validate_records(manifest)
-    assert len(manifest["documents"]) == 50
-    assert len(manifest["claims"]) == len(manifest["policies"]) == 10
-    for claim, policy in zip(manifest["claims"], manifest["policies"], strict=True):
+    assert len(manifest["documents"]) == 72
+    assert len(manifest["claims"]) == 16
+    assert len(manifest["policies"]) == 12
+    policies = {record["id"]: record for record in manifest["policies"]}
+    for claim in manifest["claims"]:
+        policy = policies[claim["policy_id"]]
         for operation in ("status", "payout", "eligibility"):
             result = calculate(operation, claim, policy, manifest["version"])
             assert result.record_ids[0] == claim["id"]

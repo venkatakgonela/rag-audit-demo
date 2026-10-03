@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "state": "candidate-awaiting-acceptance",
+  "reason": "First candidate data freeze; all labels drafted, human review pending.",
+  "digests": {
+    "corpus": "31d10e220da6b0733c65f681a4693857cb4ba0b5836bfdc50f5ce4b158079649",
+    "access": "102828a42cb98b2f940e4cb3ec9e725bf4caa3e1efa4dfad836b2745670497be",
+    "chunks": "f33939e05e4dfab88d56126213b9ee34509950806479e0691aa6660ad09ee72f",
+    "cases": "711ed1a36385f5d4beb63e3c8fc0db6c0a7346d076f0d19948f66f4524c68900",
+    "test": "7c43ec84e3a334c14ca2546cc98f7edd0a91fa86cb854620316ba91e9ce1f9df"
+  }
+}
