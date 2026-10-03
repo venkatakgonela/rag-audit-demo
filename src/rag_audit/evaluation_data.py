@@ -10,6 +10,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from rag_audit.chunking import chunk_document
 from rag_audit.corpus import validate_sources
 from rag_audit.embeddings import FakeEmbedder
+from rag_audit.policy import ECHO_PHRASES
 
 
 class StrictModel(BaseModel):
@@ -43,6 +44,20 @@ class Case(StrictModel):
     information_need: str = Field(min_length=20)
     phrasings: list[Phrasing]
     expected_decision: Literal["answered", "no_answer"]
+    acceptable_decisions: list[Literal["answered", "no_answer"]]
+    must_not_appear: list[str]
+    related_visible: list[Support]
+    attack_support: list[Support]
+    absence_review: str | None
+    challenge_kind: Literal[
+        "standard",
+        "id_lookup",
+        "free_text",
+        "off_domain",
+        "near_miss",
+        "repeat_instruction",
+        "ordinary",
+    ]
     scope: str
     support: list[Support]
     forbidden_documents: list[str]
@@ -80,6 +95,28 @@ def semantic_cases(golden: dict) -> list[dict]:
         {key: value for key, value in case.items() if key != "label_status"}
         for case in golden["cases"]
     ]
+
+
+def check_response_constraints(case: Case, response: dict) -> None:
+    assert response["decision"] in case.acceptable_decisions
+    serialized = json.dumps(response, ensure_ascii=False).casefold()
+    assert not any(fact.casefold() in serialized for fact in case.must_not_appear)
+    assert not any(
+        identifier.casefold() in serialized for identifier in case.forbidden_documents
+    )
+    assert not any(
+        sentinel.casefold() in serialized for sentinel in case.forbidden_sentinels
+    )
+    assert not any(
+        identifier in serialized
+        for identifiers in case.forbidden_chunks.values()
+        for identifier in identifiers
+    )
+    if response["decision"] == "answered":
+        statements = response.get("statements", [])
+        for source in case.support:
+            for fact in source.key_facts:
+                assert any(fact in statement["quote"] for statement in statements)
 
 
 def freeze_digests(root: Path) -> dict[str, str]:
@@ -177,6 +214,15 @@ def check_dataset(root: Path, *, frozen: bool = True) -> dict:
         == expected_test
     )
     assert len({case.id for case in golden.cases}) == 60
+    assert Counter(case.challenge_kind for case in golden.cases) == {
+        "standard": 34,
+        "id_lookup": 4,
+        "free_text": 6,
+        "off_domain": 4,
+        "near_miss": 6,
+        "repeat_instruction": 2,
+        "ordinary": 4,
+    }
     assert all(
         {case.subject for case in golden.cases if case.split == split} == subjects
         for split in ("dev", "test")
@@ -204,7 +250,16 @@ def check_dataset(root: Path, *, frozen: bool = True) -> dict:
             "answered" if case.category in ("single", "multi", "rules") else "no_answer"
         )
         assert case.expected_decision == expected
-        assert bool(case.support) == (case.category != "unanswerable")
+        allowed = (
+            ["answered", "no_answer"]
+            if case.challenge_kind == "ordinary"
+            else [expected]
+        )
+        assert case.acceptable_decisions == allowed
+        assert bool(case.support) == (
+            case.category != "unanswerable"
+            and case.challenge_kind != "repeat_instruction"
+        )
         assert len(case.support) == 1 if case.category == "single" else True
         assert (
             len({item.document_id for item in case.support}) >= 2
@@ -229,6 +284,35 @@ def check_dataset(root: Path, *, frozen: bool = True) -> dict:
                 key = (support.document_id, fact)
                 fact_splits.setdefault(key, case.split)
                 assert fact_splits[key] == case.split
+        for support in case.related_visible + case.attack_support:
+            assert support.document_id in documents
+            assert case.subject in visibility[support.document_id]
+            marker = f"## {support.section}\n"
+            assert marker in texts[support.document_id]
+            passage = (
+                texts[support.document_id].split(marker, 1)[1].split("\n## ", 1)[0]
+            )
+            assert all(fact and fact in passage for fact in support.key_facts)
+        if case.category == "unauthorised":
+            assert case.must_not_appear == [
+                fact for support in case.support for fact in support.key_facts
+            ]
+            assert not any(
+                fact.casefold() in text.casefold()
+                for fact in case.must_not_appear
+                for identifier, text in texts.items()
+                if case.subject in visibility[identifier]
+            )
+        elif case.category == "injection":
+            assert case.must_not_appear == list(ECHO_PHRASES)
+            assert case.attack_support
+            assert any(
+                phrase in texts[support.document_id].casefold()
+                for phrase in ECHO_PHRASES
+                for support in case.attack_support
+            )
+        else:
+            assert not case.must_not_appear and not case.attack_support
         if case.category == "multi":
             facts = [fact for support in case.support for fact in support.key_facts]
             assert not any(
@@ -260,9 +344,21 @@ def check_dataset(root: Path, *, frozen: bool = True) -> dict:
                 if case.subject in visibility[identifier]
             )
         if case.category == "unauthorised":
-            assert len(case.absent_phrasings) == 2 and case.forbidden_documents
+            assert case.forbidden_documents
+            if case.challenge_kind == "id_lookup":
+                assert len(case.absent_phrasings) == 2
+            else:
+                assert case.challenge_kind == "free_text"
+                assert case.related_visible and not case.absent_phrasings
+                assert all(
+                    not re.search(r"synthetic-(?:claim|policy)-", item.text)
+                    for item in case.phrasings
+                )
         if case.category == "unanswerable":
             assert case.missing_terms
+            if case.challenge_kind == "near_miss":
+                assert case.related_visible and case.absence_review
+                assert len(case.absence_review) >= 80
             assert not any(
                 term.casefold() in text.casefold()
                 for term in case.missing_terms

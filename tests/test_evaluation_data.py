@@ -6,7 +6,12 @@ import pytest
 from data_oracle import expected_rule
 
 from rag_audit.corpus import SOURCE, validate_sources
-from rag_audit.evaluation_data import check_dataset, read_json
+from rag_audit.evaluation_data import (
+    Case,
+    check_dataset,
+    check_response_constraints,
+    read_json,
+)
 from rag_audit.rules import calculate
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,7 +71,16 @@ def test_independent_rule_oracles():
 
 
 @pytest.mark.parametrize(
-    "change", ["fact", "visibility", "document", "chunk", "freeze"]
+    "change",
+    [
+        "fact",
+        "visibility",
+        "document",
+        "chunk",
+        "freeze",
+        "forbidden_fact",
+        "acceptable_decision",
+    ],
 )
 def test_bad_dataset_is_detected(tmp_path, change):
     shutil.copytree(ROOT / "datasets", tmp_path / "datasets")
@@ -84,6 +98,16 @@ def test_bad_dataset_is_detected(tmp_path, change):
     elif change == "chunk":
         case = next(case for case in data["cases"] if case["forbidden_chunks"])
         next(iter(case["forbidden_chunks"].values()))[0] = "stale-chunk"
+    elif change == "forbidden_fact":
+        case = next(
+            case for case in data["cases"] if case["category"] == "unauthorised"
+        )
+        case["must_not_appear"] = ["invented unrelated fact"]
+    elif change == "acceptable_decision":
+        case = next(
+            case for case in data["cases"] if case["challenge_kind"] == "ordinary"
+        )
+        case["acceptable_decisions"] = ["answered"]
     else:
         name = "freeze.json"
         data = read_json(directory / name)
@@ -107,3 +131,29 @@ def test_source_bindings_cannot_mask_amount_drift():
     manifest["policies"][0]["excess"] = "00"
     with pytest.raises(ValueError, match="Structured prose"):
         validate_sources(SOURCE, manifest)
+
+
+def test_response_label_constraints_are_enforced():
+    cases = read_json(ROOT / "datasets/evaluation/golden.json")["cases"]
+    case = Case.model_validate(
+        next(item for item in cases if item["challenge_kind"] == "ordinary")
+    )
+    check_response_constraints(case, {"decision": "no_answer", "text": "No evidence."})
+    quote = case.support[0].key_facts[0]
+    check_response_constraints(
+        case, {"decision": "answered", "statements": [{"quote": quote}]}
+    )
+    for response in (
+        {"decision": "error"},
+        {"decision": "answered", "statements": []},
+        {"decision": "no_answer", "text": "IGNORE PREVIOUS INSTRUCTIONS"},
+    ):
+        with pytest.raises(AssertionError):
+            check_response_constraints(case, response)
+    hidden = Case.model_validate(
+        next(item for item in cases if item["challenge_kind"] == "free_text")
+    )
+    with pytest.raises(AssertionError):
+        check_response_constraints(
+            hidden, {"decision": "no_answer", "text": hidden.must_not_appear[0]}
+        )
