@@ -177,6 +177,14 @@ def test_idempotence_offsets_atomic_failure_and_model_mismatch(database):
 
 def test_section_path_and_rrf_raw_signals(database):
     connection, _ = database
+    vector = FakeEmbedder().encode(["assessment"], query=True)[0]
+    vector_ids = {
+        row[0]
+        for row in connection.execute(
+            "SELECT id FROM demo_chunks ORDER BY embedding <=> %s::vector,id LIMIT 50",
+            (str(vector),),
+        ).fetchall()
+    }
     result = retrieve(
         connection, "synthetic-admin", "assessment", FakeEmbedder(), top_k=20
     )
@@ -184,7 +192,12 @@ def test_section_path_and_rrf_raw_signals(database):
     for row in result["chunks"]:
         assert row["score"] > 0
         if row["keyword_rank"] is not None:
-            assert row["score"] >= 1 / (60 + row["keyword_rank"])
+            contribution = 1 / (60 + row["keyword_rank"])
+            if row["id"] in vector_ids:
+                assert row["score"] > contribution
+            else:
+                # Keyword-only candidates outside the vector top 50 contribute once.
+                assert row["score"] == pytest.approx(contribution)
 
 
 def test_section_only_term_is_indexed_and_affects_embedding(database):

@@ -1,6 +1,7 @@
 import json
 import math
 from dataclasses import dataclass
+from enum import StrEnum
 
 from rag_audit.embeddings import MODEL, REVISION, FakeEmbedder
 from rag_audit.settings import AnswerMode, Settings
@@ -15,6 +16,20 @@ ECHO_PHRASES = (
     "</evidence>",
     "<system>",
 )
+
+
+class VerificationReason(StrEnum):
+    SCHEMA = "schema"
+    CITATION = "citation"
+    QUOTATION = "quotation"
+    INSTRUCTION_ECHO = "instruction_echo"
+    DUPLICATE = "duplicate"
+
+
+class VerificationError(ValueError):
+    def __init__(self, reason: VerificationReason, message: str):
+        super().__init__(message)
+        self.reason = reason
 
 
 @dataclass(frozen=True)
@@ -110,16 +125,19 @@ def verify(
         settings.answer_mode != AnswerMode.EXTRACTIVE
         or len(payload.encode()) > settings.output_bytes
     ):
-        raise ValueError("Output limit")
-    data = strict_json(payload)
+        raise VerificationError(VerificationReason.SCHEMA, "Output limit")
+    try:
+        data = strict_json(payload)
+    except ValueError:
+        raise VerificationError(VerificationReason.SCHEMA, "Invalid JSON") from None
     if type(data) is not dict or set(data) != {"statements"}:
-        raise ValueError("Invalid schema")
+        raise VerificationError(VerificationReason.SCHEMA, "Invalid schema")
     statements = data["statements"]
     if (
         type(statements) is not list
         or not 1 <= len(statements) <= settings.max_statements
     ):
-        raise ValueError("Invalid statements")
+        raise VerificationError(VerificationReason.SCHEMA, "Invalid statements")
     sources = {chunk["id"]: chunk for chunk in sent}
     verified = []
     seen = set()
@@ -129,27 +147,29 @@ def verify(
             "chunk_id",
             "quote",
         }:
-            raise ValueError("Invalid statement")
+            raise VerificationError(VerificationReason.SCHEMA, "Invalid statement")
         if any(type(value) is not str for value in statement.values()):
-            raise ValueError("Invalid field")
+            raise VerificationError(VerificationReason.SCHEMA, "Invalid field")
         identifier, quote, text = (
             statement["chunk_id"],
             statement["quote"],
             statement["text"],
         )
         if identifier not in authorised or identifier not in sources:
-            raise ValueError("Invalid citation")
+            raise VerificationError(VerificationReason.CITATION, "Invalid citation")
         if (
             not quote.strip()
             or len(quote) > settings.statement_characters
             or text != quote
             or quote not in sources[identifier]["text"]
         ):
-            raise ValueError("Invalid quotation")
+            raise VerificationError(VerificationReason.QUOTATION, "Invalid quotation")
         if any(phrase in text.casefold() for phrase in ECHO_PHRASES):
-            raise ValueError("Instruction echo")
+            raise VerificationError(
+                VerificationReason.INSTRUCTION_ECHO, "Instruction echo"
+            )
         if (identifier, quote) in seen:
-            raise ValueError("Duplicate statement")
+            raise VerificationError(VerificationReason.DUPLICATE, "Duplicate statement")
         seen.add((identifier, quote))
         source = sources[identifier]
         verified.append(

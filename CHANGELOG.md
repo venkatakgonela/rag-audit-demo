@@ -11,6 +11,8 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ### Changed
 
+- Candidate labels revised before acceptance to add six free-text hidden-answer traps, six in-domain near misses and four ordinary injection questions; still 60 cases, 40 dev/20 test, with unchanged corpus and subject allocation. Candidate semantic digests regenerated for the new coverage and explicit acceptable-decision/forbidden-fact labels; all labels remain drafted.
+- Extractive verification traces now include a bounded `verification_reason` (`schema`, `citation`, `quotation`, `instruction_echo`, `duplicate`); this field never enters the public response and does not change verification criteria.
 - Extractive verification rejection returns the standard HTTP 200 no-answer, with a distinct trace reason; infrastructure errors and deterministic rule rephrase fallback retain their prior handling.
 - Payout rule v2 includes claim status and a calculation-only qualification without changing the amount or adding an eligibility decision.
 - Static corpus export replaces seeded generation; v2 corpus ingestion is no longer supported. Initial v3 candidate labels have not been accepted or human-reviewed.

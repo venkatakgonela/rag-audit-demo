@@ -37,3 +37,7 @@ Evaluation justifies better safe explanations, production monitoring needs an ex
 ## Sources
 
 [Presentation tests](../../tests/test_answer_presentation.py), [rule tests](../../tests/test_rules.py), [orchestration](../../src/rag_audit/answering.py), [unchanged verifier](../../src/rag_audit/policy.py).
+
+## Additive clarification — October 3, 2026
+
+Extractive rejection traces additionally carry `verification_reason`, limited to `schema`, `citation`, `quotation`, `instruction_echo` or `duplicate`. Typed verification failures avoid brittle parsing of exception messages; arbitrary exception text is not recorded in this field. Alternatives were unbounded messages (unstable and potentially sensitive) or one undifferentiated count (insufficient diagnosis). Public response bytes, verification acceptance criteria and the instruction-echo list remain unchanged. Rule-template fallback and non-verification paths retain a null subreason. The presentation tests assert every bounded value and exact public byte identity. This clarification changes diagnostic typing in the verifier, not the accepted safety policy.
