@@ -1,6 +1,9 @@
 import asyncio
 import uuid
+from dataclasses import asdict
+from decimal import Decimal
 
+from rag_audit.accounting import Price
 from rag_audit.answering import ask
 from rag_audit.evaluation.baseline import BaselineGenerator
 from rag_audit.evaluation.metrics import assess
@@ -18,9 +21,23 @@ class ObservedStore(PostgresStore):
 
 
 async def run_phrasing(
-    connection, embedder, case: Case, style: str, question: str, gate: Gate | None
+    connection,
+    embedder,
+    case: Case,
+    style: str,
+    question: str,
+    gate: Gate | None,
+    *,
+    live=None,
 ) -> dict:
-    provider = BaselineGenerator()
+    provider = live[0] if live else BaselineGenerator()
+    counter = live[2] if live else provider
+    before_calls = counter.calls
+    prices = (
+        live[1]
+        if live
+        else {provider.model: Price("synthetic-baseline-v1", Decimal(0), Decimal(0))}
+    )
     store = ObservedStore(connection)
     request_id = str(uuid.uuid4())
     response = await ask(
@@ -32,6 +49,7 @@ async def run_phrasing(
         Settings(),
         gate=gate,
         id_factory=lambda: request_id,
+        prices=prices,
     )
     stored = connection.execute(
         "SELECT payload FROM demo_traces WHERE request_id=%s", (request_id,)
@@ -39,8 +57,14 @@ async def run_phrasing(
     if not stored:
         raise ValueError("Persisted trace missing")
     trace = stored[0]
+    if (
+        trace["subject"] != case.subject
+        or trace["question"] != question
+        or trace["decision"] != response["decision"]
+    ):
+        raise ValueError("Persisted trace does not match response")
     chunks = store.observed.chunks
-    assessment = assess(case, response, trace, chunks, provider.calls)
+    assessment = assess(case, response, trace, chunks, counter.calls - before_calls)
     attack_documents = {support.document_id for support in case.attack_support}
     attack_chunks = [
         chunk["id"]
@@ -67,16 +91,35 @@ async def run_phrasing(
         lexical_coverage=[lexical_coverage(question, chunk) for chunk in chunks],
         attack_retrieved=bool(attack_chunks),
         attack_sent=bool(set(attack_chunks) & set(trace["sent_ids"])),
+        generation_requests=[asdict(request) for request in provider.requests]
+        if isinstance(provider, BaselineGenerator)
+        else [],
     )
 
 
-def run_cases(connection, embedder, cases: list[Case], gate: Gate | None) -> list[dict]:
-    rows = []
+def run_cases(
+    connection,
+    embedder,
+    cases: list[Case],
+    gate: Gate | None,
+    *,
+    live=None,
+    checkpoint=None,
+) -> list[dict]:
+    rows: list[dict] = []
     for case in cases:
         for index, phrasing in enumerate(case.phrasings):
+            if live and live[2].ledger.stopped:
+                return rows
             row = asyncio.run(
                 run_phrasing(
-                    connection, embedder, case, phrasing.style, phrasing.text, gate
+                    connection,
+                    embedder,
+                    case,
+                    phrasing.style,
+                    phrasing.text,
+                    gate,
+                    live=live,
                 )
             )
             if case.category == "unauthorised":
@@ -95,7 +138,13 @@ def run_cases(connection, embedder, cases: list[Case], gate: Gate | None) -> lis
                     question = phrasing.text if hidden else case.absent_phrasings[index]
                     paired = asyncio.run(
                         run_phrasing(
-                            connection, embedder, case, phrasing.style, question, gate
+                            connection,
+                            embedder,
+                            case,
+                            phrasing.style,
+                            question,
+                            gate,
+                            live=live,
                         )
                     )
                     if row["response_bytes"] != paired["response_bytes"]:
@@ -116,4 +165,6 @@ def run_cases(connection, embedder, cases: list[Case], gate: Gate | None) -> lis
                         )
                         connection.execute("DROP TABLE removed_chunks")
             rows.append(row)
+            if checkpoint:
+                checkpoint(row)
     return rows

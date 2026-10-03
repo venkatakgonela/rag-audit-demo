@@ -1,3 +1,5 @@
+import fcntl
+import json
 import os
 from pathlib import Path
 
@@ -32,6 +34,20 @@ def append_event(path: Path, event: dict) -> None:
 
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as output:
+        output.write(json.dumps(event, sort_keys=True) + "\n")
+        output.flush()
+        os.fsync(output.fileno())
+
+
+def start_test_run(path: Path, event: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a+", encoding="utf-8") as output:
+        fcntl.flock(output.fileno(), fcntl.LOCK_EX)
+        output.seek(0)
+        if any(
+            json.loads(line).get("key") == event["key"] for line in output
+        ) and not event.get("rerun_reason"):
+            raise ValueError("Test configuration already attempted; review required")
         output.write(json.dumps(event, sort_keys=True) + "\n")
         output.flush()
         os.fsync(output.fileno())

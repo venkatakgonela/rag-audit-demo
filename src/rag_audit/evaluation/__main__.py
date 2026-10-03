@@ -10,7 +10,9 @@ import psycopg
 
 from rag_audit.embeddings import FakeEmbedder, OnnxEmbedder
 from rag_audit.evaluation.calibration import choose, grid, summarize
-from rag_audit.evaluation.data import append_event, load_split
+from rag_audit.evaluation.data import append_event, load_split, start_test_run
+from rag_audit.evaluation.forecast import forecast
+from rag_audit.evaluation.live import Ledger, live_provider
 from rag_audit.evaluation.oracle import rule_failures
 from rag_audit.evaluation.reporting import report, write_report
 from rag_audit.evaluation.runner import run_cases
@@ -24,16 +26,22 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--split", choices=("dev", "test", "all"), default="dev")
     parser.add_argument("--embedder", choices=("fake", "real"), default="fake")
-    parser.add_argument("--generator", choices=("baseline",), default="baseline")
+    parser.add_argument("--generator", choices=("baseline", "live"), default="baseline")
     parser.add_argument("--policy", default="default")
     parser.add_argument("--calibrate", action="store_true")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--root", type=Path, default=Path.cwd())
     parser.add_argument("--model-directory", type=Path)
     parser.add_argument("--run-log", type=Path)
+    parser.add_argument("--forecast-baseline", type=Path)
+    parser.add_argument("--rerun-reason")
     arguments = parser.parse_args()
+    if arguments.rerun_reason and len(arguments.rerun_reason.strip()) < 20:
+        parser.error("Bug-fix reruns require a meaningful recorded reason")
     if arguments.calibrate and (
-        arguments.split != "dev" or arguments.embedder != "real"
+        arguments.split != "dev"
+        or arguments.embedder != "real"
+        or arguments.generator != "baseline"
     ):
         parser.error("Calibration requires dev and real embeddings")
     root = arguments.root.resolve()
@@ -57,8 +65,26 @@ def main() -> int:
     config = dict(
         freeze=freeze,
         embedder=embedder.identity,
-        generator="sentence-overlap-v1",
+        generator="sentence-overlap-v1"
+        if arguments.generator == "baseline"
+        else "informational-live-v1",
         gate=asdict(gate) if gate else None,
+        settings={
+            key: value
+            for key, value in Settings().model_dump(mode="json").items()
+            if key
+            in (
+                "evidence_bytes",
+                "prompt_bytes",
+                "context_chunks",
+                "output_units",
+                "max_statements",
+                "statement_characters",
+                "generation_output_tokens",
+                "generation_seconds",
+                "generation_reasoning_effort",
+            )
+        },
     )
     commit = subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=root, text=True
@@ -66,22 +92,17 @@ def main() -> int:
     log = arguments.run_log or root / "datasets/evaluation/run-log.jsonl"
     key = digest(config)
     if test_run:
-        if log.exists() and any(
-            json.loads(line).get("key") == key for line in log.read_text().splitlines()
-        ):
-            raise ValueError(
-                "Test configuration already attempted; explicit bug-fix review required"
-            )
-        append_event(
+        start_test_run(
             log,
             dict(
                 event="started",
                 key=key,
                 commit=commit,
                 config=config,
+                rerun_reason=arguments.rerun_reason,
                 command=(
                     f"--split {arguments.split} --embedder {arguments.embedder} "
-                    "--generator baseline --policy <configuration>"
+                    f"--generator {arguments.generator} --policy <configuration>"
                 ),
             ),
         )
@@ -90,6 +111,25 @@ def main() -> int:
         raise ValueError("Isolated database required")
     schema = "evaluation_" + uuid.uuid4().hex
     arguments.output.mkdir(parents=True, exist_ok=True)
+    live = None
+    if arguments.generator == "live":
+        if (
+            arguments.embedder != "real"
+            or arguments.calibrate
+            or arguments.forecast_baseline is None
+        ):
+            raise ValueError(
+                "Live run requires real embeddings and frozen-policy baseline forecast"
+            )
+        baseline = read_json(arguments.forecast_baseline)
+        if (
+            baseline["config"]["freeze"] != freeze
+            or baseline["config"]["gate"] != config["gate"]
+        ):
+            raise ValueError("Forecast baseline configuration mismatch")
+        prediction = forecast(baseline["rows"], settings)
+        ledger = Ledger(arguments.output / "live-ledger.jsonl", prediction)
+        live = live_provider(settings, ledger, arguments.output / "raw-output.jsonl")
     with psycopg.connect(
         settings.database_url.get_secret_value(), autocommit=True
     ) as connection:
@@ -100,7 +140,16 @@ def main() -> int:
             ingest(connection, root / "datasets/corpus-v3", embedder)
 
             def evaluate(policy):
-                rows = run_cases(connection, embedder, cases, policy)
+                rows = run_cases(
+                    connection,
+                    embedder,
+                    cases,
+                    policy,
+                    live=live,
+                    checkpoint=lambda row: append_event(
+                        arguments.output / "requests.jsonl", row
+                    ),
+                )
                 lookup = {case.id: case for case in cases}
                 for row in rows:
                     case = lookup[row["case"]]
@@ -144,6 +193,7 @@ def main() -> int:
                 row["hard_failures"] or row["response"]["decision"] == "error"
                 for row in rows
             )
+            failures = failures or len(rows) != 2 * len(cases)
             if test_run:
                 append_event(
                     log,
@@ -155,6 +205,10 @@ def main() -> int:
                     ),
                 )
             return int(failures)
+        except BaseException:
+            if test_run:
+                append_event(log, dict(event="interrupted", key=key))
+            raise
         finally:
             connection.execute("SET search_path TO public")
             connection.execute(f"DROP SCHEMA {schema} CASCADE")

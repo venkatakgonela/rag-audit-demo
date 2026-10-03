@@ -11,7 +11,7 @@ def summarize_rows(rows: list[dict]) -> dict:
     retrieval = [
         row
         for row in rows
-        if row["category"] not in ("rules", "unanswerable")
+        if row["category"] in ("single", "multi", "injection")
         and row["assessment"]["recall"]["5"][1]
     ]
     for limit in ("5", "10"):
@@ -31,6 +31,14 @@ def summarize_rows(rows: list[dict]) -> dict:
     counts = [row["assessment"]["facts"] for row in rows if row["category"] != "rules"]
     result["fact_coverage"] = rate(
         sum(pair[0] for pair in counts), sum(pair[1] for pair in counts)
+    )
+    fact_rows = [pair for pair in counts if pair[1]]
+    result["all_facts_covered"] = rate(
+        sum(pair[0] == pair[1] for pair in fact_rows), len(fact_rows)
+    )
+    rule_rows = [row for row in rows if row["category"] == "rules"]
+    result["rule_agreement"] = rate(
+        sum(row["assessment"]["correct"] for row in rule_rows), len(rule_rows)
     )
     answerable = [row for row in rows if row["category"] in ("single", "multi")]
     negative = [
@@ -73,6 +81,14 @@ def summarize_rows(rows: list[dict]) -> dict:
             )
             for stage in stages
         }
+        gates = [
+            row["trace"]["gate_duration"]
+            for row in selected
+            if "gate_duration" in row["trace"]
+        ]
+        result["latency"][str(invoked)]["gate"] = dict(
+            n=len(gates), p50=percentile(gates, 0.5), p95=percentile(gates, 0.95)
+        )
     result["usage"] = {
         key: sum((row["trace"]["usage"] or {}).get(key, 0) or 0 for row in rows)
         for key in ("input", "output", "cached", "cache_write", "reasoning")
@@ -109,7 +125,8 @@ def report(rows: list[dict]) -> dict:
                     ]
                 )
     cases = {
-        identifier: all(
+        identifier: len([row for row in rows if row["case"] == identifier]) == 2
+        and all(
             row["assessment"]["allowed"]
             and not row["hard_failures"]
             and (
@@ -121,7 +138,18 @@ def report(rows: list[dict]) -> dict:
         )
         for identifier in sorted({row["case"] for row in rows})
     }
-    return dict(groups=groups, cases=cases)
+    probes = [row["counterfactual"] for row in rows if "counterfactual" in row]
+    return dict(groups=groups, cases=cases, counterfactuals=summarize_rows(probes))
+
+
+def deterministic_metrics(metrics: dict) -> dict:
+    if not isinstance(metrics, dict):
+        return metrics
+    return {
+        key: deterministic_metrics(value) if isinstance(value, dict) else value
+        for key, value in metrics.items()
+        if key != "latency"
+    }
 
 
 def write_report(output: Path, payload: dict) -> None:
