@@ -3,6 +3,7 @@ import hashlib
 import importlib.metadata
 import json
 import tomllib
+from pathlib import Path
 
 from scripts.audit_evidence import ROOT, markdown_table
 
@@ -41,6 +42,35 @@ def inventory(root=ROOT, installed=False):
             else:
                 if version != package["version"]:
                     raise ValueError("notice_installed_version: " + name)
+                distribution = importlib.metadata.distribution(name)
+                metadata = distribution.metadata
+                expression = (
+                    metadata.get("License-Expression")
+                    or metadata.get("License")
+                    or "; ".join(
+                        value
+                        for value in metadata.get_all("Classifier", [])
+                        if value.startswith("License ::")
+                    )
+                )
+                if expression != package["licence"]:
+                    raise ValueError("notice_installed_licence: " + name)
+                for entry in texts:
+                    if entry["path"].startswith("https://"):
+                        continue
+                    matches = [
+                        filename
+                        for filename in distribution.files or []
+                        if str(filename).endswith(".dist-info/" + entry["path"])
+                    ]
+                    if (
+                        len(matches) != 1
+                        or Path(str(distribution.locate_file(matches[0]))).read_text(
+                            errors="replace"
+                        )
+                        != entry["text"]
+                    ):
+                        raise ValueError("notice_installed_text: " + name)
     return record, licences
 
 

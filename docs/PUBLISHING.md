@@ -1,6 +1,6 @@
 # Publication checklist
 
-Status: preparation in progress; not publication clearance. The repository remains private. No visibility, settings, pull request, tag or release change has been made by this work.
+Status: local readiness checks complete; owner review and platform settings remain publication prerequisites. The repository remains private. No visibility, settings, pull request, tag or release change has been made by this work.
 
 ## Accepted historical exceptions
 
@@ -39,8 +39,11 @@ All other scan rules remain in force. No history rewrite or replacement reposito
   the owner must check the first README screen, PDF, file tree, licence display,
   docs index and both proof links without signing in.
 
-Final local/fresh-clone verification and owner review are required before
-publication. Missing platform permissions are unavailable, not successful checks.
+Local and fresh no-hardlinks clone checks pass: lint, types, unit tests,
+integration, recorded replay gate and fault self-tests. Offline PDF rebuilds
+produce the same extracted text and tables, with no external page requests;
+the 12-page report has been visually inspected. Owner review remains required.
+Missing platform permissions are unavailable, not successful checks.
 
 ## Settings read-back and owner-only commands
 
