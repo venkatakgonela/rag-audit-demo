@@ -34,6 +34,8 @@ async def run_phrasing(
     provider = live[0] if live else BaselineGenerator()
     counter = live[2] if live else provider
     before_calls = counter.calls
+    if live and hasattr(counter, "context"):
+        counter.context = f"{case.id}/{style}"
     prices = (
         live[1]
         if live
