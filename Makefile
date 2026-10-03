@@ -3,9 +3,34 @@
 eval:
 	uv run --frozen python -m rag_audit.evaluation $(ARGS)
 ARGS ?=
+MODEL_DIRECTORY ?= data/model
+.PHONY: eval-gate eval-selftest eval-record eval-rebaseline eval-model eval-runtime
+eval-runtime:
+	uv sync --frozen --extra embeddings
+
+eval-model:
+	uv run --frozen --extra embeddings python -m rag_audit.evaluation.model_integrity --directory $(MODEL_DIRECTORY) $(ARGS)
+
+eval-gate:
+	uv run --frozen --extra embeddings python -m rag_audit.evaluation.ci_gate --model-directory $(MODEL_DIRECTORY) $(ARGS)
+
+eval-selftest:
+	SYNTHETIC_MODEL_DIRECTORY=$(MODEL_DIRECTORY) uv run --frozen --extra embeddings pytest tests/integration/test_gate_selftest.py --run-integration -q
+
+eval-record:
+	uv run --frozen --extra embeddings python -m rag_audit.evaluation.record $(ARGS)
+
+eval-rebaseline:
+	uv run --frozen --extra embeddings python -m rag_audit.evaluation.ci_gate --rebaseline --model-directory $(MODEL_DIRECTORY) $(ARGS)
 .PHONY: help setup up down lint format typecheck test test-integration db-init run clean
 
 help:
+	@printf '%s\n' 'eval-runtime      Install locked embedding runtime' \
+	  'eval-model        Verify trusted model bytes; --provision only on missing cache' \
+	  'eval-gate         Read-only recorded-behaviour regression gate' \
+	  'eval-selftest     Gate passing controls and faulty variants (DB/model required)' \
+	  'eval-record       Explicit local live recording; opt-in/reason/key required' \
+	  'eval-rebaseline   Explicit local logged baseline change; reason/marker required'
 	@printf '%s\n' 'eval              Isolated evaluation; ARGS="--split dev --embedder fake --output /tmp/eval"'
 	@printf '%s\n' \
 	  'setup             Install locked dependencies and create .env only if absent' \

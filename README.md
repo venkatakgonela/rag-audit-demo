@@ -1,6 +1,8 @@
 # rag-audit-demo
 
-A synthetic answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Offline fake generation is the default; real Responses generation is opt-in local only, never exercised in CI. [Isolated evaluation and dev calibration](docs/evaluation.md) are implemented; the real profile is `local-calibrated-v1`, cosine >=0.75. Regression gating/replay remain planned.
+A synthetic answering demonstration with PostgreSQL/pgvector retrieval, access-scoped Decimal rules, verified extractive citations, signed fixture identity and durable tracing. Offline fake generation is the default; live Responses generation is opt-in local only. [Evaluation](docs/evaluation.md) includes calibration and a recorded-HTTP regression gate; the real profile is `local-calibrated-v1`, cosine >=0.75. CI exercises the real adapter with recorded responses, not live generation; hosted validation is pending.
+
+Regression commands: `make eval-runtime`, `make eval-model ARGS="--provision"` (first cache only), `make db-init`, `make eval-gate`, `make eval-selftest`. Configure an isolated `DATABASE_URL`; no provider key is needed. Read the [failure and re-baseline protocol](docs/evaluation.md#failure-and-re-baseline-protocol) before explicit local `make eval-record` or `make eval-rebaseline`. Neither runs in CI.
 
 > **All data is synthetic.** The generated corpus models a fictional insurer. Nothing here is real customer, policy or claims data. Database credentials and identifiers are synthetic, disposable and local-only.
 
@@ -14,8 +16,8 @@ Under active development. Nothing below is claimed as working until it ships wit
 | Synthetic corpus and ACL model | implemented, synthetic fixture identities only |
 | Hybrid retrieval with pre-filter access control | implemented, exact CPU vectors + full-text RRF |
 | Rules layer and extractive answer policy | implemented; fake default and opt-in local Responses generation |
-| Evaluation harness and golden set | planned |
-| CI regression gate | planned |
+| Evaluation harness and golden set | implemented; labels drafted, 0/65 human-reviewed |
+| CI regression gate | implemented configuration and local proofs; hosted run pending |
 | Cost and latency tracing | implemented; synthetic usage, unknown price is null |
 | Sample AI audit report | planned |
 
@@ -78,7 +80,7 @@ No model download occurs in these commands; missing model artifacts fail. `test-
 
 Real defaults: `GENERATION_OUTPUT_TOKENS=2048`, `GENERATION_SECONDS=60`, `GENERATION_COST_CEILING=0.55` USD per call. Configured maxima are 4,096 and USD 0.65; no adaptive raising or retries. Input bound is actual serialized UTF-8 request bytes plus 1,024 tokens, with a 32 KiB request cap. This is a qualified assumption, not a verified tokenizer counter. Exceeding the reported-input bound or 272,000-token supported-price limit fails closed. Incomplete and rejected generations retain valid usage/cost; timeouts may still be billable and are not retried. Exact expected reported model mapping rejects substitutions. A deployment using different usage semantics needs separate validation.
 
-The first small local smoke found substantial natural-question abstention and rejected exact instruction quotations. It is not calibrated evaluation or proof of general injection resistance. A drafted golden dataset now exists; calibration, reranker and quality gate remain Planned. No LLM judge is used for extractive evaluation data.
+The first small local smoke found substantial natural-question abstention and rejected exact instruction quotations. It is not proof of general injection resistance. Subsequent frozen evaluation and calibration are implemented, the reranker was not adopted, and the replay gate awaits hosted confirmation. No LLM judge is used for extractive evaluation data.
 
 ### Offline answering quickstart
 
@@ -125,7 +127,7 @@ The token contains only subject; roles/teams come from PostgreSQL. Extra body fi
 
 Answer settings (environment names): `ANSWER_MODE=extractive`, `QUESTION_CHARACTERS=4000`, `HTTP_BODY_BYTES=16384`, `EVIDENCE_BYTES=12288`, `PROMPT_BYTES=32768`, `CONTEXT_CHUNKS=5`, `OUTPUT_UNITS=512`, `OUTPUT_BYTES=16384`, `MAX_STATEMENTS=5`, `STATEMENT_CHARACTERS=2048`, `PROVIDER_SECONDS=10`, `COST_CEILING=0.01`, and `STUB_SIGNING_KEY` (required for HTTP, at least 32 UTF-8 bytes). Evidence uses whole UTF-8 chunks: oversize chunks are skipped and ranking continues, never truncated. Fake usage is **synthetic UTF-8 bytes**, not vendor tokens. Unknown fake price stays null; real calls require configured prices and use the separate real limits described above. There are no default real prices, per-user rate limits or verified billing guarantees.
 
-`instruction-echo-v1` blocks configured attack phrases/delimiters, including exact in-set quotations; benign discussions can be overblocked. Delimiters alone are not security. [Calibrated evaluation and three canonical baselines](docs/evaluation-results.md) are complete; the evaluated reranker is not adopted. General injection resistance remains unproven. CI quality gates/replay and the release audit remain **Planned**. No judge or abstractive answering is implemented.
+`instruction-echo-v1` blocks configured attack phrases/delimiters, including exact in-set quotations; benign discussions can be overblocked. Delimiters alone are not security. [Calibrated evaluation and three canonical baselines](docs/evaluation-results.md) are complete; the evaluated reranker is not adopted. General injection resistance remains unproven. Replay regression configuration is implemented, hosted validation remains pending, and the release audit remains **Planned**. No judge or abstractive answering is implemented.
 
 ### Synthetic retrieval quickstart
 

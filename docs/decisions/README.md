@@ -31,6 +31,9 @@ Record significant product choices here. Preserve accepted decision text; dated 
 | [0023: CPU reranker trial](0023-cpu-reranker-trial.md) | Accepted; not adopted | October 3, 2026 |
 | [0024: Extractive evaluation](0024-extractive-evaluation.md) | Accepted | October 3, 2026 |
 | [0025: Calibrated local gate](0025-calibrated-local-gate.md) | Accepted | October 3, 2026 |
+| [0026: Regression CI gate](0026-regression-ci-gate.md) | Accepted; hosted numerics pending | October 3, 2026 |
+| [0027: HTTP recorded replay](0027-http-recorded-replay.md) | Accepted | October 3, 2026 |
+| [0028: Runner and model cache](0028-runner-and-model-cache.md) | Accepted; hosted execution pending | October 3, 2026 |
 
 ## Pending decisions
 
@@ -41,11 +44,10 @@ All entries are **Planned**, not accepted choices. Milestones describe product w
 | Reranker reassessment | One local model evaluated but not adopted; require separately declared new evidence | Expanded human-reviewed evaluation |
 | Production provider deployment | Opt-in local Responses integration exists; deployment and production identity remain undecided | Production design |
 | Evaluation expansion | Exact method implemented; larger human-reviewed data pending | Broader validation |
-| CI gate thresholds | Zero-leak/citation/rule safety constraints plus evidence-based quality tolerance | Regression gate |
+| Hosted numerical tolerance confirmation | Zero allowances adopted in ADR 0026; confirm hosted CPU, no silent relaxation | First hosted run |
 | Recalibration | Local dev-calibrated profile adopted; reopen with new evidence only | Model/corpus change |
 | Billing and tighter token bounds | Versioned estimates and qualified byte bound exist; invoice reconciliation and verified tokenizer counter remain planned | Production accounting |
 | Workflow supply chain | Action SHA pins, update automation and image digests | CI hardening |
-| Runner image | Pin ubuntu-24.04 versus follow ubuntu-latest; migration compatibility | CI hardening |
 | Repository licence | Candidate permissive terms versus retaining current restrictions pending an explicit choice | Publication policy |
 
 ## Template

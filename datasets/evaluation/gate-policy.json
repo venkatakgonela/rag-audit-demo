@@ -1,0 +1,8 @@
+{
+  "version": "regression-policy-v1",
+  "count_tolerance": 0,
+  "mrr_tolerance": 0,
+  "cost_tolerance": "0",
+  "provisional_until_hosted": true,
+  "evidence": "Two macOS ARM64 and two emulated Linux AMD64 replays: identical metrics, request sets and selected contexts. Maximum cosine delta 3.241387346308855e-7. Hosted CPU unverified."
+}

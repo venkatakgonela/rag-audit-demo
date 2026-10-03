@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
         with:
@@ -24,7 +24,7 @@ jobs:
       - run: make test
 
   integration:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     services:
       db:
         image: pgvector/pgvector:pg16
@@ -52,3 +52,41 @@ jobs:
       - run: make setup
       - run: make db-init
       - run: make test-integration
+
+  evaluation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: synthetic_demo
+          POSTGRES_PASSWORD: synthetic_local_only
+          POSTGRES_DB: synthetic_demo
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U synthetic_demo -d synthetic_demo"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 30
+    env:
+      DATABASE_URL: postgresql://synthetic_demo:synthetic_local_only@127.0.0.1:5432/synthetic_demo
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.11.3"
+          python-version: "3.12"
+      - run: make setup
+      - run: make eval-runtime
+      - uses: actions/cache@v4
+        with:
+          path: data/model
+          key: bge-5c38ec7c405ec4b44b94cc5a9bb96e735b38267a-${{ hashFiles('datasets/evaluation/model-manifest.json') }}
+      - run: make eval-model ARGS="--provision"
+      - run: make db-init
+      - run: make eval-gate
+      - run: make eval-selftest
