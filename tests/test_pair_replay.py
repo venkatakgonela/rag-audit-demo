@@ -70,3 +70,26 @@ def test_pair_faults_fail_with_passing_control(fault):
             )
             with pytest.raises(ValueError, match="replay_"):
                 call(broken, changed)
+
+
+@pytest.mark.parametrize("missing", ["consumers", "expected_consumptions"])
+def test_versioned_manifest_requires_context_metadata(tmp_path, missing):
+    import hashlib
+
+    from rag_audit.evaluation.record import write_candidates
+    from rag_audit.evaluation.replay import fixture_entries
+    from rag_audit.evaluation_data import digest
+
+    _, entry = pair()
+    entry["response_digest"] = digest(entry["response"])
+    directory = tmp_path / "fixtures"
+    write_candidates(directory, [entry], "synthetic")
+    assert fixture_entries(directory) == [entry]
+    del entry[missing]
+    content = json.dumps([entry]).encode()
+    (directory / "responses.json").write_bytes(content)
+    manifest = json.loads((directory / "manifest.json").read_text())
+    manifest["sha256"] = hashlib.sha256(content).hexdigest()
+    (directory / "manifest.json").write_text(json.dumps(manifest))
+    with pytest.raises(ValueError, match="context metadata missing"):
+        fixture_entries(directory)

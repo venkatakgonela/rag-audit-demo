@@ -36,6 +36,10 @@ def fixture_entries(directory: Path) -> list[dict]:
     if len(entries) != manifest["count"] or identities != manifest["request_hashes"]:
         raise ValueError("fixture_manifest: count or identity mismatch")
     for entry in entries:
+        if manifest.get("version") == "neutral-http-v2" and (
+            "consumers" not in entry or "expected_consumptions" not in entry
+        ):
+            raise ValueError("fixture_consumers: required context metadata missing")
         if digest(entry["response"]) != entry["response_digest"]:
             raise ValueError("fixture_digest: entry changed")
         if entry["response"].get("model") != MODEL:
@@ -47,6 +51,7 @@ def fixture_entries(directory: Path) -> list[dict]:
                 or not consumers
                 or any(type(value) is not str for value in consumers)
                 or len(consumers) != len(set(consumers))
+                or type(entry.get("expected_consumptions")) is not int
                 or entry.get("expected_consumptions") != len(consumers)
             ):
                 raise ValueError("fixture_consumers: invalid expected consumption")
