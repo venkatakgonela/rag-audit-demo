@@ -530,6 +530,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
+    { name = "httpx" },
     { name = "psycopg", extra = ["binary"] },
     { name = "pydantic-settings" },
     { name = "uvicorn" },
@@ -544,7 +545,6 @@ embeddings = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "httpx" },
     { name = "mypy" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -556,6 +556,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.115,<1" },
+    { name = "httpx", specifier = ">=0.28,<1" },
     { name = "numpy", marker = "extra == 'embeddings'", specifier = "==2.5.3" },
     { name = "onnxruntime", marker = "extra == 'embeddings'", specifier = "==1.30.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2,<4" },
@@ -567,7 +568,6 @@ provides-extras = ["embeddings"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "httpx", specifier = ">=0.28,<1" },
     { name = "mypy", specifier = ">=1.14,<2" },
     { name = "pytest", specifier = ">=8.3,<10" },
     { name = "pytest-cov", specifier = ">=6,<8" },

@@ -26,10 +26,10 @@ Definitions describe the design vocabulary; they do not imply implementation. Fo
 | Liveness / readiness | Process responding versus being able to serve required dependencies/work; health is liveness only. |
 | Lockfile | Committed dependency resolutions/hashes; not a lock on all operating-system or container bits. |
 | ORM | Object-relational mapper; not currently used. |
-| Ports and adapters | Separate generation/embedding contracts; offline fake generation and fake/local embeddings exist. |
+| Ports and adapters | Separate generation/embedding contracts; fake and opt-in local Responses generation, fake/local embeddings. |
 | Pre-filter ACL | Authorisation restricts candidates inside the query before exact ranking; no ANN index in production schema. |
 | Prompt injection | Untrusted instructions influencing model behaviour, including instructions embedded in retrieved documents. |
-| RAG | Retrieval-augmented generation: fetch evidence before generation; this implementation uses fake extractive selection only. |
+| RAG | Retrieval-augmented generation: fetch evidence before generation; extractive selection via fake or opt-in local Responses. |
 | Reranker | Optional planned second-stage ranking of candidates; not selected. |
 | SecretStr | Masking wrapper for ordinary representations; not encryption or permission enforcement. |
 | Synthetic data | Fabricated, labelled demonstration material, not real customer records; realism is a limitation. |
@@ -40,6 +40,10 @@ Definitions describe the design vocabulary; they do not imply implementation. Fo
 | Extractive answer mode | Statement text equals its exact source quote; only current mode, deliberately not general synthesis. |
 | Abstention profile | Versioned per-embedder raw-score gate; current constants are provisional, not calibrated probabilities. |
 | Synthetic usage units | Fake-reported UTF-8 bytes; never presented as real vendor tokens. |
+| Cache-write tokens | Provider-reported input subset written to cache, priced separately from cache reads; synonymous counters are not added. |
+| Reported-model mapping | Exact operator-configured requested alias to expected reported name, not a wildcard or fallback. |
+| Token upper bound | Serialized request UTF-8 bytes plus a fixed margin here; qualified conservative assumption, not a universal tokenizer proof. |
+| List-price estimate | Provider usage multiplied by dated operator-supplied rates, not a verified invoice or billing guarantee. |
 | Trace-before-release | Commit the decision record before returning a response; storage failure replaces it with a generic error. |
 | Subject-only stub | Signed synthetic identifier; roles/teams are resolved from PostgreSQL, without production expiry/replay protections. |
 | p50 / p95 | Median and 95th-percentile measurements, planned for latency reporting; no numbers measured for RAG yet. |

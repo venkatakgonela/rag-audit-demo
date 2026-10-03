@@ -1,6 +1,6 @@
 # Architecture: synthetic RAG audit demonstration
 
-Implemented: health, corpus v2, transactional ingestion, scoped hybrid retrieval and rules, extractive fake answering, signed fixture identity and durable tracing. Planned: real generation, calibrated evaluation and release gating. All domain records are fictional and labelled synthetic.
+Implemented: health, corpus v2, transactional ingestion, scoped retrieval/rules, extractive answering, signed fixture identity and durable tracing. Generation defaults to fake; a Responses adapter is implemented for opt-in local use only, never exercised by CI. Calibrated evaluation and release gating remain Planned. All domain records are synthetic.
 
 ## Key design ideas
 
@@ -12,7 +12,7 @@ Implemented: health, corpus v2, transactional ingestion, scoped hybrid retrieval
 
 ## System context
 
-Caption: **System context** — current offline answering and planned real provider.
+Caption: **System context** — offline default and opt-in local real provider.
 Legend: solid links are Implemented; dashed links are Planned.
 
 ```mermaid
@@ -22,18 +22,19 @@ flowchart LR
     cli --> model["Local pinned ONNX model"]
     user --> answer["Signed-subject offline answering API"]
     answer --> cli
-    answer -.-> real["Planned real generation endpoint"]
+    answer --> real["Opt-in local Responses endpoint; not in CI"]
 ```
 
 ## Containers
 
 Caption: **Containers** — logical processes, not an application Docker image.
-Legend: all nodes and links are Implemented; external generation is absent.
+Legend: all nodes and links are Implemented; real generation is opt-in and not in CI.
 
 ```mermaid
 flowchart LR
     host["Host Python CLI, health and answering API"] --> database[("Loopback Compose PostgreSQL")]
     host --> cache["Local model cache"]
+    host --> provider["Optional Responses endpoint"]
     tests["Unit and opt-in integration tests"] --> database
     ci["Existing CI configuration"] --> tests
 ```
@@ -58,6 +59,8 @@ flowchart LR
     result --> gate["Versioned gate and byte budgets"]
     gate --> fake["Offline fake evidence selector"]
     fake --> verify["Exact citation and echo verification"]
+    gate --> real["Opt-in Responses: price and byte-bound preflight"]
+    real --> verify
     rules --> template["Code-owned wording"]
     verify --> trace["Commit trace before release"]
     template --> trace
@@ -68,7 +71,7 @@ The [chunker](../src/rag_audit/chunking.py) targets 384 tokens, ceiling 480, ove
 ## Implemented answering flow
 
 Caption: **Question-answering sequence** — offline answer decisions and durable traces.
-Legend: all messages are Implemented; real provider and evaluation remain Planned.
+Legend: messages are Implemented; real provider is opt-in local only, evaluation remains Planned.
 
 ```mermaid
 sequenceDiagram
@@ -76,7 +79,7 @@ sequenceDiagram
     participant Policy as Answer policy
     participant Store as PostgreSQL snapshot and traces
     participant Rules as Decimal rules
-    participant Model as Offline fake
+    participant Model as Fake or opt-in Responses
     Caller->>Policy: Signed subject and bounded question
     Policy->>Store: Resolve identity and entity ACLs under locks
     Store-->>Policy: Authorised evidence or records, release locks
@@ -84,8 +87,8 @@ sequenceDiagram
         Policy->>Rules: Compute authorised inputs
         Rules-->>Policy: Fixed result and template
     else Sufficient evidence
-        Policy->>Model: Bounded untrusted evidence data
-        Model-->>Policy: Structured extractive statements
+        Policy->>Model: Price preflight and bounded untrusted evidence
+    Model-->>Policy: Structured extractive statements
         Policy->>Policy: Verify whole output
     else Missing or weak evidence
         Policy->>Policy: Fixed no-answer envelope

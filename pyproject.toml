@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "fastapi>=0.115,<1",
+    "httpx>=0.28,<1",
     "pydantic-settings>=2.7,<3",
     "psycopg[binary]>=3.2,<4",
     "uvicorn>=0.34,<1",
@@ -20,7 +21,6 @@ embeddings = ["onnxruntime==1.30.0", "tokenizers==0.23.2", "numpy==2.5.3"]
 
 [dependency-groups]
 dev = [
-    "httpx>=0.28,<1",
     "mypy>=1.14,<2",
     "pytest>=8.3,<10",
     "pytest-cov>=6,<8",
@@ -35,7 +35,7 @@ packages = ["src/rag_audit"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--strict-markers"
-markers = ["integration: requires a configured PostgreSQL database with vector enabled", "model: explicit local real-model smoke"]
+markers = ["integration: requires a configured PostgreSQL database with vector enabled", "model: explicit local real-model smoke", "live: opt-in real provider; requires environment key"]
 
 [tool.ruff]
 target-version = "py312"

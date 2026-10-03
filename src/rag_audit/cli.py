@@ -11,6 +11,7 @@ from rag_audit.corpus import generate
 from rag_audit.embeddings import FakeEmbedder, OnnxEmbedder, download
 from rag_audit.ingestion import ingest
 from rag_audit.policy import serialize
+from rag_audit.provider_config import configured_provider
 from rag_audit.retrieval import retrieve
 from rag_audit.settings import Settings
 from rag_audit.store import PostgresStore
@@ -61,13 +62,16 @@ def main() -> int:
                 settings.database_url.get_secret_value(), autocommit=True
             ) as connection:
                 if arguments.command == "ask":
+                    provider, prices = configured_provider(settings)
                     response = asyncio.run(
                         ask(
                             PostgresStore(connection),
                             arguments.subject,
                             arguments.query,
                             embedder,
+                            provider,
                             settings=settings,
+                            prices=prices,
                         )
                     )
                     print(serialize(response))
