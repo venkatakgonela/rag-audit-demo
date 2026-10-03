@@ -132,7 +132,7 @@ class RequestRegistry(httpx.AsyncBaseTransport):
         self.expected: set[str] | None = None
         self.failures: list[str] = []
 
-    def restore_cache(self, path: Path):
+    def restore_cache(self, path: Path, body_builder=None):
         if self.bodies or self.responses:
             raise ValueError("cache_restore: fresh registry required")
         for line in path.read_text().splitlines():
@@ -140,6 +140,10 @@ class RequestRegistry(httpx.AsyncBaseTransport):
             body = json.dumps(
                 entry["body"], ensure_ascii=False, separators=(",", ":")
             ).encode()
+            if body_builder is not None:
+                body = body_builder(entry["body"])
+                if json.loads(body) != entry["body"]:
+                    raise ValueError("cache_restore: reconstructed request differs")
             identity = hashlib.sha256(body).hexdigest()
             if identity != entry["request_hash"] or identity in self.bodies:
                 raise ValueError("cache_restore: identity mismatch or duplicate")
