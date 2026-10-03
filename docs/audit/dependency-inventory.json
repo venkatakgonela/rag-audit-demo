@@ -1,0 +1,428 @@
+{
+  "lock_sha256": "7294587b4f347ca4ee3306d8d3fc2dab087db049a7700f9b0585a5a5ce978f16",
+  "packages": [
+    {
+      "name": "annotated-doc",
+      "version": "0.0.5",
+      "licence": "MIT",
+      "source": "https://github.com/fastapi/annotated-doc",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "licence": "MIT",
+      "source": "https://github.com/annotated-types/annotated-types",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "anyio",
+      "version": "4.15.1",
+      "licence": "MIT",
+      "source": "https://anyio.readthedocs.io/en/latest/",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "certifi",
+      "version": "2026.7.22",
+      "licence": "MPL-2.0",
+      "source": "https://github.com/certifi/python-certifi",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": true,
+      "licence_file_count": 1
+    },
+    {
+      "name": "click",
+      "version": "8.5.0",
+      "licence": "BSD-3-Clause",
+      "source": "https://click.palletsprojects.com/page/changes/",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "licence": "BSD-3-Clause",
+      "source": "https://github.com/tartley/colorama",
+      "metadata_evidence": "Publisher version metadata and licence text retrieved read-only; tzdata data files are IANA public-domain data as distinguished from the Python package licence.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "coverage",
+      "version": "7.16.2",
+      "licence": "Apache-2.0",
+      "source": "https://github.com/coveragepy/coveragepy",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 2
+    },
+    {
+      "name": "fastapi",
+      "version": "0.142.2",
+      "licence": "MIT",
+      "source": "https://github.com/fastapi/fastapi",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "filelock",
+      "version": "4.0.9",
+      "licence": "MIT",
+      "source": "https://py-filelock.readthedocs.io",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "flatbuffers",
+      "version": "25.12.19",
+      "licence": "Apache 2.0",
+      "source": "https://google.github.io/flatbuffers/",
+      "metadata_evidence": "Exact installed METADATA; missing licence/notice text retrieved read-only from the version-tagged publisher source.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "fsspec",
+      "version": "2026.9.0",
+      "licence": "BSD-3-Clause",
+      "source": "https://filesystem-spec.readthedocs.io/en/latest/changelog.html",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "licence": "MIT",
+      "source": "https://github.com/python-hyper/h11",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "hf-xet",
+      "version": "1.6.0",
+      "licence": "Apache-2.0",
+      "source": "https://huggingface.co/docs/hub/xet/index",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9",
+      "licence": "BSD-3-Clause",
+      "source": "https://www.encode.io/httpcore",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1",
+      "licence": "BSD-3-Clause",
+      "source": "https://github.com/encode/httpx/blob/master/CHANGELOG.md",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "huggingface-hub",
+      "version": "1.33.0",
+      "licence": "Apache-2.0",
+      "source": "https://github.com/huggingface/huggingface_hub",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "idna",
+      "version": "3.20",
+      "licence": "BSD-3-Clause",
+      "source": "https://github.com/kjd/idna/blob/master/HISTORY.md",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.0",
+      "licence": "MIT",
+      "source": "https://github.com/pytest-dev/iniconfig",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "librt",
+      "version": "0.16.0",
+      "licence": "MIT",
+      "source": "https://github.com/mypyc/librt",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "mypy",
+      "version": "1.20.2",
+      "licence": "MIT",
+      "source": "https://www.mypy-lang.org/",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 2
+    },
+    {
+      "name": "mypy-extensions",
+      "version": "1.1.0",
+      "licence": "MIT",
+      "source": "https://github.com/python/mypy_extensions",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "numpy",
+      "version": "2.5.3",
+      "licence": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+      "source": "https://numpy.org",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 17
+    },
+    {
+      "name": "onnxruntime",
+      "version": "1.30.0",
+      "licence": "MIT License",
+      "source": "https://onnxruntime.ai",
+      "metadata_evidence": "Exact installed METADATA; missing licence/notice text retrieved read-only from the version-tagged publisher source.",
+      "review_required": false,
+      "licence_file_count": 2
+    },
+    {
+      "name": "opentelemetry-api",
+      "version": "1.45.0",
+      "licence": "Apache-2.0",
+      "source": "https://github.com/open-telemetry/opentelemetry-python/tree/main/opentelemetry-api",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "packaging",
+      "version": "26.3",
+      "licence": "Apache-2.0 OR BSD-2-Clause",
+      "source": "https://packaging.pypa.io/",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 3
+    },
+    {
+      "name": "pathspec",
+      "version": "1.1.1",
+      "licence": "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+      "source": "https://python-path-specification.readthedocs.io/en/latest/changes.html",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": true,
+      "licence_file_count": 1
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0",
+      "licence": "MIT",
+      "source": "https://pypi.org/project/pluggy/1.6.0/",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "protobuf",
+      "version": "7.36.2",
+      "licence": "3-Clause BSD License",
+      "source": "https://developers.google.com/protocol-buffers/",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "psycopg",
+      "version": "3.3.6",
+      "licence": "LGPL-3.0-only",
+      "source": "https://psycopg.org/",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": true,
+      "licence_file_count": 1
+    },
+    {
+      "name": "psycopg-binary",
+      "version": "3.3.6",
+      "licence": "LGPL-3.0-only",
+      "source": "https://psycopg.org/",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": true,
+      "licence_file_count": 1
+    },
+    {
+      "name": "pydantic",
+      "version": "2.13.5",
+      "licence": "MIT",
+      "source": "https://github.com/pydantic/pydantic",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.46.5",
+      "licence": "MIT",
+      "source": "https://github.com/pydantic/pydantic",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "pydantic-settings",
+      "version": "2.15.0",
+      "licence": "MIT",
+      "source": "https://github.com/pydantic/pydantic-settings",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "pygments",
+      "version": "2.21.0",
+      "licence": "BSD-2-Clause",
+      "source": "https://pygments.org",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 2
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1",
+      "licence": "MIT",
+      "source": "https://docs.pytest.org/en/stable/changelog.html",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "pytest-cov",
+      "version": "7.1.0",
+      "licence": "MIT",
+      "source": "https://github.com/pytest-dev/pytest-cov",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 2
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.2.4",
+      "licence": "BSD-3-Clause",
+      "source": "https://github.com/theskumar/python-dotenv",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "pyyaml",
+      "version": "6.0.3",
+      "licence": "MIT",
+      "source": "https://pyyaml.org/",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "ruff",
+      "version": "0.16.10",
+      "licence": "MIT",
+      "source": "https://docs.astral.sh/ruff",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "starlette",
+      "version": "1.7.0",
+      "licence": "BSD-3-Clause",
+      "source": "https://github.com/Kludex/starlette",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "tokenizers",
+      "version": "0.23.2",
+      "licence": "License :: OSI Approved :: Apache Software License",
+      "source": "https://github.com/huggingface/tokenizers",
+      "metadata_evidence": "Exact installed METADATA; missing licence/notice text retrieved read-only from the version-tagged publisher source.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.1",
+      "licence": "MPL-2.0 AND MIT",
+      "source": "https://tqdm.github.io",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": true,
+      "licence_file_count": 1
+    },
+    {
+      "name": "types-pyyaml",
+      "version": "6.0.12.20260906",
+      "licence": "Apache-2.0",
+      "source": "https://github.com/python/typeshed",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "licence": "PSF-2.0",
+      "source": "https://github.com/python/typing_extensions/issues",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.4",
+      "licence": "MIT",
+      "source": "https://github.com/pydantic/typing-inspection",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.4",
+      "licence": "Apache-2.0 AND LicenseRef-IANA-Public-Domain",
+      "source": "https://github.com/python/tzdata/issues",
+      "metadata_evidence": "Publisher version metadata and licence text retrieved read-only; tzdata data files are IANA public-domain data as distinguished from the Python package licence.",
+      "review_required": true,
+      "licence_file_count": 3
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.54.0",
+      "licence": "BSD-3-Clause",
+      "source": "https://uvicorn.dev/release-notes",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 1
+    }
+  ]
+}
