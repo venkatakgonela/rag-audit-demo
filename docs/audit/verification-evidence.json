@@ -1,0 +1,1229 @@
+{
+  "audited_commit": "cfd53ff1cf8028dba24e44008f1c910f31de8132",
+  "observations": [
+    {
+      "kind": "verified-from-run-log",
+      "date": "2026-10-03",
+      "run_id": 37131091615,
+      "url": "https://github.com/venkatakgonela/rag-audit-demo/actions/runs/37131091615",
+      "jobs": [
+        {
+          "name": "integration",
+          "conclusion": "success",
+          "head_sha": "cfd53ff1cf8028dba24e44008f1c910f31de8132",
+          "started_at": "2026-10-03T14:50:52Z",
+          "completed_at": "2026-10-03T14:51:45Z"
+        },
+        {
+          "name": "evaluation",
+          "conclusion": "success",
+          "head_sha": "cfd53ff1cf8028dba24e44008f1c910f31de8132",
+          "started_at": "2026-10-03T14:50:52Z",
+          "completed_at": "2026-10-03T14:52:13Z"
+        },
+        {
+          "name": "checks",
+          "conclusion": "success",
+          "head_sha": "cfd53ff1cf8028dba24e44008f1c910f31de8132",
+          "started_at": "2026-10-03T14:50:52Z",
+          "completed_at": "2026-10-03T14:51:14Z"
+        }
+      ],
+      "gate_pass": true,
+      "gate_checks": [
+        {
+          "name": "complete",
+          "baseline": "130",
+          "current": "130",
+          "result": "PASS"
+        },
+        {
+          "name": "hard_safety",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "operational_errors",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "replay_identity",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "counterfactual_coverage",
+          "baseline": "22",
+          "current": "22",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/evidence_sufficient",
+          "baseline": "14",
+          "current": "14",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/correct_answer",
+          "baseline": "15",
+          "current": "15",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/false_answer",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/missed_answer",
+          "baseline": "8",
+          "current": "8",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/correct_abstention",
+          "baseline": "18",
+          "current": "18",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/model_abstention",
+          "baseline": "9",
+          "current": "9",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/evidence_sufficient",
+          "baseline": "12",
+          "current": "12",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/correct_answer",
+          "baseline": "16",
+          "current": "16",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/false_answer",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/missed_answer",
+          "baseline": "8",
+          "current": "8",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/correct_abstention",
+          "baseline": "17",
+          "current": "17",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/model_abstention",
+          "baseline": "6",
+          "current": "6",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/recall_hits",
+          "baseline": "50",
+          "current": "50",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/recall_total",
+          "baseline": "54",
+          "current": "54",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/mrr_count",
+          "baseline": "44",
+          "current": "44",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/mrr_sum",
+          "baseline": "40.55952380952381",
+          "current": "40.55952380952381",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/off_domain",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_answer/off_domain",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/id_lookup",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_answer/id_lookup",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/free_text",
+          "baseline": "2",
+          "current": "2",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_answer/free_text",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/near_miss",
+          "baseline": "5",
+          "current": "5",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_answer/near_miss",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/schema",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/citation",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/quotation",
+          "baseline": "1",
+          "current": "1",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/instruction_echo",
+          "baseline": "4",
+          "current": "4",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/duplicate",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/cost_per_call",
+          "baseline": "0.009241333333333333333333333333",
+          "current": "0.009241333333333333333333333333",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/unknown_cost",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/evidence_sufficient",
+          "baseline": "7",
+          "current": "7",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/correct_answer",
+          "baseline": "9",
+          "current": "9",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/false_answer",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/missed_answer",
+          "baseline": "5",
+          "current": "5",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/correct_abstention",
+          "baseline": "9",
+          "current": "9",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/model_abstention",
+          "baseline": "2",
+          "current": "2",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/evidence_sufficient",
+          "baseline": "7",
+          "current": "7",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/correct_answer",
+          "baseline": "8",
+          "current": "8",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/false_answer",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/missed_answer",
+          "baseline": "5",
+          "current": "5",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/correct_abstention",
+          "baseline": "10",
+          "current": "10",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/model_abstention",
+          "baseline": "2",
+          "current": "2",
+          "result": "PASS"
+        },
+        {
+          "name": "test/recall_hits",
+          "baseline": "28",
+          "current": "28",
+          "result": "PASS"
+        },
+        {
+          "name": "test/recall_total",
+          "baseline": "32",
+          "current": "32",
+          "result": "PASS"
+        },
+        {
+          "name": "test/mrr_count",
+          "baseline": "26",
+          "current": "26",
+          "result": "PASS"
+        },
+        {
+          "name": "test/mrr_sum",
+          "baseline": "22.416666666666668",
+          "current": "22.416666666666668",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/off_domain",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_answer/off_domain",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/id_lookup",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_answer/id_lookup",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/free_text",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_answer/free_text",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/near_miss",
+          "baseline": "1",
+          "current": "1",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_answer/near_miss",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/schema",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/citation",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/quotation",
+          "baseline": "4",
+          "current": "4",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/instruction_echo",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/duplicate",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/cost_per_call",
+          "baseline": "0.008967142857142857142857142857",
+          "current": "0.008967142857142857142857142857",
+          "result": "PASS"
+        },
+        {
+          "name": "test/unknown_cost",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        }
+      ],
+      "selftest_pass_counts": [
+        13
+      ],
+      "log_sha256": "f1de0fd9a46e1b123dd0dc7c446d7d4490ccc140b3a3a542ce71b532efcd10ed"
+    },
+    {
+      "kind": "verified-from-run-log",
+      "date": "2026-10-03",
+      "run_id": 37130712841,
+      "url": "https://github.com/venkatakgonela/rag-audit-demo/actions/runs/37130712841",
+      "jobs": [
+        {
+          "name": "evaluation",
+          "conclusion": "success",
+          "head_sha": "0bfc8364007b9478fa455102c1f3299b9faff02c",
+          "started_at": "2026-10-03T14:44:54Z",
+          "completed_at": "2026-10-03T14:46:04Z"
+        },
+        {
+          "name": "checks",
+          "conclusion": "success",
+          "head_sha": "0bfc8364007b9478fa455102c1f3299b9faff02c",
+          "started_at": "2026-10-03T14:44:54Z",
+          "completed_at": "2026-10-03T14:45:10Z"
+        },
+        {
+          "name": "integration",
+          "conclusion": "success",
+          "head_sha": "0bfc8364007b9478fa455102c1f3299b9faff02c",
+          "started_at": "2026-10-03T14:44:54Z",
+          "completed_at": "2026-10-03T14:45:48Z"
+        }
+      ],
+      "gate_pass": true,
+      "gate_checks": [
+        {
+          "name": "complete",
+          "baseline": "130",
+          "current": "130",
+          "result": "PASS"
+        },
+        {
+          "name": "hard_safety",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "operational_errors",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "replay_identity",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "counterfactual_coverage",
+          "baseline": "22",
+          "current": "22",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/evidence_sufficient",
+          "baseline": "14",
+          "current": "14",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/correct_answer",
+          "baseline": "15",
+          "current": "15",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/false_answer",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/missed_answer",
+          "baseline": "8",
+          "current": "8",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/correct_abstention",
+          "baseline": "18",
+          "current": "18",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/model_abstention",
+          "baseline": "9",
+          "current": "9",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/evidence_sufficient",
+          "baseline": "12",
+          "current": "12",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/correct_answer",
+          "baseline": "16",
+          "current": "16",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/false_answer",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/missed_answer",
+          "baseline": "8",
+          "current": "8",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/correct_abstention",
+          "baseline": "17",
+          "current": "17",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/model_abstention",
+          "baseline": "6",
+          "current": "6",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/recall_hits",
+          "baseline": "50",
+          "current": "50",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/recall_total",
+          "baseline": "54",
+          "current": "54",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/mrr_count",
+          "baseline": "44",
+          "current": "44",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/mrr_sum",
+          "baseline": "40.55952380952381",
+          "current": "40.55952380952381",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/off_domain",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_answer/off_domain",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/id_lookup",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_answer/id_lookup",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/free_text",
+          "baseline": "2",
+          "current": "2",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_answer/free_text",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/near_miss",
+          "baseline": "5",
+          "current": "5",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_answer/near_miss",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/schema",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/citation",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/quotation",
+          "baseline": "1",
+          "current": "1",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/instruction_echo",
+          "baseline": "4",
+          "current": "4",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/duplicate",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/cost_per_call",
+          "baseline": "0.009241333333333333333333333333",
+          "current": "0.009241333333333333333333333333",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/unknown_cost",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/evidence_sufficient",
+          "baseline": "7",
+          "current": "7",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/correct_answer",
+          "baseline": "9",
+          "current": "9",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/false_answer",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/missed_answer",
+          "baseline": "5",
+          "current": "5",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/correct_abstention",
+          "baseline": "9",
+          "current": "9",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/model_abstention",
+          "baseline": "2",
+          "current": "2",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/evidence_sufficient",
+          "baseline": "7",
+          "current": "7",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/correct_answer",
+          "baseline": "8",
+          "current": "8",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/false_answer",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/missed_answer",
+          "baseline": "5",
+          "current": "5",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/correct_abstention",
+          "baseline": "10",
+          "current": "10",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/model_abstention",
+          "baseline": "2",
+          "current": "2",
+          "result": "PASS"
+        },
+        {
+          "name": "test/recall_hits",
+          "baseline": "28",
+          "current": "28",
+          "result": "PASS"
+        },
+        {
+          "name": "test/recall_total",
+          "baseline": "32",
+          "current": "32",
+          "result": "PASS"
+        },
+        {
+          "name": "test/mrr_count",
+          "baseline": "26",
+          "current": "26",
+          "result": "PASS"
+        },
+        {
+          "name": "test/mrr_sum",
+          "baseline": "22.416666666666668",
+          "current": "22.416666666666668",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/off_domain",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_answer/off_domain",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/id_lookup",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_answer/id_lookup",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/free_text",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_answer/free_text",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/near_miss",
+          "baseline": "1",
+          "current": "1",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_answer/near_miss",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/schema",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/citation",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/quotation",
+          "baseline": "4",
+          "current": "4",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/instruction_echo",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/duplicate",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/cost_per_call",
+          "baseline": "0.008967142857142857142857142857",
+          "current": "0.008967142857142857142857142857",
+          "result": "PASS"
+        },
+        {
+          "name": "test/unknown_cost",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        }
+      ],
+      "selftest_pass_counts": [
+        13
+      ],
+      "log_sha256": "973c3e9d6214222d21e4ceeed3887532dfcb3ada8029d04b63a35d9f78c891ea"
+    },
+    {
+      "kind": "verified-from-run-log",
+      "date": "2026-10-03",
+      "run_id": 37121894077,
+      "url": "https://github.com/venkatakgonela/rag-audit-demo/actions/runs/37121894077",
+      "jobs": [
+        {
+          "name": "checks",
+          "conclusion": "success",
+          "head_sha": "c8e09bc57c84b78122889e26a8ed3dab298733f8",
+          "started_at": "2026-10-03T12:08:18Z",
+          "completed_at": "2026-10-03T12:08:43Z"
+        },
+        {
+          "name": "evaluation",
+          "conclusion": "failure",
+          "head_sha": "c8e09bc57c84b78122889e26a8ed3dab298733f8",
+          "started_at": "2026-10-03T12:08:18Z",
+          "completed_at": "2026-10-03T12:09:02Z"
+        },
+        {
+          "name": "integration",
+          "conclusion": "failure",
+          "head_sha": "c8e09bc57c84b78122889e26a8ed3dab298733f8",
+          "started_at": "2026-10-03T12:08:19Z",
+          "completed_at": "2026-10-03T12:09:06Z"
+        }
+      ],
+      "gate_pass": false,
+      "gate_checks": [
+        {
+          "name": "complete",
+          "baseline": "130",
+          "current": "130",
+          "result": "PASS"
+        },
+        {
+          "name": "hard_safety",
+          "baseline": "0",
+          "current": "8",
+          "result": "FAIL"
+        },
+        {
+          "name": "hard:counterfactual_bytes",
+          "baseline": "0",
+          "current": "4",
+          "result": "FAIL"
+        },
+        {
+          "name": "hard:forbidden_output",
+          "baseline": "0",
+          "current": "4",
+          "result": "FAIL"
+        },
+        {
+          "name": "operational_errors",
+          "baseline": "0",
+          "current": "1",
+          "result": "FAIL"
+        },
+        {
+          "name": "replay_identity",
+          "baseline": "0",
+          "current": "2",
+          "result": "FAIL"
+        },
+        {
+          "name": "counterfactual_coverage",
+          "baseline": "22",
+          "current": "22",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/evidence_sufficient",
+          "baseline": "7",
+          "current": "7",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/keyword/correct_answer",
+          "baseline": "11",
+          "current": "11",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/evidence_sufficient",
+          "baseline": "6",
+          "current": "6",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/natural/correct_answer",
+          "baseline": "11",
+          "current": "11",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/recall_hits",
+          "baseline": "50",
+          "current": "50",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/recall_total",
+          "baseline": "54",
+          "current": "54",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/mrr_count",
+          "baseline": "44",
+          "current": "44",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/mrr_sum",
+          "baseline": "40.55952380952381",
+          "current": "40.05952380952381",
+          "result": "FAIL"
+        },
+        {
+          "name": "dev/false_evidence/off_domain",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/id_lookup",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/free_text",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/false_evidence/near_miss",
+          "baseline": "1",
+          "current": "1",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/schema",
+          "baseline": "1",
+          "current": "1",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/citation",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/quotation",
+          "baseline": "2",
+          "current": "2",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/instruction_echo",
+          "baseline": "3",
+          "current": "3",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/verification/duplicate",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/cost_per_call",
+          "baseline": "0.0081704",
+          "current": "0.0078524",
+          "result": "PASS"
+        },
+        {
+          "name": "dev/unknown_cost",
+          "baseline": "0",
+          "current": "1",
+          "result": "FAIL"
+        },
+        {
+          "name": "test/keyword/evidence_sufficient",
+          "baseline": "4",
+          "current": "4",
+          "result": "PASS"
+        },
+        {
+          "name": "test/keyword/correct_answer",
+          "baseline": "7",
+          "current": "7",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/evidence_sufficient",
+          "baseline": "2",
+          "current": "2",
+          "result": "PASS"
+        },
+        {
+          "name": "test/natural/correct_answer",
+          "baseline": "5",
+          "current": "5",
+          "result": "PASS"
+        },
+        {
+          "name": "test/recall_hits",
+          "baseline": "28",
+          "current": "28",
+          "result": "PASS"
+        },
+        {
+          "name": "test/recall_total",
+          "baseline": "32",
+          "current": "32",
+          "result": "PASS"
+        },
+        {
+          "name": "test/mrr_count",
+          "baseline": "26",
+          "current": "26",
+          "result": "PASS"
+        },
+        {
+          "name": "test/mrr_sum",
+          "baseline": "22.416666666666668",
+          "current": "22.416666666666668",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/off_domain",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/id_lookup",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/free_text",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/false_evidence/near_miss",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/schema",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/citation",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/quotation",
+          "baseline": "1",
+          "current": "1",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/instruction_echo",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/verification/duplicate",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        },
+        {
+          "name": "test/cost_per_call",
+          "baseline": "0.008286",
+          "current": "0.008286",
+          "result": "PASS"
+        },
+        {
+          "name": "test/unknown_cost",
+          "baseline": "0",
+          "current": "0",
+          "result": "PASS"
+        }
+      ],
+      "selftest_pass_counts": [],
+      "log_sha256": "b29e7d792c0526bf6ac93993958e9e563f481af38d84a18203c1a64bc6e09463"
+    },
+    {
+      "kind": "verified-from-run-log",
+      "date": "2026-10-03",
+      "run_id": 37121892287,
+      "url": "https://github.com/venkatakgonela/rag-audit-demo/actions/runs/37121892287",
+      "jobs": [
+        {
+          "name": "evaluation",
+          "conclusion": "failure",
+          "head_sha": "ab513be090b063f22de0478d8c04895e9e2ff460",
+          "started_at": "2026-10-03T12:08:17Z",
+          "completed_at": "2026-10-03T12:08:44Z"
+        },
+        {
+          "name": "checks",
+          "conclusion": "failure",
+          "head_sha": "ab513be090b063f22de0478d8c04895e9e2ff460",
+          "started_at": "2026-10-03T12:08:16Z",
+          "completed_at": "2026-10-03T12:08:39Z"
+        },
+        {
+          "name": "integration",
+          "conclusion": "success",
+          "head_sha": "ab513be090b063f22de0478d8c04895e9e2ff460",
+          "started_at": "2026-10-03T12:08:18Z",
+          "completed_at": "2026-10-03T12:09:09Z"
+        }
+      ],
+      "gate_pass": false,
+      "gate_checks": [],
+      "selftest_pass_counts": [],
+      "log_sha256": "8bd92d1b3103923c04d276ba03e78701a834f077f692ebf5e502545c93a3d4ef"
+    },
+    {
+      "kind": "reported-observation",
+      "date": "2026-10-03",
+      "platform": "macOS",
+      "command": "make eval-selftest",
+      "invocations": 6,
+      "native_exit_crashes": 1,
+      "passing_reruns": 5,
+      "tests_per_passing_rerun": 13,
+      "description": "Reviewer reported an intermittent native process-exit crash; not reproducible from committed evidence. Root cause unestablished. Selected hosted Linux logs above contain passing self-tests, not a platform-wide absence guarantee."
+    }
+  ]
+}

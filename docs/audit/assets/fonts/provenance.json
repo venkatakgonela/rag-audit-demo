@@ -1,0 +1,25 @@
+{
+  "family": "Noto Sans",
+  "version": "2.015",
+  "licence": "OFL-1.1",
+  "source": "https://github.com/google/fonts/tree/main/ofl/notosans",
+  "publisher_source_revision": "c4a321e123e4d4ff315f57f4e0adf294fe3a95be",
+  "note": "Publisher metadata identifies this release/source. Download URLs used main; the exact files below are independently hash-pinned. Upright variable font supplies regular and bold.",
+  "files": [
+    {
+      "path": "docs/audit/assets/fonts/OFL.txt",
+      "bytes": 4396,
+      "sha256": "cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a"
+    },
+    {
+      "path": "docs/audit/assets/fonts/NotoSans.ttf",
+      "bytes": 2049096,
+      "sha256": "bfb7bb691513f12e734dc346c03a03f784912432d7e3fa8e56efcf906fe86b3d"
+    },
+    {
+      "path": "docs/audit/assets/fonts/NotoSans-Italic.ttf",
+      "bytes": 2322640,
+      "sha256": "58e6e0ebd1931b29a365aa2d3e2ee9a9e831a3af7cf3ad1462d4e72154f0b291"
+    }
+  ]
+}
