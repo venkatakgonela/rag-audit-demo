@@ -106,6 +106,8 @@ Final primary false answers and hard failures are zero on both splits. More fals
 | dev | 22 | 9 | 0 | 53 |
 | test | 10 | 7 | 2 | 27 |
 
+The two lost test successes are both phrasings of case-058: the model returned text shorter than its quoted passage, so unchanged quotation verification correctly rejected it. The overall test gain does not erase these regressions, and no test-based retuning or resampling was performed.
+
 The complete unchanged historical [live-v1](../datasets/evaluation/baselines/live-v1.json) and new [live-v2](../datasets/evaluation/baselines/live-v2.json) retain per-phrasing outcomes and split/category/style metrics. The [exposure log](../datasets/evaluation/run-log.jsonl) appends one start/completion. macOS ARM64 and emulated Linux AMD64 replay match all non-latency live-v2 metrics; the database runs on the same local ARM host, not an independent native Linux deployment. Hosted verification remains pending.
 
 Total known operator estimates USD 1.64388 plus retained unknown 429 hold USD 0.1460375 = USD 1.7899175; final phase USD 0.18831. The 429-only policy amendment occurred after the observed interruption, not before the original experiment. Historical-average forecasts are scenarios, not guaranteed bills; total worst-case reservations are not concurrent holds.

@@ -39,7 +39,7 @@ Record significant product choices here. Preserve accepted decision text; dated 
 
 ## Pending decisions
 
-Explicit model abstention is accepted in [0029](0029-explicit-model-abstention.md); [0030](0030-abstention-recalibration.md) selects V1 0.70 from the complete dev grid. Hosted verification remains pending.
+Explicit model abstention is accepted in ADR 0029; ADR 0030 selects V1 0.70 from the complete dev grid. Hosted verification remains pending.
 
 All entries are **Planned**, not accepted choices. Milestones describe product work, not implementation commitments.
 
