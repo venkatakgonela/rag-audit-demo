@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="690" viewBox="0 0 1000 690" role="img" aria-labelledby="title description">
+  <title id="title">From risk to control to evidence</title>
+  <desc id="description">Four rows map restricted disclosure to SQL access filtering and retrieval tests; unsupported answers to quote verification and policy tests; wrong amounts to code-owned arithmetic and rule tests; unnoticed regressions to replay comparisons and gate self-tests. These implemented controls are not a compliance certification.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9" fill="#475569"/></marker>
+    <style>
+      text { font-family: Arial, sans-serif; fill: #17243b; font-size: 24px; }
+      .title { font-size: 34px; font-weight: 700; }
+      .label { font-size: 23px; font-weight: 700; }
+      .arrow { stroke: #475569; stroke-width: 2.5; marker-end: url(#arrow); }
+      .risk { fill: #fff1ec; stroke: #a64e37; stroke-width: 2; }
+      .control { fill: #edf4ff; stroke: #305f9c; stroke-width: 2; }
+      .evidence { fill: #edf7f0; stroke: #397052; stroke-width: 2; }
+    </style>
+  </defs>
+  <rect width="1000" height="690" fill="white"/>
+  <text x="35" y="48" class="title">From risk to reviewable evidence</text>
+  <text x="35" y="85">Implemented controls · synthetic demonstration, not certification</text>
+  <text x="40" y="137" class="label">RISK</text><text x="373" y="137" class="label">CONTROL</text><text x="700" y="137" class="label">EVIDENCE</text>
+  <rect x="35" y="157" width="270" height="100" rx="10" class="risk"/>
+  <text x="55" y="196">Restricted record</text><text x="55" y="229">is disclosed</text>
+  <path d="M313 207 H351" class="arrow"/>
+  <rect x="365" y="157" width="270" height="100" rx="10" class="control"/>
+  <text x="385" y="196">Access filtering</text><text x="385" y="229">inside SQL</text>
+  <path d="M643 207 H681" class="arrow"/>
+  <rect x="695" y="157" width="270" height="100" rx="10" class="evidence"/>
+  <text x="715" y="196">Retrieval tests:</text><text x="715" y="229">roles + hidden data</text>
+  <rect x="35" y="279" width="270" height="100" rx="10" class="risk"/>
+  <text x="55" y="318">Answer has no</text><text x="55" y="351">valid source</text>
+  <path d="M313 329 H351" class="arrow"/>
+  <rect x="365" y="279" width="270" height="100" rx="10" class="control"/>
+  <text x="385" y="318">Verify citations</text><text x="385" y="351">and exact quotes</text>
+  <path d="M643 329 H681" class="arrow"/>
+  <rect x="695" y="279" width="270" height="100" rx="10" class="evidence"/>
+  <text x="715" y="318">Answer-policy tests:</text><text x="715" y="351">accept + reject</text>
+  <rect x="35" y="401" width="270" height="100" rx="10" class="risk"/>
+  <text x="55" y="440">Model invents</text><text x="55" y="473">an amount</text>
+  <path d="M313 451 H351" class="arrow"/>
+  <rect x="365" y="401" width="270" height="100" rx="10" class="control"/>
+  <text x="385" y="440">Calculate in code;</text><text x="385" y="473">use fixed wording</text>
+  <path d="M643 451 H681" class="arrow"/>
+  <rect x="695" y="401" width="270" height="100" rx="10" class="evidence"/>
+  <text x="715" y="440">Rule tests:</text><text x="715" y="473">amounts + access</text>
+  <rect x="35" y="523" width="270" height="100" rx="10" class="risk"/>
+  <text x="55" y="562">A change weakens</text><text x="55" y="595">quality or safety</text>
+  <path d="M313 573 H351" class="arrow"/>
+  <rect x="365" y="523" width="270" height="100" rx="10" class="control"/>
+  <text x="385" y="562">Replay + compare</text><text x="385" y="595">with the reference</text>
+  <path d="M643 573 H681" class="arrow"/>
+  <rect x="695" y="523" width="270" height="100" rx="10" class="evidence"/>
+  <text x="715" y="562">Gate self-tests:</text><text x="715" y="595">pass + fail controls</text>
+  <text x="35" y="664">Solid arrows connect controls to evidence; links and limits are in the text.</text>
+</svg>

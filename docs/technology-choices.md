@@ -1,5 +1,7 @@
 # Technology choices
 
+This catalogue explains what each dependency does here, why it was selected, and what would make the choice worth revisiting. It is a trade-off record, not a claim that this stack is best for every application. For the short system tour, start with [architecture](ARCHITECTURE.md).
+
 ## Audit publication tooling (implemented)
 
 The report uses Python's standard library and existing read-only evaluation
@@ -10,7 +12,7 @@ new reporting framework; external tools remain explicit prerequisites rather
 than project dependencies. See [reproduction](audit/README.md),
 [tests](../tests/test_audit.py) and [notices](third-party-notices.md).
 
-CI increment: [actions/cache v4](https://github.com/actions/cache/blob/v4/README.md) avoids repeated public weight transfers, with revision/manifest keys and unconditional independent verification. All jobs use Ubuntu 24.04 OS labels (not immutable images). Alternatives, maintenance costs and revisit triggers: [ADR 0028](decisions/0028-runner-and-model-cache.md). HTTP replay uses existing httpx; manifest/digest/network guards use Python standard library. No runtime dependencies or versions changed.
+The [CI workflow](../.github/workflows/ci.yml) pins actions/cache v6 to avoid repeated public weight transfers, with revision/manifest keys and unconditional independent verification. All jobs use Ubuntu 24.04 OS labels (not immutable images). Original alternatives, maintenance costs and revisit triggers: [ADR 0028](decisions/0028-runner-and-model-cache.md). HTTP replay uses existing httpx; manifest/digest/network guards use Python standard library. Presentation diagrams retain editable SVGs and Chrome-rendered PNGs; [rendering instructions](images/README.md) reuse the existing browser tooling without adding a dependency.
 
 **Implemented** unless marked otherwise. This catalogue covers direct runtime/dev/build requirements and project tools; [pyproject.toml](../pyproject.toml) and [uv.lock](../uv.lock) are version evidence and the complete transitive inventory. The assessments are project-specific, not benchmarks. Source links were consulted October 2, 2026. Each row's revisit condition states when to reconsider, not a promised change.
 

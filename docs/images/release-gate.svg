@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="880" viewBox="0 0 1000 880" role="img" aria-labelledby="title description">
+  <title id="title">A passing gate supports review, not automatic release</title>
+  <desc id="description">A contributor proposes a change. CI replays fixed cases with verified inputs. Hard safety, integrity and completeness checks must pass, then measured results must meet the approved reference. Any failure blocks the gate. A pass goes to a human reviewer alongside other checks and known risks.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="#475569"/></marker>
+    <style>
+      text { font-family: Arial, sans-serif; fill: #17243b; font-size: 24px; }
+      .title { font-size: 34px; font-weight: 700; }
+      .label { font-size: 23px; font-weight: 700; }
+      .arrow { fill: none; stroke: #475569; stroke-width: 2.5; marker-end: url(#arrow); }
+      .check { fill: #edf4ff; stroke: #305f9c; stroke-width: 2; }
+    </style>
+  </defs>
+  <rect width="1000" height="880" fill="white"/>
+  <text x="35" y="48" class="title">A passing gate is evidence, not approval</text>
+  <text x="35" y="84">Implemented CI decision · recorded behaviour, not a new model draw</text>
+  <rect x="45" y="116" width="620" height="76" rx="12" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+  <text x="355" y="147" text-anchor="middle" class="label">1 · CONTRIBUTOR PROPOSES A CHANGE</text>
+  <text x="355" y="177" text-anchor="middle">Push or pull request starts CI</text>
+  <path d="M355 192 V224" class="arrow"/>
+  <rect x="45" y="233" width="620" height="92" rx="12" class="check"/>
+  <text x="355" y="266" text-anchor="middle" class="label">2 · EVALUATION JOB REPLAYS FIXED CASES</text>
+  <text x="355" y="300" text-anchor="middle">Verified inputs + recorded model responses</text>
+  <path d="M355 325 V360" class="arrow"/>
+  <rect x="45" y="369" width="620" height="92" rx="12" class="check"/>
+  <text x="355" y="402" text-anchor="middle" class="label">3 · HARD REQUIREMENTS SATISFIED?</text>
+  <text x="355" y="436" text-anchor="middle">Safety · integrity · complete, error-free coverage</text>
+  <text x="370" y="494">Yes</text><path d="M355 461 V512" class="arrow"/>
+  <rect x="45" y="521" width="620" height="92" rx="12" class="check"/>
+  <text x="355" y="554" text-anchor="middle" class="label">4 · RESULTS MEET THE REFERENCE?</text>
+  <text x="355" y="588" text-anchor="middle">No disallowed regression; zero allowances</text>
+  <path d="M665 415 H800 V449" class="arrow"/><text x="692" y="402">No</text>
+  <path d="M665 567 H800 V540" class="arrow"/><text x="691" y="602">No / error</text>
+  <path d="M665 279 H932 V493 H921" class="arrow"/>
+  <text x="718" y="267">Setup / replay error</text>
+  <rect x="700" y="458" width="220" height="76" rx="12" fill="#fff1ec" stroke="#a64e37" stroke-width="2"/>
+  <text x="810" y="489" text-anchor="middle" class="label">BLOCK</text>
+  <text x="810" y="520" text-anchor="middle">Investigate + fix</text>
+  <text x="370" y="646">Yes</text><path d="M355 613 V663" class="arrow"/>
+  <rect x="45" y="672" width="620" height="76" rx="12" fill="#edf7f0" stroke="#397052" stroke-width="2"/>
+  <text x="355" y="705" text-anchor="middle" class="label">PASS · GATE REQUIREMENTS MET</text>
+  <text x="355" y="736" text-anchor="middle">Self-tests also check the gate can fail</text>
+  <path d="M355 748 V779" class="arrow"/>
+  <rect x="45" y="788" width="910" height="67" rx="12" fill="#f4effb" stroke="#705394" stroke-width="2"/>
+  <text x="500" y="817" text-anchor="middle" class="label">5 · HUMAN REVIEW · no automatic release</text>
+  <text x="500" y="844" text-anchor="middle">Inspect other checks, evidence and remaining risks before deciding</text>
+</svg>

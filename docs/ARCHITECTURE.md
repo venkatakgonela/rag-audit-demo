@@ -1,10 +1,23 @@
 # Architecture: synthetic RAG audit demonstration
 
-The [evaluation harness](evaluation.md), versioned [baselines](evaluation-results.md), recorded replay gate and `local-calibrated-v2` default (V1 cosine >=0.70 with explicit abstention) are Implemented. Fake stays untuned. Reranker not adopted. [ADR 0030](decisions/0030-abstention-recalibration.md) records the dev-only profile selection. Hosted verification of this revision remains pending.
+An assistant over internal documents must not expose restricted records or invent an answer that its sources cannot support. This synthetic demonstration puts access decisions, calculations and answer checks in application code, rather than trusting the language model to enforce them. It records each decision and replays fixed questions before changes are accepted, giving reviewers evidence to inspect rather than a promise of safety.
+
+## Who does what
+
+![Request flow: the caller supplies a synthetic identity; application code selects authorised evidence or calculates a rule, checks any model proposal and saves a trace before responding. Separate CI checks and human review govern changes.](images/ownership-flow.png)
+
+Caption: **Request ownership** — answering a question and reviewing a change are separate activities.
+Legend: solid arrows show Implemented request flow; the lower panel describes Implemented CI checks and the human review process, not an automatic review of every answer. [Editable SVG](images/ownership-flow.svg).
+
+The model proposes source quotations or declines to answer; it neither grants access nor calculates payouts. Rule questions use code-owned calculations and fixed wording by default; optional rephrasing may only select an allowed template, with a fixed-template fallback on failure. The figure shows the default rule path. A failed trace write prevents a successful response. These boundaries are implemented in [answer orchestration](../src/rag_audit/answering.py), [access rules](../src/rag_audit/access.py) and [answer verification](../src/rag_audit/policy.py), with [answering tests](../tests/test_answering.py) and [database tests](../tests/integration/test_answer_database.py).
+
+## What is implemented, and what remains limited
+
+The [evaluation harness](evaluation.md), versioned [baselines](evaluation-results.md), recorded replay gate and `local-calibrated-v2` default (V1 cosine >=0.70 with explicit abstention) are Implemented. Fake stays untuned. Reranker not adopted. [ADR 0030](decisions/0030-abstention-recalibration.md) records the dev-only profile selection. The [audit's hosted evidence](audit/report.md#10-regression-plan-and-existing-hosted-evidence) records passing and deliberately failing runs at identified revisions; it does not certify every later change.
 
 Dev calibration and an experimental pairwise CPU reranker are Implemented. The reranker sees only the existing top-20 authorised candidates; it does not expand retrieval or change rules/verification. The [trial](reranker-dev.md) did not meet adoption criteria ([ADR 0023](decisions/0023-cpu-reranker-trial.md)); it is not deployed by default.
 
-Implemented: health, corpus v3, transactional ingestion, scoped retrieval/rules, extractive answering, signed fixture identity, durable tracing and calibrated evaluation. Labels remain outside ingestion/generation boundaries. Generation defaults to fake; Responses is opt-in local only, never exercised by CI. Release gating remains Planned. All domain records are synthetic.
+Implemented: health, corpus v3, transactional ingestion, scoped retrieval/rules, extractive answering, signed fixture identity, durable tracing and calibrated evaluation. Labels remain outside ingestion/generation boundaries. Generation defaults to fake; Responses is opt-in local only, never exercised live by CI. The [release gate lifecycle](release-gate.md) checks recorded behaviour, not future model responses. All domain records are synthetic.
 
 Implemented data flow: `datasets/corpus-v3` → source/hash/structured-binding validation → unchanged chunker and ingestion. `datasets/evaluation` → offline label checks and independent SQL visibility comparison, never provider prompts. See [evaluation data](evaluation-data.md) and [ADR 0021](decisions/0021-versioned-evaluation-data.md). No database tables changed. Rule version v2 qualifies payout by status without changing arithmetic. Extractive verification rejection now presents as no-answer while its trace remains distinct; invalid rule rephrasing retains template fallback ([ADR 0022](decisions/0022-answer-outcome-presentation.md)).
 
@@ -14,9 +27,11 @@ Implemented data flow: `datasets/corpus-v3` → source/hash/structured-binding v
 2. Implemented: deterministic source slices with section paths and Unicode offsets; section paths enter embedding/full-text inputs without changing stored text.
 3. Implemented: explicit CPU-only optional runtime, immutable model revision and no paid API in tests.
 4. Implemented: code-owned rules, authorised extractive citations and a dev-calibrated real evidence gate; fake remains untuned.
-5. Implemented: small synthetic real-model evaluation; regression gate Planned. Results are not broad retrieval-quality proof.
+5. Implemented: small synthetic real-model evaluation and recorded-behaviour regression gate. Results are not broad retrieval-quality proof.
 
 ## System context
+
+The caller uses a local fixture identity, not a production sign-in service. The command-line and HTTP interfaces share the answering policy; PostgreSQL stores the documents, access metadata and traces.
 
 Caption: **System context** — offline default and opt-in local real provider.
 Legend: solid links are Implemented; dashed links are Planned.
@@ -33,6 +48,8 @@ flowchart LR
 
 ## Containers
 
+These are the processes needed to run the demonstration. The language model is optional; default fake answering works without a provider key.
+
 Caption: **Containers** — logical processes, not an application Docker image.
 Legend: all nodes and links are Implemented; real generation is opt-in and not in CI.
 
@@ -46,6 +63,8 @@ flowchart LR
 ```
 
 ## Components
+
+Read this detailed pipeline after the ownership overview. Evaluation labels describe expected outcomes for the tests; they are kept out of generation prompts.
 
 Caption: **Components** — implemented retrieval pipeline.
 Legend: all shown components and links are Implemented.
@@ -81,7 +100,7 @@ The [chunker](../src/rag_audit/chunking.py) targets 384 tokens, ceiling 480, ove
 ## Implemented answering flow
 
 Caption: **Question-answering sequence** — offline answer decisions and durable traces.
-Legend: messages are Implemented; real provider is opt-in local only; CI quality gates remain Planned.
+Legend: messages are Implemented; real provider is opt-in local only; separate CI checks are described in the [release gate lifecycle](release-gate.md).
 
 ```mermaid
 sequenceDiagram
@@ -187,7 +206,7 @@ erDiagram
 ## Deployment
 
 Caption: **Deployment** — local and CI configuration.
-Legend: nodes and links are Implemented configuration; hosted execution is verified only for the historical foundation, not this increment.
+Legend: nodes and links are Implemented configuration; the [audit evidence](audit/verification-evidence.json) identifies the revisions with recorded hosted verification, not a guarantee about subsequent runs.
 
 ```mermaid
 flowchart TB
@@ -210,7 +229,7 @@ flowchart TB
 
 - [Unit tests](../tests/test_retrieval_core.py) check deterministic generation/chunks, metadata restrictions and source offsets.
 - [Integration tests](../tests/integration/test_retrieval.py) check role sets, forbidden-content noninterference, raw signals, idempotence and ANN underfill versus exact search.
-- [Explicit real-model smoke](../tests/test_embedding_adapter.py) checks shape, normalisation, query instruction and Unicode offsets. The separate evaluation job exercises real embeddings and [replay self-tests](../tests/integration/test_gate_selftest.py); hosted verification is pending.
+- [Explicit real-model smoke](../tests/test_embedding_adapter.py) checks shape, normalisation, query instruction and Unicode offsets. The separate evaluation job exercises real embeddings and [replay self-tests](../tests/integration/test_gate_selftest.py); historical hosted results are retained in the [audit evidence](audit/verification-evidence.json).
 - Exact search is linear in eligible rows; candidate bounds limit ranking output, not database work. No production identity provider or constant-time defence exists. Calibrated local and provisional CI gates do not establish production utility.
 - [Answering tests](../tests/test_answering.py) and [database tests](../tests/integration/test_answer_database.py) cover trace failure, rules, role differentiation, absence equality and snapshot provenance. Table locks end before generation; trace commit is independent and requires an idle connection. Traces survive ingestion and contain no rejected provider payloads.
 - Operator/database access is trusted. Corpus/model cache are ignored local state; CI checks model bytes against a publisher-derived committed manifest. HTTPS/publisher and repository review remain trust roots; metadata is not signed.

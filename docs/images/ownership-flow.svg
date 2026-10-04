@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="980" viewBox="0 0 1000 980" role="img" aria-labelledby="title description">
+  <title id="title">Who does what when a question is answered</title>
+  <desc id="description">Implemented request flow. The caller sends a question and synthetic identity. Application code resolves access before retrieval. A rule request is calculated in code; an evidence request uses a fake selector or opt-in model, or returns no answer for weak evidence. Code verifies proposals, commits a trace and responds. CI replay and human review are separate change-control activities.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10" fill="#475569"/></marker>
+    <style>
+      text { font-family: Arial, sans-serif; fill: #17243b; font-size: 24px; }
+      .title { font-size: 34px; font-weight: 700; }
+      .label { font-size: 23px; font-weight: 700; }
+      .small { font-size: 22px; }
+      .arrow { fill: none; stroke: #475569; stroke-width: 2.5; marker-end: url(#arrow); }
+      .code { fill: #edf4ff; stroke: #305f9c; stroke-width: 2; }
+    </style>
+  </defs>
+  <rect width="1000" height="980" fill="white"/>
+  <text x="35" y="48" class="title">Who does what</text>
+  <text x="35" y="82">Implemented request flow · all domain data is synthetic</text>
+  <rect x="195" y="112" width="610" height="85" rx="12" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+  <text x="500" y="145" text-anchor="middle" class="label">1 · CALLER</text>
+  <text x="500" y="177" text-anchor="middle">Question + signed synthetic identity</text>
+  <path d="M500 197 V229" class="arrow"/>
+  <rect x="195" y="237" width="610" height="100" rx="12" class="code"/>
+  <text x="500" y="269" text-anchor="middle" class="label">2 · APPLICATION CODE + DATABASE</text>
+  <text x="500" y="299" text-anchor="middle">Resolve access; select allowed records</text>
+  <text x="500" y="327" text-anchor="middle" class="small">Access is filtered before ranking</text>
+  <path d="M500 337 V365 H245 V393" class="arrow"/>
+  <path d="M500 365 H755 V393" class="arrow"/>
+  <rect x="35" y="402" width="420" height="143" rx="12" class="code"/>
+  <text x="245" y="436" text-anchor="middle" class="label">3a · DEFAULT RULE PATH</text>
+  <text x="245" y="474" text-anchor="middle">Calculate from allowed records</text>
+  <text x="245" y="509" text-anchor="middle">Fixed wording; no model needed</text>
+  <rect x="545" y="402" width="420" height="143" rx="12" fill="#fff5df" stroke="#967020" stroke-width="2"/>
+  <text x="755" y="436" text-anchor="middle" class="label">3b · EVIDENCE PATH</text>
+  <text x="755" y="474" text-anchor="middle">Fake selector or opt-in model:</text>
+  <text x="755" y="509" text-anchor="middle">propose quotes or decline</text>
+  <path d="M755 545 V582" class="arrow"/>
+  <rect x="545" y="591" width="420" height="95" rx="12" class="code"/>
+  <text x="755" y="625" text-anchor="middle" class="label">4 · CODE CHECKS THE PROPOSAL</text>
+  <text x="755" y="662" text-anchor="middle">Citations, exact quotes, format</text>
+  <text x="35" y="590" class="small">Weak / missing evidence: no answer.</text>
+  <text x="35" y="623" class="small">Rejected proposals: no answer.</text>
+  <path d="M245 545 V556 H20 V712 H500" class="arrow"/>
+  <path d="M755 686 V712 H510 V733" class="arrow"/>
+  <rect x="195" y="742" width="610" height="95" rx="12" class="code"/>
+  <text x="500" y="776" text-anchor="middle" class="label">5 · CODE SAVES A TRACE, THEN RESPONDS</text>
+  <text x="500" y="812" text-anchor="middle">If trace storage fails: generic error</text>
+  <rect x="35" y="869" width="930" height="89" rx="12" fill="#edf7f0" stroke="#397052" stroke-width="2"/>
+  <text x="55" y="901" class="label">SEPARATE CHANGE REVIEW · not part of each request</text>
+  <text x="55" y="935">CI replays fixed cases; people review findings and baseline changes.</text>
+</svg>

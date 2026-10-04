@@ -17,6 +17,8 @@ These are illustrations of failure modes, not reports of real incidents.
 
 ## Framework mapping (indicative)
 
+The following mapping is separate from the [risk-to-evidence view](#from-risk-to-reviewable-evidence): tests support specific implementation claims, not certification against a framework.
+
 | Framework | Practice in this project | Area it supports |
 | --- | --- | --- |
 | **NIST AI Risk Management Framework 1.0** | Fixed evaluation sets, hard checks, recorded baselines, reported limits | Measure (testing, validity and reliability) and Manage (risk response); roles and accountability support Govern |
@@ -27,6 +29,20 @@ These are illustrations of failure modes, not reports of real incidents.
 | **UK GDPR** | Documents selected by entitlement, retained questions noted as a limit | Data protection by design, data minimisation, security of processing |
 | **EU AI Act** (if a use is classed high-risk) | Accuracy testing, record-keeping, abstention and human review | Obligations on risk management, record-keeping, human oversight, accuracy and robustness |
 | **Financial-services model risk expectations** (for example the PRA's SS1/23 for UK banks) | Independent-style testing, documented limitations, change control | Model validation and ongoing monitoring principles |
+
+## From risk to reviewable evidence
+
+![Four risks mapped to implemented controls and evidence: restricted disclosure to query-level access tests; unsupported answers to quotation checks; wrong amounts to code-owned rule tests; and unnoticed regressions to replay gate self-tests.](images/risk-control-evidence.png)
+
+Caption: **Risk, control, evidence** — each row connects a failure mode to a testable protection.
+Legend: solid arrows connect Implemented controls and repository evidence; this is not a framework certification. [Editable SVG](images/risk-control-evidence.svg).
+
+| Risk in the figure | Evidence to inspect | What the evidence does not establish |
+| --- | --- | --- |
+| Restricted disclosure | [Query-level access](../src/rag_audit/access.py), [retrieval integration tests](../tests/integration/test_retrieval.py) | Production identity or resistance to every side channel |
+| Unsupported answer | [Answer verification](../src/rag_audit/policy.py), [quotation and citation tests](../tests/test_answer_policy.py) | That authorised, accurately quoted evidence is relevant or correct |
+| Wrong amount | [Code-owned rules](../src/rag_audit/rules.py), [rule tests](../tests/test_rules.py) | Real insurance-policy interpretation or real customer data |
+| Unnoticed regression | [Release gate lifecycle](release-gate.md), [gate self-tests](../tests/integration/test_gate_selftest.py) | Future model behaviour or a production release approval |
 
 ## What this does not show
 

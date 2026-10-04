@@ -1,8 +1,20 @@
 # Synthetic extractive evaluation
 
-Implemented: isolated CLI, dev calibration, hard checks, calibrated local gate and recorded-HTTP regression configuration. Hosted execution, regressive PRs and release audit remain unverified/planned. All 65 labels are drafted, zero human-reviewed: 42 dev/23 test, each keyword/natural. The test set is visible to implementers, not a blind benchmark.
+The evaluation asks three practical questions: did the assistant retrieve useful evidence, did it answer correctly or appropriately decline, and did any safety control fail? It runs fixed synthetic questions through the actual answering pipeline and compares the output with author-written expected outcomes. Passing safety checks does not mean the assistant answered enough questions well to be useful.
+
+A Wilson interval is a range around an observed success rate that reflects uncertainty from a limited number of trials, rather than presenting the percentage alone. The 95% label describes the method's long-run coverage under its sampling assumptions; these small, related synthetic cases are not independent real-world samples, so the ranges are descriptive, not a production accuracy guarantee.
+
+**Implemented:** isolated CLI, dev calibration, hard checks, calibrated local gate and recorded-HTTP regression checks. The [sample audit](audit/README.md) includes [revision-specific hosted passes and deliberately failing changes](audit/report.md#10-regression-plan-and-existing-hosted-evidence). All 65 labels are drafted, zero human-reviewed: 42 dev/23 test, each keyword/natural. The test set is visible to implementers, not a blind benchmark. This remains a builder self-assessment.
+
+## Worked example: read the count before the percentage
+
+In the [answerable single/multi results](evaluation-results.md#answerable-singlemulti-phrasings), the test/natural row goes from **2/10 (5.7–51.0%)** before to **5/10 (23.7–76.3%)** after explicit abstention and the dev-selected threshold change. Five correct answers out of ten is 50%, but the wide interval is a warning against treating that point estimate as established reliability.
+
+The denominator is ten answerable questions in one phrasing style, not all 23 test cases or all 46 test phrasings. The overlapping ranges are not a significance test; the [full results](evaluation-results.md) also retain two regressed test phrasings. The threshold was selected on development data, not this test row; one live draw on author-written labels cannot establish general improvement. No new measurements are introduced by this example.
 
 ## CI regression gate
+
+For the decision sequence and who acts on a failure, start with the [release gate lifecycle](release-gate.md). The following commands and table are the operator reference.
 
 After `make setup`, run `make eval-runtime`, then `make eval-model ARGS="--provision"` for first-time trusted model provisioning. Subsequent `make eval-model` verifies bytes, including cache hits; existing corrupt/incomplete directories fail without automatic repair. With isolated `DATABASE_URL`, run `make db-init`, `make eval-gate` and `make eval-selftest`. No provider key is needed. Bootstrap may download dependencies/model; replay traps Python networking except the database connection opened beforehand. Default unit/lint/type checks need neither model nor Docker. Integration skips expensive self-tests unless `SYNTHETIC_MODEL_DIRECTORY` is explicit; `eval-selftest` supplies it.
 
@@ -20,7 +32,7 @@ The current 66 neutral responses pass through the real Responses adapter across 
 | Verification sub-reasons; Decimal cost/call; unknown cost | No increase |
 | Latency | Informational |
 
-Allowances are zero, **provisional until hosted validation**. [ADR 0026](decisions/0026-regression-ci-gate.md) records measurements/limits. These are absolute regression guards, not significance tests. Output is check/baseline/current/pass-fail and verdict, without test row details. `--output` optionally saves aggregate JSON (temporary directory by default). Detailed diagnostics are separate: `python -m rag_audit.evaluation.regression --output /tmp/new-diagnostic.json`; never publish its test rows in CI logs.
+Allowances are zero; [recorded hosted checks](audit/verification-evidence.json) establish the observed result only for their listed revisions. [ADR 0026](decisions/0026-regression-ci-gate.md) records the original measurements/limits. These are absolute regression guards, not significance tests. Output is check/baseline/current/pass-fail and verdict, without test row details. `--output` optionally saves aggregate JSON (temporary directory by default). Detailed diagnostics are separate: `python -m rag_audit.evaluation.regression --output /tmp/new-diagnostic.json`; never publish its test rows in CI logs.
 
 ### Failure and re-baseline protocol
 
@@ -29,7 +41,7 @@ Allowances are zero, **provisional until hosted validation**. [ADR 0026](decisio
 3. CI observations are not baseline exposures: historical fake/real/live baselines and `run-log.jsonl` are never written. Do not tune against repeated test outcomes.
 4. Intentional reviewed changes require evidence, reason and a unique CHANGELOG marker first. Run locally: `make eval-rebaseline ARGS="--reason 'Meaningful reviewed change with measured evidence' --marker unique-change-marker"`. It refuses CI and safety/incomplete/replay failures. Commit baseline, policy/config changes, chained baseline log and changelog together. New calibration/live exposures follow the existing separate logging rules.
 5. Changed requests require investigation, explicit recording approval, forecast and exposure reason. Use `make eval-record ARGS="--allow-live-recording --reason 'Approved recording with frozen policy evidence' --forecast-baseline /private/frozen-real/results.json --output /private/new-recording"`. Key stays in its configured environment variable. Real/all/live mode is fixed; the existing USD 3 reservation ledger/cap applies. Output contains private `candidate-replay`, never automatic public replacements. Review every response and scan identities/secrets before promotion, replay equality and logged rebaseline. Never clean rejected/injection text to pass.
-6. First hosted CPU run: retain gate table, selection/request differences, metric deltas and cold/warm times. A measured one-phrasing numerical allowance may be proposed via the logged protocol, not silently edited. Greater drift, safety/integrity changes or fixture staleness requires a separate decision. Emulated AMD64 is not hosted numerical evidence.
+6. For a new hosted revision or environment: retain gate table, selection/request differences, metric deltas and cold/warm times. A measured one-phrasing numerical allowance may be proposed via the logged protocol, not silently edited. Greater drift, safety/integrity changes or fixture staleness requires a separate decision. Emulated AMD64 is not hosted numerical evidence.
 
 Coordinated edits to checks/manifests/baseline/log can bypass in-repository integrity; trusted review remains necessary. Passing regressions does not cure low coverage or zero human-reviewed labels.
 
@@ -73,10 +85,12 @@ Local verification is not hosted certification. The operator pushes the reviewed
 
 ## Canonical results
 
+This section describes the original three baselines. The later `live-v2` reference is described above and in the additive [before/after results](evaluation-results.md#answerable-singlemulti-phrasings); historical numbers are retained, not replaced.
+
 All three canonical baselines completed at frozen source `532ddea`, each with exactly one logged held-out pass: 130 primary phrasings, zero hard failures. [Results and intervals](evaluation-results.md) show every baseline separately. Correct answered on test: fake 7/46, real deterministic 10/46, informational live 12/46; these denominators include all primary controls, not just answerable questions. Live dispatched 35 requests and settled an operator estimate of USD 0.28712, below the USD 3 cap; zero unknown usage/cost. The conservative pre-run reservation forecast was USD 4.614675, but actual settlements released headroom. No paid retry or warmup. Raw live records stay private; public provider identity is neutral with a digest.
 
 No test false evidence or hard failures occurred, but real test evidence sufficiency is only 6/20, and the live run still missed 14 answerable/rule phrasings on test. Correct safety controls do not imply useful answer coverage. The deterministic baseline answered some abstention-only dev injection challenges incorrectly without echoing attack text; live had one dev false answer. Exact verification rejected live outputs for quotation/schema/echo reasons. These are reported failures of utility/decision quality, not hidden by the zero-hard-failure result.
 
 ## Candidate audit findings
 
-OR-based team/ownership access can intentionally cross tiers. Natural abstention improved on dev but remains high. Near-miss evidence can survive relevance gates. First-chunk generation limits multi-source accuracy. Injection verification may reject relevant sources. These are candidate findings, not a completed release audit.
+OR-based team/ownership access can intentionally cross tiers. Natural abstention improved on dev but remains high. Near-miss evidence can survive relevance gates. First-chunk generation limits multi-source accuracy. Injection verification may reject relevant sources. These observations informed the [sample audit](audit/README.md), which records assessed findings, severity, evidence and recommendations; it is a builder self-assessment, not an independent audit.

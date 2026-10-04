@@ -1,5 +1,7 @@
 # Patterns and their evidence
 
+These are repeatable design choices used to prevent specific failures, not a list of fashionable techniques. Each table row connects the problem to its implementation, test evidence and limits. Read the [architecture overview](ARCHITECTURE.md) first if the request flow is unfamiliar.
+
 ## Source-derived audit publication (implemented)
 
 Pinned source digests and read-only adapters generate tables and review wording;
@@ -9,11 +11,11 @@ changed digests, stale output, invalid evidence and incomplete package inventori
 fail [audit tests](../tests/test_audit.py). PDF rendering blocks remote page
 requests and embeds local assets; it does not run an evaluation or change labels.
 
-Implemented: independent evaluator/oracle, split-label isolation, pre-dispatch held-out log, private reservation ledger and explicit partial coverage. See [ADR 0024](decisions/0024-extractive-evaluation.md) and [completion tests](../tests/test_evaluation_completion.py). The [calibrated local profile](decisions/0025-calibrated-local-gate.md) is the real default; no reranker adoption.
+Implemented: independent evaluator/oracle, split-label isolation, pre-dispatch held-out log, private reservation ledger and explicit partial coverage. See [ADR 0024](decisions/0024-extractive-evaluation.md) and [completion tests](../tests/test_evaluation_completion.py). The [current calibrated local profile](decisions/0030-abstention-recalibration.md) is the real default; no reranker adoption.
 
 Implemented HTTP-boundary replay preserves adapter/verification behaviour while removing live dependency ([ADR 0027](decisions/0027-http-recorded-replay.md), [tests](../tests/test_replay.py)). Read-only regression versus explicit baseline production separates CI observation from exposures ([ADR 0026](decisions/0026-regression-ci-gate.md)). Paired passing controls and faulty variants prevent an always-red/always-green gate from masquerading as validation ([self-tests](../tests/integration/test_gate_selftest.py)). Independent artifact manifests prevent trusting cache-local metadata; review remains the trust root.
 
-Implemented experiment: pairwise reranking preserves the authorised candidate set and uses no corpus-wide statistic. Over-512-token pairs are unscorable, never silently truncated. [Adapter and gate tests](../tests/test_reranking.py) cover limits, ordering, nonfinite output and replacement semantics; [counterfactual tests](../tests/integration/test_evaluation_runner.py) compare scores after hidden-document removal. Dev-only calibration now exists separately from the data-validation layer described below; adoption remains pending.
+Implemented experiment: pairwise reranking preserves the authorised candidate set and uses no corpus-wide statistic. Over-512-token pairs are unscorable, never silently truncated. [Adapter and gate tests](../tests/test_reranking.py) cover limits, ordering, nonfinite output and replacement semantics; [counterfactual tests](../tests/integration/test_evaluation_runner.py) compare scores after hidden-document removal. Dev-only calibration exists separately from the data-validation layer described below; the [trial](reranker-dev.md) did not justify adoption.
 
 Implemented: [versioned evaluation data](decisions/0021-versioned-evaluation-data.md) separates expected source facts and authored visibility from the runtime decision path. Candidate freeze hashes detect silent label edits; independent integer-pence/date oracles avoid importing product rules. [Dataset tests](../tests/test_evaluation_data.py) and [SQL comparison](../tests/integration/test_evaluation_visibility.py) enforce the boundary. This is data validation, not an evaluation harness.
 
@@ -33,7 +35,7 @@ Status labels describe this repository, not general pattern maturity. Source lin
 | Implemented: deterministic core / LLM shell | [Rules](../src/rag_audit/rules.py) compute outcomes; optional fake picks code-owned wording | Model-invented business outcomes | [Rule tests](../tests/test_rules.py), [wrong-rephrase tests](../tests/test_answering.py). |
 | Implemented: ports-and-adapters provider boundary | [Generation](../src/rag_audit/generation.py) is separate from embeddings | Provider coupling and paid-API unit tests | [Fake tests](../tests/test_answering.py), [mocked Responses tests](../tests/test_responses.py); real adapter is opt-in local only, never live in CI. |
 | Implemented: trace-before-release | [Store](../src/rag_audit/store.py) commits independently after snapshot locks end | Untraced accepted answer | [Durability and snapshot tests](../tests/integration/test_answer_database.py); outage yields generic error, not a durable record. |
-| Planned: golden-set regression gating | Evaluation/CI compare labelled cases and baselines | Releasing known quality/safety regressions | Planned hard leak/citation/rule constraints and calibrated quality thresholds; current foundation CI is not this gate. |
+| Implemented: recorded-behaviour regression gating | [CI gate](../src/rag_audit/evaluation/ci_gate.py) compares fixed labelled cases with the baseline | Accepting measured quality/safety regressions | [Self-tests](../tests/integration/test_gate_selftest.py) exercise passing controls and faulty variants; replay does not test future model behaviour. |
 
 The [threat model](threat-model.md) separates automated evidence from inspection, historical run evidence and planned controls. No row implies total prevention beyond its stated scope.
 
