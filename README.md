@@ -4,7 +4,9 @@
 
 **[Read the sample audit report](docs/audit/report.pdf)** · [Why it matters](docs/governance.md) · [Evaluation method](docs/evaluation.md) · [Architecture](docs/ARCHITECTURE.md)
 
-![Who does what: requester, application code, language model, evaluation and CI, and the human owner](docs/images/ownership-flow.png)
+![Request ownership: code controls access, rules, verification and tracing; CI and people review changes](docs/images/ownership-flow.png)
+
+[Diagram source and legend](docs/ARCHITECTURE.md#who-does-what).
 
 ## Why it matters
 

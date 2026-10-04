@@ -4,6 +4,10 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ## [Unreleased]
 
+- Explain request ownership, evaluation uncertainty and release checks in plain
+  English; add editable risk/control/evidence and release-gate diagrams, and
+  reconcile documentation status with the retained implementation evidence.
+
 - Allow reviewed action SHA updates while checking immutable pins, version
   comments and unchanged action placement in CI; retain workflow security checks.
 - Update the development type checker to mypy 2.3.1 without loosening typing

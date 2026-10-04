@@ -48,8 +48,8 @@ Definitions describe the design vocabulary; they do not imply implementation. Fo
 | Deterministic core | Code computes reproducible Decimal outcomes rather than asking a model to decide. |
 | Embedding | 384-dimensional representation from the pinned local model or deterministic synthetic fake. |
 | Fail closed | Reject protected operations when required identity, evidence, verification or durable trace conditions fail. |
-| Faithfulness | Whether an answer is supported by evidence; planned evaluation distinct from citation syntax. |
-| Golden set | Planned labelled cases with expected outcomes for regression evaluation. |
+| Faithfulness | Whether an answer is supported by evidence; implemented exact-quote and labelled-fact checks are limited proxies, not a full truth test. |
+| Golden set | Fixed labelled cases with expected outcomes for evaluation; all 65 labels here remain author-drafted, not human-reviewed. |
 | Hybrid retrieval | Exact vector and PostgreSQL full-text ranks combined with reciprocal rank fusion. |
 | Liveness / readiness | Process responding versus being able to serve required dependencies/work; health is liveness only. |
 | Lockfile | Committed dependency resolutions/hashes; not a lock on all operating-system or container bits. |
@@ -58,12 +58,12 @@ Definitions describe the design vocabulary; they do not imply implementation. Fo
 | Pre-filter ACL | Authorisation restricts candidates inside the query before exact ranking; no ANN index in production schema. |
 | Prompt injection | Untrusted instructions influencing model behaviour, including instructions embedded in retrieved documents. |
 | RAG | Retrieval-augmented generation: fetch evidence before generation; extractive selection via fake or opt-in local Responses. |
-| Reranker | Optional planned second-stage ranking of candidates; not selected. |
+| Reranker | Second-stage ranking of retrieved candidates; an experimental implementation exists but was not adopted. |
 | SecretStr | Masking wrapper for ordinary representations; not encryption or permission enforcement. |
 | Synthetic data | Fabricated, labelled demonstration material, not real customer records; realism is a limitation. |
 | Mutation evidence | Temporarily break an invariant and show a test fails, then restore; not exhaustive correctness proof. |
 | Trust boundary | Transition between components/actors with different assumptions about data or authority. |
-| Release gate | A check that prevents promotion on failure; current CI checks the foundation, planned gates evaluate RAG safety/quality. |
+| Release gate | Implemented CI check that fails on safety, integrity or measured regression errors; a pass is not release approval. See the [lifecycle](release-gate.md). |
 | Judge calibration | Planned comparison of model judging with human labels to quantify error rather than assume reliability. |
 | Extractive answer mode | Statement text equals its exact source quote; only current mode, deliberately not general synthesis. |
 | Abstention profile | Versioned per-embedder raw-score gate; current constants are provisional, not calibrated probabilities. |
@@ -78,4 +78,5 @@ Definitions describe the design vocabulary; they do not imply implementation. Fo
 | Context-bound replay | A recorded response may be consumed only by declared case/style/pair-side contexts, with exact expected counts. |
 | Retained unknown hold | Conservative reservation kept for an attempt whose cost cannot be established; not a claim of billing. |
 | Subject-only stub | Signed synthetic identifier; roles/teams are resolved from PostgreSQL, without production expiry/replay protections. |
-| p50 / p95 | Median and 95th-percentile measurements, planned for latency reporting; no numbers measured for RAG yet. |
+| p50 / p95 | Median and 95th-percentile timings recorded by the evaluator; informational, not regression pass/fail criteria. |
+| Wilson interval | Range describing uncertainty around a counted success rate; small synthetic samples do not establish real-world reliability. See the [worked example](evaluation.md#worked-example-read-the-count-before-the-percentage). |

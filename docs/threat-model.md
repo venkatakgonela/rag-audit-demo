@@ -1,6 +1,8 @@
 # Threat model
 
-Implemented evaluation controls: [freeze/duplicate-log/leak/citation/rule/cap tests](../tests/test_evaluation_safety.py), [forecast matching and partial coverage](../tests/test_evaluation_completion.py), [runtime isolation](../tests/test_evaluation_harness.py), and [counterfactual byte/global-signal tests](../tests/integration/test_evaluation_runner.py). The [profile boundary tests](../tests/test_answer_policy.py) enforce real cosine-only 0.75 and unchanged fake conjunction. Test exposure is logged, not blinded; drafted labels remain a limitation.
+This page asks what can go wrong at each boundary, what stops it, and which test supports that claim. Start with the [risk-to-evidence overview](governance.md#from-risk-to-reviewable-evidence) for a non-technical map; use the tables here to inspect the safeguards and their remaining gaps.
+
+Implemented evaluation controls: [freeze/duplicate-log/leak/citation/rule/cap tests](../tests/test_evaluation_safety.py), [forecast matching and partial coverage](../tests/test_evaluation_completion.py), [runtime isolation](../tests/test_evaluation_harness.py), and [counterfactual byte/global-signal tests](../tests/integration/test_evaluation_runner.py). The [profile boundary tests](../tests/test_answer_policy.py) enforce the current real cosine-only 0.70 threshold and unchanged fake conjunction; [ADR 0030](decisions/0030-abstention-recalibration.md) explains the selection. Test exposure is logged, not blinded; drafted labels remain a limitation.
 
 ## Regression trust boundaries (Implemented)
 
@@ -66,7 +68,7 @@ Explicit model abstention is **not a safety control**. Authorised but irrelevant
 
 Live nondeterminism can make two identical requests return different bytes. Evaluation independently constructs both protected-pair requests, compares their full identities, and shares one sample only when byte-identical. Context-bound replay rejects unexpected consumers and missing/extra consumptions ([tests](../tests/test_pair_replay.py)); this establishes conditional request noninterference, not universal model safety or constant-time behaviour. Looser gates failed hidden-intent free-text quality eligibility despite passing hard noninterference checks; see [decision 0030](decisions/0030-abstention-recalibration.md).
 
-The machine/operator and repository reviewers are trusted; synthetic passwords are not deployment secrets. Real generation is opt-in local only and is never exercised in CI. Production identity, rate limiting and calibrated evaluation remain Planned. Model artifacts are revision-pinned with local hash verification, but initial HTTPS downloads trust the publisher and cache metadata is not signed. [Adapter smoke tests](../tests/test_embedding_adapter.py) cover shape, offsets and query prefixes, not complete supply-chain defence. The [backlog](BACKLOG.md) records unresolved work.
+The machine/operator and repository reviewers are trusted; synthetic passwords are not deployment secrets. Real generation is opt-in local only and is never exercised live in CI. Production identity and rate limiting remain Planned; [dev calibration](evaluation.md#calibration-and-baseline-limitations) is Implemented but does not validate production performance. Model artifacts are revision-pinned with local hash verification, but initial HTTPS downloads trust the publisher and cache metadata is not signed. [Adapter smoke tests](../tests/test_embedding_adapter.py) cover shape, offsets and query prefixes, not complete supply-chain defence. The [backlog](BACKLOG.md) records unresolved work.
 
 ## Opt-in Responses boundary
 
