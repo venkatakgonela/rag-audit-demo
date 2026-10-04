@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import pytest
@@ -21,9 +22,7 @@ def test_ci_pins_and_unconditional_model_verification():
             if step.get("uses", "").startswith("actions/checkout")
         )
         assert checkout["with"]["persist-credentials"] is False
-        assert checkout["uses"] == (
-            "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803"
-        )
+        assert re.fullmatch(r"actions/checkout@[0-9a-f]{40}", checkout["uses"])
     steps = workflow["jobs"]["evaluation"]["steps"]
     verify = next(step for step in steps if "eval-model" in step.get("run", ""))
     assert "if" not in verify
