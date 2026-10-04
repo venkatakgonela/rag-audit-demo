@@ -25,3 +25,6 @@ The synthetic corpus and generator, the evaluation datasets and labels, the rule
 
 ## How I can help
 Assessment of an existing assistant against these controls with a written, severity-rated report; building the evaluation gate into your CI; or adapting individual patterns to your stack. Scope, access and an honest statement of what cannot be assessed are agreed first. Start with a GitHub issue on this repository or the profile linked from it.
+
+## Further reading
+The design decisions are written up in [Who is allowed to see the evidence?](https://venkatakgonela.substack.com/p/who-is-allowed-to-see-the-evidence) (access control inside the retrieval query and its limits).
