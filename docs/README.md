@@ -6,7 +6,7 @@ All domain data is synthetic. **Implemented** means present in the repository; *
 2. [Decision index](decisions/README.md) — anyone asking “why this rather than that?”; alternatives and unresolved decisions.
 3. [Technology choices](technology-choices.md) and [patterns](patterns.md) — implementers and technical interviews: trade-offs, locations, and tests.
 4. [Threat model](threat-model.md) — reviewers: trust boundaries, tested protections, known gaps, and planned mitigations.
-5. [Glossary](glossary.md) — readers new to the terminology.
+5. [Glossary](glossary.md) — readers new to the terminology. [Why it matters](governance.md) — risk examples and framework mapping for governance, risk and compliance readers.
 6. [Evaluation method](evaluation.md) and [canonical results](evaluation-results.md) — definitions, limitations, counts/intervals and the one-pass held-out record.
 7. [Sample audit](audit/README.md) — client-facing report, reproducible tables, findings and limitations.
 8. [Developer reference](development.md), [contributing](../CONTRIBUTING.md), [third-party notices](third-party-notices.md), [publication provenance](PUBLISHING.md) and [release notes](release-notes-0.1.0.md).
