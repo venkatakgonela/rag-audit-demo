@@ -6,16 +6,18 @@ permissive. Retain attribution and review redistribution obligations.
 
 ## Locked Python inventory
 
-Generated from `uv.lock` and exact-version distribution METADATA on October 3,
-2026: 47 external packages, including transitive, optional and development
+Generated from `uv.lock` and exact-version distribution METADATA, refreshed on
+October 4, 2026: 48 external packages, including transitive, optional and development
 packages. Conditional colorama and tzdata metadata/licence texts were retrieved
-from their publishers without installation. No package version changed.
+from their publishers without installation. Updated mypy and ast-serialize
+metadata and licence texts come from their exact locked installed distributions.
 
 | Package | Locked version | Licence | Obligation | Source |
 | --- | --- | --- | --- | --- |
 | annotated-doc | 0.0.5 | MIT | Retain attribution | [Publisher](https://github.com/fastapi/annotated-doc) |
 | annotated-types | 0.8.0 | MIT | Retain attribution | [Publisher](https://github.com/annotated-types/annotated-types) |
 | anyio | 4.15.1 | MIT | Retain attribution | [Publisher](https://anyio.readthedocs.io/en/latest/) |
+| ast-serialize | 0.12.1 | MIT | Retain attribution | [Publisher](https://github.com/mypyc/ast_serialize) |
 | certifi | 2026.7.22 | MPL-2.0 | Review obligations | [Publisher](https://github.com/certifi/python-certifi) |
 | click | 8.5.0 | BSD-3-Clause | Retain attribution | [Publisher](https://click.palletsprojects.com/page/changes/) |
 | colorama | 0.4.6 | BSD-3-Clause | Retain attribution | [Publisher](https://github.com/tartley/colorama) |
@@ -32,7 +34,7 @@ from their publishers without installation. No package version changed.
 | idna | 3.20 | BSD-3-Clause | Retain attribution | [Publisher](https://github.com/kjd/idna/blob/master/HISTORY.md) |
 | iniconfig | 2.3.0 | MIT | Retain attribution | [Publisher](https://github.com/pytest-dev/iniconfig) |
 | librt | 0.16.0 | MIT | Retain attribution | [Publisher](https://github.com/mypyc/librt) |
-| mypy | 1.20.2 | MIT | Retain attribution | [Publisher](https://www.mypy-lang.org/) |
+| mypy | 2.3.1 | MIT | Retain attribution | [Publisher](https://www.mypy-lang.org/) |
 | mypy-extensions | 1.1.0 | MIT | Retain attribution | [Publisher](https://github.com/python/mypy_extensions) |
 | numpy | 2.5.3 | BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0 | Retain attribution | [Publisher](https://numpy.org) |
 | onnxruntime | 1.30.0 | MIT License | Retain attribution | [Publisher](https://onnxruntime.ai) |

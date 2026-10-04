@@ -1,5 +1,5 @@
 {
-  "lock_sha256": "f294cfee6e9b79b735af8f30fc5af33414f55a26d78210060e039e18194ad2f9",
+  "lock_sha256": "0e5657b1b114c0ee7eebfec7c4bbc981f4ace756ae230421a106dabe40bafaf3",
   "packages": [
     {
       "name": "annotated-doc",
@@ -27,6 +27,15 @@
       "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
       "review_required": false,
       "licence_file_count": 1
+    },
+    {
+      "name": "ast-serialize",
+      "version": "0.12.1",
+      "licence": "MIT",
+      "source": "https://github.com/mypyc/ast_serialize",
+      "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
+      "review_required": false,
+      "licence_file_count": 2
     },
     {
       "name": "certifi",
@@ -174,7 +183,7 @@
     },
     {
       "name": "mypy",
-      "version": "1.20.2",
+      "version": "2.3.1",
       "licence": "MIT",
       "source": "https://www.mypy-lang.org/",
       "metadata_evidence": "Installed distribution METADATA at the exact locked version; licence files retained verbatim below.",
