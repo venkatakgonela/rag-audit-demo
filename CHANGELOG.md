@@ -6,6 +6,8 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 - Allow reviewed action SHA updates while checking immutable pins, version
   comments and unchanged action placement in CI; retain workflow security checks.
+- Update the development type checker to mypy 2.3.1 without loosening typing
+  settings; refresh the locked dependency inventory and retained notices.
 
 ## [0.1.0] - 2026-10-04
 

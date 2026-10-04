@@ -6,10 +6,11 @@ permissive. Retain attribution and review redistribution obligations.
 
 ## Locked Python inventory
 
-Generated from `uv.lock` and exact-version distribution METADATA on October 3,
-2026: {{count}} external packages, including transitive, optional and development
+Generated from `uv.lock` and exact-version distribution METADATA, refreshed on
+October 4, 2026: {{count}} external packages, including transitive, optional and development
 packages. Conditional colorama and tzdata metadata/licence texts were retrieved
-from their publishers without installation. No package version changed.
+from their publishers without installation. Updated mypy and ast-serialize
+metadata and licence texts come from their exact locked installed distributions.
 
 {{inventory}}
 
