@@ -10,7 +10,7 @@
 
 ## Why it matters
 
-Assistants over internal documents fail in three costly ways: they show someone a document they must not see, they state things no source supports, and a harmless-looking change quietly makes both more likely. Spot-checks miss all three; each surfaces later as an audit finding. This project makes each failure testable before release. [Examples and framework mapping](../../docs/governance.md).
+Assistants over internal documents fail three costly ways: they show someone a document they must not see, state things no source supports, and a harmless-looking change quietly makes both likelier. Spot-checks miss all three; each surfaces later as an audit finding. This project makes each failure testable before release. [Examples and framework mapping](../../docs/governance.md).
 
 ## What you get
 
@@ -35,11 +35,11 @@ Indicative mapping, not a compliance claim; see [the governance note](../../docs
 
 {{comparison}}
 
-“Correct” counts answerable questions answered correctly. The brackets are 95% ranges (Wilson intervals): with only 10 to 18 questions per row, read ranges, not single percentages. These are not system-wide accuracy; two other test phrasings regressed. **{{review}}** An AI reviewer checked all 65 labels against their sources and found no factual, outcome or visibility disagreement and three wording notes ([record](../../docs/audit/label-review.md)); that is not human review and not independent of the AI-assisted build, and every label remains `drafted`.
+The brackets are 95% ranges (Wilson intervals): with only 10 to 18 questions per row, read ranges, not single percentages. These are not system-wide accuracy; two other test phrasings regressed. **{{review}}** An AI reviewer checked all 65 labels against their sources and found no factual, outcome or visibility disagreement and three wording notes ([record](../../docs/audit/label-review.md)); that is not human review and not independent of the AI-assisted build, and every label remains `drafted`.
 
 ## Try it locally
 
-Needs Git, Make, uv/Python 3.12 and Docker Compose; macOS only tested. Fake answering needs no model or key.
+Needs Git, Make, uv, Python 3.12 and Docker Compose; tested on macOS. No model key needed.
 
 ```sh
 git clone https://github.com/venkatakgonela/rag-audit-demo.git
@@ -51,7 +51,7 @@ make ingest ARGS="--fake"
 make ask ARGS='--fake --subject synthetic-customer-a --query "Synthetic Hearth edition 1 drying diary reading"'
 ```
 
-The answer includes: “The drying diary must show a reading every 24 hours.” For the same customer, contrast a restricted-topic request with a code-calculated payout:
+The answer includes “The drying diary must show a reading every 24 hours.” Now contrast a restricted-topic request with a code-calculated payout:
 
 ```sh
 make ask ARGS='--fake --subject synthetic-customer-a --query "broker reconciliation"'
@@ -60,10 +60,14 @@ make ask ARGS='--fake --subject synthetic-customer-a --query "payout synthetic-c
 
 The first returns “I cannot answer from the available evidence.” The second returns “Payout in GBP: 400.00 (calculation only; claim status: pending).”
 
-Port 5433 busy? Change `POSTGRES_PORT` and `DATABASE_URL` in `.env`. Checks without Docker: `make lint typecheck test`. See [developer setup](../../docs/development.md).
+Port 5433 busy? See [developer setup](../../docs/development.md); no-Docker checks: `make lint typecheck test`.
+
+## Stage and reuse
+
+A v0.1 reference implementation, not a library: the patterns and evaluation gate transfer, the insurance-style rules and data do not. [Reuse, and how this can help your project](../../docs/reuse.md).
 
 ## Limits
 
-All data is synthetic. This is a builder self-assessment, not an independent audit or production service; prompt-injection checks cover a small fixture set and no compliance or availability guarantee is made. CI tests recorded behaviour, not future model behaviour. Written by Venkata K Gonela with AI coding assistants.
+All data is synthetic. This is a builder self-assessment, not an independent audit or production service; prompt-injection checks cover a small fixture set. CI tests recorded behaviour, not future model behaviour. Written by Venkata K Gonela with AI coding assistants.
 
 MIT © 2026 Venkata K Gonela. See [LICENSE](../../LICENSE), [notices](../../docs/third-party-notices.md), [security](../../SECURITY.md), [contributing](../../CONTRIBUTING.md), [publication provenance](../../docs/PUBLISHING.md) and [docs index](../../docs/README.md).
