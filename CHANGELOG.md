@@ -4,7 +4,12 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ## [Unreleased]
 
-### Changed
+## [0.1.0] - 2026-10-04
+
+First public release. Entries describe the implementation as audited, including
+their original limits.
+
+#### Changed
 
 - Pin workflow actions and configure bounded weekly action/uv dependency updates.
 - Add contribution and issue guidance; shorten the quickstart and retain public
@@ -12,20 +17,15 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 - Compose temporary evaluation schema identifiers safely and retain constant,
   parameter-bound retrieval queries without changing evaluation or access policy.
 
-### Added
+#### Added
 
 - Record of an AI reviewer's check of all 65 labels (`docs/audit/label-review.md`): no disagreement found, three wording notes; labels stay `drafted` and no human review is claimed.
 
-### Fixed
+#### Fixed
 
 - Audit category tables now distinguish correct answers from permitted refusals
   and injection outcomes; hosted results label deliberate proof runs explicitly.
 - Fake-mode quickstart demonstrates an answer, a refusal and a calculated payout.
-
-## [0.1.0] - 2026-10-03
-
-Prepared release; owner tagging and publication are pending. Existing entries
-below describe the historical implementation, including their original limits.
 
 - Added a reproducible synthetic builder self-assessment, source-derived findings
   and tables, client README, MIT licence, third-party inventory and security policy.

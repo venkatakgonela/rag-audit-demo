@@ -9,7 +9,7 @@ All domain data is synthetic. **Implemented** means present in the repository; *
 5. [Glossary](glossary.md) — readers new to the terminology.
 6. [Evaluation method](evaluation.md) and [canonical results](evaluation-results.md) — definitions, limitations, counts/intervals and the one-pass held-out record.
 7. [Sample audit](audit/README.md) — client-facing report, reproducible tables, findings and limitations.
-8. [Developer reference](development.md), [contributing](../CONTRIBUTING.md), [third-party notices](third-party-notices.md), [publication provenance](PUBLISHING.md) and [prepared release](release-notes.md).
+8. [Developer reference](development.md), [contributing](../CONTRIBUTING.md), [third-party notices](third-party-notices.md), [publication provenance](PUBLISHING.md) and [release notes](release-notes-0.1.0.md).
 
 Use the [project README](../README.md) for runnable commands, the [changelog](../CHANGELOG.md) for changes, and the [backlog](BACKLOG.md) for deferred work.
 

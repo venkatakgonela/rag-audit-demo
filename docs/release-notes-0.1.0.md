@@ -1,4 +1,4 @@
-# Prepared release: 0.1.0
+# Release 0.1.0
 
 Synthetic RAG audit demonstration with query-scoped access control, code-owned
 rules, verified extractive answers and durable traces. The included sample audit
@@ -14,7 +14,8 @@ is a builder self-assessment, not an independent audit or a production service.
   their own terms.
 
 Read the [audit](audit/report.pdf), [limits](audit/report.md) and
-[publication prerequisites](PUBLISHING.md) before using or sharing. Nothing in
-these notes claims broad injection resistance, independent labels, production
-identity, billing accuracy or availability. This text is prepared only: no tag,
-release or visibility change has been made.
+[publication notes](PUBLISHING.md) before using or sharing. Nothing in these notes
+claims broad injection resistance, independent labels, production identity,
+billing accuracy or availability. Repository protection (rulesets, secret
+scanning, dependency alerts, code scanning) was enabled when the repository was
+published on 2026-10-04.
