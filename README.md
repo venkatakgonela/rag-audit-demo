@@ -2,7 +2,7 @@
 
 **Prove your AI assistant is safe to release.** Access control that cannot be talked around, answers you can trace to a source, and a release gate that fails when quality drops. A working example with an audit report that states its own weaknesses.
 
-**[Read the sample audit report](docs/audit/report.pdf)** · [Why it matters](docs/governance.md) · [Evaluation method](docs/evaluation.md) · [Architecture](docs/ARCHITECTURE.md)
+**[Read the sample audit report](docs/audit/report.pdf)** · [Why it matters](docs/governance.md) · [Evaluation method](docs/evaluation.md) · [Architecture](docs/ARCHITECTURE.md) · [Write-up](https://venkatakgonela.substack.com/p/who-is-allowed-to-see-the-evidence)
 
 ![Request ownership: code controls access, rules, verification and tracing; CI and people review changes](docs/images/ownership-flow.png)
 
@@ -46,7 +46,7 @@ The brackets are 95% ranges (Wilson intervals): with only 10 to 18 questions per
 
 ## Try it locally
 
-Needs Git, Make, uv, Python 3.12 and Docker Compose; tested on macOS. No model key needed.
+Needs Git, Make, uv, Python 3.12, Docker Compose; macOS tested. No model key.
 
 ```sh
 git clone https://github.com/venkatakgonela/rag-audit-demo.git
