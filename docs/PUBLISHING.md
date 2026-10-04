@@ -1,6 +1,6 @@
 # Publication checklist
 
-Status: local readiness checks complete; owner review and platform settings remain publication prerequisites. The repository remains private. No visibility, settings, pull request, tag or release change has been made by this work.
+Status: published. The repository was made public on October 4, 2026, after the readiness checks below were completed. Hosted protection (rulesets, secret scanning with push protection, Dependabot alerts and security updates, CodeQL default setup, private vulnerability reporting, an Actions allowlist requiring pinned actions) was applied afterwards; the checks below describe the state before publication.
 
 ## Accepted historical exceptions
 
