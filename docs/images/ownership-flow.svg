@@ -39,8 +39,8 @@
   <text x="755" y="662" text-anchor="middle">Citations, exact quotes, format</text>
   <text x="35" y="590" class="small">Weak / missing evidence: no answer.</text>
   <text x="35" y="623" class="small">Rejected proposals: no answer.</text>
-  <path d="M245 545 V556 H20 V712 H500" class="arrow"/>
-  <path d="M755 686 V712 H510 V733" class="arrow"/>
+  <path d="M245 545 V556 H20 V790 H187" class="arrow"/>
+  <path d="M755 686 V734" class="arrow"/>
   <rect x="195" y="742" width="610" height="95" rx="12" class="code"/>
   <text x="500" y="776" text-anchor="middle" class="label">5 · CODE SAVES A TRACE, THEN RESPONDS</text>
   <text x="500" y="812" text-anchor="middle">If trace storage fails: generic error</text>
