@@ -4,6 +4,9 @@ All notable user-visible changes are recorded here, following Keep a Changelog.
 
 ## [Unreleased]
 
+- Allow reviewed action SHA updates while checking immutable pins, version
+  comments and unchanged action placement in CI; retain workflow security checks.
+
 ## [0.1.0] - 2026-10-04
 
 First public release. Entries describe the implementation as audited, including

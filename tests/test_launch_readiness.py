@@ -1,13 +1,18 @@
 import re
 from pathlib import Path
 
+import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-PINS = {
-    "actions/checkout": "d23441a48e516b6c34aea4fa41551a30e30af803",
-    "astral-sh/setup-uv": "37802adc94f370d6bfd71619e3f0bf239e1f3b78",
-    "actions/cache": "0057852bfaa89a56745cba8c7296529d2fc39830",
+ACTION_STEPS = {
+    "checks": {0: "actions/checkout", 1: "astral-sh/setup-uv"},
+    "integration": {0: "actions/checkout", 1: "astral-sh/setup-uv"},
+    "evaluation": {
+        0: "actions/checkout",
+        1: "astral-sh/setup-uv",
+        4: "actions/cache",
+    },
 }
 
 
@@ -23,18 +28,62 @@ def uses_references(value):
             yield from uses_references(child)
 
 
-def test_every_workflow_action_has_exact_full_sha():
+def verify_workflow_actions(directory):
     references = []
-    for path in (ROOT / ".github/workflows").glob("*.y*ml"):
+    for path in directory.glob("*.y*ml"):
         text = path.read_text()
-        for reference in uses_references(yaml.safe_load(text)):
+        workflow = yaml.safe_load(text)
+        assert path.name == "ci.yml"
+        assert set(workflow["jobs"]) == set(ACTION_STEPS)
+        for name, job in workflow["jobs"].items():
+            assert {
+                index: step["uses"].split("@")[0]
+                for index, step in enumerate(job["steps"])
+                if "uses" in step
+            } == ACTION_STEPS[name]
+        for reference in uses_references(workflow):
             assert re.fullmatch(r"[^@\s]+@[0-9a-f]{40}", reference), reference
-            name, revision = reference.split("@")
-            assert PINS.get(name) == revision, reference
-            assert re.search(re.escape(reference) + r"\s+# v\d+\b", text)
             references.append(reference)
+        assert len(
+            re.findall(
+                r"^\s*- uses: [^@\s]+@[0-9a-f]{40}[ \t]+# v\d+(?:\.\d+)*[ \t]*$",
+                text,
+                re.MULTILINE,
+            )
+        ) == len(list(uses_references(workflow)))
     assert len(references) == 7
-    assert {reference.split("@")[0] for reference in references} == set(PINS)
+
+
+def test_every_workflow_action_has_full_sha_and_version():
+    verify_workflow_actions(ROOT / ".github/workflows")
+
+
+@pytest.mark.parametrize("mutation", ["unpinned", "comment", "placement", "action"])
+def test_workflow_action_guards_reject_deliberate_breaks(tmp_path, mutation):
+    text = (ROOT / ".github/workflows/ci.yml").read_text()
+    match = re.search(r"actions/checkout@[0-9a-f]{40}", text)
+    assert match is not None
+    reference = match.group()
+    if mutation == "unpinned":
+        text = text.replace(reference, "actions/checkout@v7", 1)
+    elif mutation == "comment":
+        text = re.sub(re.escape(reference) + r"[^\n]*", reference, text, count=1)
+    elif mutation == "placement":
+        text = text.replace(
+            "    steps:\n", "    steps:\n      - run: echo changed\n", 1
+        )
+    else:
+        text = text.replace("actions/checkout@", "unexpected/action@", 1)
+    (tmp_path / "ci.yml").write_text(text)
+    with pytest.raises(AssertionError):
+        verify_workflow_actions(tmp_path)
+
+
+def test_workflow_action_guards_accept_another_full_sha(tmp_path):
+    text = (ROOT / ".github/workflows/ci.yml").read_text()
+    text = re.sub(r"(?<=@)[0-9a-f]{40}", "a" * 40, text)
+    (tmp_path / "ci.yml").write_text(text)
+    verify_workflow_actions(tmp_path)
 
 
 def test_dependabot_covers_actions_and_uv_weekly_with_bounded_prs():
