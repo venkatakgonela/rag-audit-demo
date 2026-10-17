@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-embeddings = ["onnxruntime==1.30.0", "tokenizers==0.23.2", "numpy==2.5.3"]
+embeddings = ["onnxruntime==1.30.0", "tokenizers==0.23.3", "numpy==2.5.3"]
 
 [dependency-groups]
 dev = [
